@@ -3,12 +3,37 @@
 <body>
     <form action="/login" method="post">
         <label for="email">Email</label>
-        <input type="text" placeholder="Email" name="email">
+        <input type="email" placeholder="Email" name="email" required="true">
+            <li>Must be a valid email address</li>
 
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" name="password">
+        <input type="password" placeholder="Password" name="password" required="true" minlength="10" maxlength="64">
+            <li>Must be between 10 and 64 characters</li>
 
         <button type="submit" value="submit">Log In</button>
     </form>
 </body>
 </html>
+
+
+<style>
+
+    /* Turn the email field red */
+    input[type=email]:invalid {
+        border-color: red;        
+    }
+
+    input[type=email]:valid {
+        border-color:  green
+    }
+
+
+    /* Turn the password field red */
+    input[type=password]:invalid {
+        border-color: red;
+    }
+
+    input[type=password]:valid {
+        border-color: green;
+    }
+</style>

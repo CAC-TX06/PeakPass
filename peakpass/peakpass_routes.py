@@ -11,7 +11,7 @@ from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
 
 
-# Create the Flask application and a random 32 character secret key as well as the pepper value
+# Create the Flask application, set the sesssion lifetime, and a random 32 character secret key
 app = Flask(__name__)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
 
