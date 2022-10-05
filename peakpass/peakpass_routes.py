@@ -50,20 +50,15 @@ async def login():
 async def signup():
     # If the user attempts to sign up, check the email/username and password against the valid DB entries
     # Make sure that the passwords are hashed and never stored as plaintext in the DB
-    try:
-        if(request.method == 'POST'):
-            email = request.form['email']
-            password = request.form['password']
-            info = await hash_new_pass(password)
-            if await add_user(email, info):
-                return render_template('signup-success.html')
-            else:
-                return render_template('signup-failure.html')
+    if(request.method == 'POST'):
+        if await add_user(request.form['email'], await hash_new_pass(request.form['password'])):
+            return render_template('signup-success.html')
+        else:
+            return render_template('signup-failure.html')
 
-        elif(request.method == 'GET'):
-            return render_template('signup.html')
-    except:
-        pass
+    elif(request.method == 'GET'):
+        return render_template('signup.html')
+
 
 
 @app.route('/dashboard', methods=['GET'])
