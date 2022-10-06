@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, session, url_for, flash
 from reader import USER, PASSWORD, DATABASE, HOST
 import os
 import asyncpg
@@ -9,14 +9,15 @@ import string
 from datetime import timedelta
 from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
+from flask_login import login_user, login_required, logout_user, current_user
+from flask_sqlalchemy import SQLAlchemy
+from __init__ import create_website
+from flask_login import UserMixin
+from __init__ import db
+import bcrypt
 
+app = create_website()
 
-# Create the Flask application, set the sesssion lifetime, and a random 32 character secret key
-app = Flask(__name__)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
-
-app.secret_key = os.urandom(32)
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"
 
 @app.route('/')
 def index():
@@ -27,23 +28,23 @@ def index():
 async def login():
     # If the user attempts to login, check the email/username and password against the valid DB entries
     # Make sure that the passwords are hashed and never stored as plaintext in the DB
-    try:
-        if(request.method == 'POST'):
-            if await correct_login_information(request.form['email'], request.form['password']):
-                session["email"] = True
-                return redirect(url_for('dashboard'))
-            else:
-                return render_template('login-incorrect.html')
+    if(request.method == 'POST'):
+        if(await correct_login_information(request.form['email'], request.form['password'])):
+            session["email"] = True
+            flash("You have successfully logged in!", category='success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash("Incorrect password!", category='error')
+            return redirect(url_for('login-incorrect.html'))
 
-        elif(request.method == 'GET'):
-            try:
-                if session["email"]:
-                    return redirect(url_for('dashboard'))
-            except:
-                pass
-            return render_template('login.html')
-    except:
-        pass
+    elif(request.method == 'GET'):
+        try:
+            if session["email"]:
+                return redirect(url_for('dashboard'))
+        except:
+            pass
+        return render_template('login.html')
+
 
 
 @app.route('/signup', methods = ['POST', 'GET'])

@@ -3,11 +3,11 @@
 <body>
     <form action="/login" method="post">
         <label for="email">Email</label>
-        <input type="email" placeholder="Email" name="email" required="true">
+        <input type="text" placeholder="Email" name="email" required="true">
             <li>Must be a valid email address</li>
 
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" name="password" required="true" minlength="10" maxlength="64">
+        <input type="password" placeholder="Password" name="password" required="true">
             <li>Must be between 10 and 64 characters</li>
 
         <button type="submit" value="submit">Log In</button>
