@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <!-- <title>{% block title %}Home{% endblock %}</title> -->
+  </head>
+  <!-- <body>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+  </body> -->
+  <body>
+    <div class="sign-up-form">
+      <!-- <img src="images/1024x1024.png""> -->
+      <h1>PeakPass</h1>
+      <form>
+        <input type="email" class="input-box" placeholder="Your Email">
+        <input type="password" class="input-box" placeholder="Your Password">
+        <button type="button" class="sign-up-btn">Sign Up</button>
+        <hr>
+        <p class="alt-log-in">Already have an account? <a href="">Log In</a></p>
+      </form>
+    </div>
+    <footer>
+      © 2022 PeakPass. All Rights Reserved.
+    </footer>
+  </body>
+</html>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(50, 52, 63);
+  }
+
+  /* Changes the Box everything sits in; can change the margin from 8% to 13% if you want to center in the middle of the screen*/
+  .sign-up-form {
+    width: 500px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+    background: rgb(70, 72, 88);
+    padding: 20px;
+    margin: 8% auto;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  /* Changes the 'PeakPass' title */
+  .sign-up-form h1 {
+    color: white;
+    margin: 15px 0 15px 0;
+    padding-bottom: 5px;
+    font-family: Montserrat;
+    font-weight: 700;
+  }
+
+  /* Changes the 'Already have an account' text  */
+  .alt-log-in {
+    font-family: Montserrat;
+    font-size: 15px;
+    font-weight: 500;
+    color:white;
+    margin-bottom: 5px;
+  }
+
+  /* Changes the 'Your Email' and 'Your Password' boxes */
+  .input-box {
+    background-color: rgb(70, 72, 88);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 90%;
+    border: 1px solid rgb(151, 151, 151);
+    outline: none;
+  }
+
+  /* Changes the 'Sign Up' Button */
+  button {
+    background-color: #85dd86;
+    color: white;
+    font-family: Montserrat;
+    font-weight: 500;
+    width: 90%;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 15px;
+    margin: 10px 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  /* Changes the 'Log In' hyperlink */
+  a {
+    text-decoration: none;
+    color: #91f093;
+  }
+
+  a:hover {
+    color:#91f093;
+  }
+
+  /* Changes the thin bar between button and alt log in  */
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    background-color: rgb(235, 235, 235);
+  }
+
+  /* Can be used with the logo */
+  img {
+    width: 70px;
+  }
+
+  /* Changes the 'Your Email'/'Your Password' TEXT */
+  ::placeholder {
+    font-family: Montserrat;
+    font-size: 15px;
+    color: white;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: 100vw;
+    margin-bottom: 20px;
+    padding-top: 40px;
+    text-align: center;
+    color: rgb(70, 72, 88);
+    font-family: Montserrat;
+  }
+</style>
