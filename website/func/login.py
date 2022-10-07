@@ -1,11 +1,9 @@
 import bcrypt
-from __init__ import db 
-from flask_sqlalchemy import SQLAlchemy
-from reader import USER, PASSWORD, DATABASE, HOST
+from __init__ import User
 
 async def correct_login_information(email: str, password: str):
-    login_data = db.session.execute("SELECT email, password FROM user WHERE email = %s", email).fetchone()
-    if login_data:
-        bcrypt.checkpw(password.encode('utf-8'), login_data[0])
-    else:
-        return False
+    user = User.query.filter_by(id=email).first()
+    if user:
+        if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+            return True
+    return False
