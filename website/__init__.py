@@ -9,7 +9,6 @@ db = SQLAlchemy()
 class User(db.Model, UserMixin):
     id = db.Column(db.String(100), unique=True, primary_key=True, nullable=False)
     password = db.Column(db.String(500), nullable=False)
-    website = db.Column(db.String(100), nullable=True)
 
 class Password(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,5 +1,5 @@
 from flask_login import current_user, login_user, login_required, logout_user
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
 from __init__ import create_website
@@ -21,12 +21,15 @@ async def login():
     if(request.method == 'POST'):
         if(await correct_login_information(request.form['email'], request.form['password'])):
             login_user(User.query.filter_by(id=request.form['email']).first(), remember=True)
+            flash('Logged in successfully.')
             return redirect(url_for('dashboard'))
 
+        flash('Incorrect login information.', 'error')
         return render_template('login-incorrect.html')
 
     elif(request.method == 'GET'):
         if(current_user.is_authenticated):
+            flash('You are already logged in.')
             return redirect(url_for('dashboard'))
 
         return render_template('login.html')
@@ -40,8 +43,10 @@ async def login():
 async def signup():
     if(request.method == 'POST'):
         if await add_user(request.form['email'], await hash_new_pass(request.form['password'])):
+            flash('Account created successfully.')
             return render_template('signup-success.html')
         else:
+            flash('That email is already taken.', 'error')
             return render_template('signup-failure.html')
 
     elif(request.method == 'GET'):
