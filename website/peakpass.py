@@ -43,14 +43,12 @@ async def login():
 async def signup():
     if(request.method == 'POST'):
         if await add_user(request.form['email'], await hash_new_pass(request.form['password'])):
-            flash('Account created successfully.')
-            return render_template('signup-success.html')
+            flash('Account created successfully. Please login to continue.')
+            return redirect(url_for('login'))
         else:
             flash('That email is already taken.', 'error')
-            return render_template('signup-failure.html')
 
-    elif(request.method == 'GET'):
-        return render_template('signup.html')
+    return render_template('signup.html')
 
 # If there is a current user, redirect to the dashboard, otherwise redirect to the login page
 @app.route('/dashboard', methods=['GET'])

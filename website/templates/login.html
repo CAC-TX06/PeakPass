@@ -9,7 +9,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <title>{% block title %}Home{% endblock %}</title>
+    <!-- <title>{% block title %}Home{% endblock %}</title> -->
   </head>
   <body>
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -30,7 +30,144 @@
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
   </body>
-  <body>
-    
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <body class="log-in-body">
+    <div class="log-in-form">
+      <!-- <img src="images/1024x1024.png""> -->
+      <h1>PeakPass - Log In</h1>
+      <form action="/login" method="POST">
+        <input type="email" class="input-box" name="email" placeholder="Email">
+        <input type="password" class="input-box" name="password" placeholder="Password">
+        
+        <button type="submit" value="submit" class="log-in-btn">Sign Up</button>
+        <hr>
+        <p class="alt-sign-up">Don't have an account yet? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+      </form>
+    </div>
+    <footer>
+      © 2022 PeakPass. All Rights Reserved.
+    </footer>
   </body>
 </html>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+  .log-in-body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(50, 52, 63);
+  }
+
+  /* Changes the Box everything sits in; can change the margin from 8% to 13% if you want to center in the middle of the screen*/
+  .log-in-form {
+    width: 500px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+    background: rgb(70, 72, 88);
+    padding: 20px;
+    margin: 25% auto;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  /* Changes the 'PeakPass' title */
+  .log-in-form h1 {
+    color: white;
+    margin: 15px 0 15px 0;
+    padding-bottom: 5px;
+    font-family: Montserrat;
+    font-weight: 700;
+  }
+
+  /* Changes the 'Already have an account' text  */
+  .alt-sign-up {
+    font-family: Montserrat;
+    font-size: 15px;
+    font-weight: 500;
+    color:white;
+    margin-bottom: 5px;
+  }
+
+  /* Changes the 'Your Email' and 'Your Password' boxes */
+  .input-box {
+    background-color: rgb(70, 72, 88);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 90%;
+    border: 1px solid rgb(151, 151, 151);
+    outline: none;
+  }
+
+  /* Changes the 'Sign Up' Button */
+  .log-in-btn {
+    background-color: #85dd86;
+    color: white;
+    font-family: Montserrat;
+    font-weight: 500;
+    width: 90%;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 15px;
+    margin: 10px 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  /* Changes the 'Log In' hyperlink */
+  a {
+    text-decoration: none;
+    color: #91f093;
+  }
+
+  a:hover {
+    color:#91f093;
+  }
+
+  /* Changes the thin bar between button and alt log in  */
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    background-color: rgb(235, 235, 235);
+  }
+
+  /* Can be used with the logo */
+  img {
+    width: 70px;
+  }
+
+  /* Changes the 'Your Email'/'Your Password' TEXT */
+  ::placeholder {
+    font-family: Montserrat;
+    font-size: 15px;
+    color: white;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: 100vw;
+    margin-bottom: 20px;
+    padding-top: 40px;
+    text-align: center;
+    color: rgb(70, 72, 88);
+    font-family: Montserrat;
+  }
+</style>

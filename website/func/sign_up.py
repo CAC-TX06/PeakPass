@@ -1,4 +1,5 @@
 import bcrypt
+import sqlalchemy
 from __init__ import db, User
 
 async def hash_new_pass(password: str):
@@ -7,11 +8,11 @@ async def hash_new_pass(password: str):
 
 
 async def add_user(email, password):   
-    # try:
-    data = User(id=email, password=password)
-    db.session.add(data)
-    db.session.commit() 
-    return True
-    # except sqlalchemy.exc.IntegrityError:
-    #     return False
+    try:
+        data = User(id=email, password=password)
+        db.session.add(data)
+        db.session.commit() 
+        return True
+    except sqlalchemy.exc.IntegrityError:
+        return False
 
