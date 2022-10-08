@@ -42,11 +42,11 @@
   ></script>
   <body class="log-in-body">
     <div class="log-in-form">
-      <!-- <img src="images/1024x1024.png""> -->
-      <h1>PeakPass - Log In</h1>
-      <form action="/login" method="POST" onsubmit="return validateForm()">
-        <input class="input-box" name="email" placeholder="Email" required="True">
-        <input class="input-box" name="password" placeholder="Password" required="True">
+      <img src="{{ url_for('static', filename='peakpass_text_logo.png') }}">
+      <h1>Log In</h1>
+      <form name="login" action="/login" method="POST" onsubmit="event.preventDefault(); checkForm();">
+        <input class="input-box" name="email" placeholder="Email">
+        <input class="input-box" name="password" placeholder="Password">
         
         <button type="submit" value="submit" class="log-in-btn">Log In</button>
         <hr>
@@ -60,15 +60,38 @@
 </html>
 
 <script>
+  window.onload = validateForm();
+
   function validateForm() {
-    var email = document.querySelector("input[name='email']").value;
-    if(email == "") {
-      email.style.borderColor = "#FA5B5B";
+    let email = document.querySelector('input[name="email"]');
+    email.addEventListener('input', () => {
+        email.style.border = '1px solid #979797';
+    });
+
+    let password = document.querySelector('input[name="password"]');
+    password.addEventListener('input', () => {
+        password.style.border = '1px solid #979797';
+    });
+  } 
+
+  function checkForm() {
+    let password = document.querySelector('input[name="password"]');
+    let email = document.querySelector('input[name="email"]');
+    console.log(password.value);
+    if (email.value.length == 0) {
+      email.style.border = '1px solid #FA5B5B';
+    } 
+    
+    if (password.value.length == 0) {
+      password.style.border = '1px solid #FA5B5B';
+    }
+
+    if (email.value.length == 0 || password.value.length == 0) {
       return false;
+    } else {
+      document.forms["login"].submit();
     }
   }
-  
-
 </script>
 
 <style>
@@ -96,6 +119,7 @@
 
   /* Changes the 'PeakPass' title */
   .log-in-form h1 {
+    font-size: 35px;
     color: white;
     margin: 15px 0 15px 0;
     padding-bottom: 5px;
@@ -159,7 +183,7 @@
 
   /* Can be used with the logo */
   img {
-    width: 70px;
+    width: 250px;
   }
 
   /* Changes the 'Your Email'/'Your Password' TEXT */

@@ -46,8 +46,8 @@
   ></script>
   <body class="sign-up-body">
     <div class="sign-up-form">
-      <!-- <img src="images/1024x1024.png""> -->
-      <h1>PeakPass - Sign Up</h1>
+      <img src="{{ url_for('static', filename='peakpass_text_logo.png') }}">
+      <h1>Sign Up</h1>
       <form name="signup" onsubmit="event.preventDefault(); checkForm();" action="/signup" method="POST">
         <input class="input-box" name="email" placeholder="Your Email">
         <label for="email">• Valid email address</label>
@@ -113,7 +113,7 @@
       email.style.border = '1px solid #FA5B5B';
     } 
     
-    if (password.value.length == 0) {
+    if (password.value.length <= 10) {
       password.style.border = '1px solid #FA5B5B';
     }
 
@@ -134,6 +134,7 @@
     margin-top: 20px;
     margin-left: -40px;
     cursor: pointer;
+    color: rgb(151, 151, 151);
   }
 
   label {
@@ -164,6 +165,7 @@
 
   /* Changes the 'PeakPass' title */
   .sign-up-form h1 {
+    font-size: 35px;
     color: white;
     margin: 15px 0 15px 0;
     padding-bottom: 5px;
@@ -229,7 +231,7 @@
 
   /* Can be used with the logo */
   img {
-    width: 70px;
+    width: 250px;
   }
 
   /* Changes the 'Your Email'/'Your Password' TEXT */
