@@ -3,9 +3,17 @@
 ## Below is a list of all of the pages that you need to create as of now.
 
 - index.html (The main webpage)
-- login.html
-- login-incorrect.html (The same exact as login, except add a little message that shows that they entered the wrong login information)
-- sign-up.html (Sign up page for new users)
-- 404.html
+- login.html COMPLETE
+- sign-up.html (Sign up page for new users) COMPLETE
+- dashboard.html
+  - Circular PFP
+  - Name of Entry
+  - When name clicked, popup
+    - Name of Entry
+    - Associated Website
+    - Username
+    - Password
+    - Favorite Button (Star)
+- 404.html PARKER
 
 ## Also please create a sort of default template page that can be used to fill in all of the technical information for the project. This will also double as the same template that will be used to give more user friendly information about overall web security.
