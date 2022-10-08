@@ -31,6 +31,145 @@
     {% endif %} {% endfor %} {% endif %} {% endwith %}
   </body> -->
   <body>
-    
+    <header>
+      <a href="/index.html">
+      <img class="logo" src="images/" alt="logo">
+      </a>
+      <nav>
+          <ul class="nav_links">
+              <li><a href="">Dashboard</a></li>
+              <li><a href="">Tools</a></li>
+          </ul>
+      </nav>
+      <img src="images/user_pfp.png" class="user-pfp" alt="User Profile Picture">
+    </header>  
+
+
   </body>
 </html>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Montserrat;
+  background-color: rgb(50, 52, 63);
+}
+
+
+li, a, button {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #edf0f1;
+  text-decoration: none;
+}
+
+/* Main Wrapper for all elements within navbar */
+header {
+  background-color: rgb(38, 39, 48);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10%;
+  margin-bottom: 4em;
+}
+
+/* PeakPass Logo */
+.logo {
+  cursor: pointer;
+  max-width: 60px;
+  margin-left: 80px;
+  background-color: rgb(38, 39, 48);
+}
+
+@media (max-width: 970px) {
+  .logo {
+    margin: 0;
+    width: 60px;
+  }
+}
+
+/* Changes the navbar color to dark */
+nav {
+  background-color: rgb(38, 39, 48);
+}
+
+
+
+.nav_links {
+  list-style: none;
+  background-color: rgb(38, 39, 48);
+  margin-bottom: 0;
+}
+
+.nav_links li {
+  display: inline-block;
+  padding: 0px 20px;
+  background-color: rgb(38, 39, 48);
+}
+
+@media (max-width: 970px) {
+  .nav_links li {
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -o-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    padding-inline-end: 0px;
+    margin: 10px;
+    margin-right: 40px;
+    text-align: center;
+    padding-left: 20px;
+    font-size: 2px;
+  }
+}
+
+.nav_links li a {
+  transition: all 0.3s ease 0s; 
+}
+
+.nav_links li a:hover {
+  color: #91f093;
+}
+
+@media (max-width: 970px) {
+  .nav_links li a{
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 970px) {
+  .home-button {
+    padding-left: 14px;
+  }
+}
+
+.cta {
+  margin-right: 70px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.user-pfp {
+  width: 50px;
+  margin: 7px 80px 7px 0;
+  background-color: rgb(38, 39, 48);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  clip-path: circle();
+}
+
+@media (max-width: 970px) {
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+</style>
