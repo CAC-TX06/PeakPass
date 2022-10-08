@@ -25,7 +25,7 @@ async def login():
             return redirect(url_for('dashboard'))
 
         flash('Incorrect login information.', 'error')
-        return render_template('login-incorrect.html')
+        return render_template('login.html')
 
     elif(request.method == 'GET'):
         if(current_user.is_authenticated):
