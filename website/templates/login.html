@@ -44,11 +44,11 @@
     <div class="log-in-form">
       <!-- <img src="images/1024x1024.png""> -->
       <h1>PeakPass - Log In</h1>
-      <form action="/login" method="POST">
-        <input type="email" class="input-box" name="email" placeholder="Email">
-        <input type="password" class="input-box" name="password" placeholder="Password">
+      <form action="/login" method="POST" onsubmit="return validateForm()">
+        <input class="input-box" name="email" placeholder="Email" required="True">
+        <input class="input-box" name="password" placeholder="Password" required="True">
         
-        <button type="submit" value="submit" class="log-in-btn">Sign Up</button>
+        <button type="submit" value="submit" class="log-in-btn">Log In</button>
         <hr>
         <p class="alt-sign-up">Don't have an account yet? <a href="{{ url_for('signup') }}">Sign Up</a></p>
       </form>
@@ -59,6 +59,18 @@
   </body>
 </html>
 
+<script>
+  function validateForm() {
+    var email = document.querySelector("input[name='email']").value;
+    if(email == "") {
+      email.style.borderColor = "#FA5B5B";
+      return false;
+    }
+  }
+  
+
+</script>
+
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
@@ -67,7 +79,7 @@
   .log-in-body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: Montserrat;
     background-color: rgb(50, 52, 63);
   }
 
@@ -77,7 +89,7 @@
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
     background: rgb(70, 72, 88);
     padding: 20px;
-    margin: 25% auto;
+    margin: 8% auto;
     text-align: center;
     border-radius: 8px;
   }
