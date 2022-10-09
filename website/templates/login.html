@@ -44,9 +44,17 @@
     <div class="log-in-form">
       <img src="{{ url_for('static', filename='peakpass_text_logo.png') }}">
       <h1>Log In</h1>
+      {% if success_message %}
+      <p class="success"> {{ success_message }} </p>
+      {% endif %}
       <form name="login" action="/login" method="POST" onsubmit="event.preventDefault(); checkForm();">
         <input class="input-box" name="email" placeholder="Email">
-        <input class="input-box" name="password" placeholder="Password">
+        <input type="password"  class="input-box" name="password" placeholder="Password">
+        <i class="bi bi-eye-slash" id="togglePassword"></i>
+        
+        {% if error_message %}
+        <p class="error"> {{ error_message }} </p>
+        {% endif %}
         
         <button type="submit" value="submit" class="log-in-btn">Log In</button>
         <hr>
@@ -91,6 +99,15 @@
     } else {
       document.forms["login"].submit();
     }
+
+    const togglePass = document.querySelector('#togglePassword');
+    const pass = document.querySelector('input[name="password"]');
+
+    togglePass.addEventListener('click', function(e) {
+      const type = pass.getAttribute('type') === 'password' ? 'text' : 'password';
+      pass.setAttribute('type', type);
+      this.classList.toggle('bi-eye');
+    });
   }
 </script>
 
@@ -98,6 +115,32 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+  .success {
+    font-family: Montserrat;
+    font-weight: 400;
+    margin: auto;
+    padding-bottom: 10px;
+    line-height: 1.75;
+    text-align: center;
+    width: 90%;
+    color: #91f093;
+  }
+
+  .error {
+    font-family: Montserrat;
+    font-weight: 400;
+    margin: auto;
+    line-height: 1.75;
+    text-align: center;
+    width: 90%;
+    color: #FA5B5B;
+  }
+
+  form i {
+    cursor: pointer;
+    color: rgb(151, 151, 151);
+  }
 
   .log-in-body {
     margin: 0;
@@ -138,6 +181,7 @@
 
   /* Changes the 'Your Email' and 'Your Password' boxes */
   .input-box {
+    color: white;
     background-color: rgb(70, 72, 88);
     border-radius: 8px;
     padding: 10px;

@@ -15,25 +15,6 @@
     />
     <!-- <title>{% block title %}Home{% endblock %}</title> -->
   </head>
-  <body>
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %} {% if category ==
-    'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
-  </body>
   <script
   src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
   integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -54,6 +35,13 @@
         <input type="password" class="input-box" name="password" placeholder="Your Password">
         <i class="bi bi-eye-slash" id="togglePassword"></i>
         <label for="password">• At least 10 characters in length</label>
+        <input type="password" class="input-box" name="confirm-password" placeholder="Confirm Password">
+        <i class="bi bi-eye-slash" id="confirm-togglePassword"></i>
+        <label for="confirm-password">• Passwords match</label>
+
+        {% if error_message %}
+        <p> {{ error_message }} </p>
+        {% endif %}
         
         <button type="submit" value="submit" class="sign-up-btn">Sign Up</button>
         <hr>
@@ -95,6 +83,18 @@
       }
     });
 
+    let confirmPassword = document.querySelector('input[name="confirm-password"]');
+    confirmPassword.addEventListener('input', () => {
+      let passwordLabel = document.querySelector('label[for="confirm-password"]');
+      if (password.value != confirmPassword.value) {
+        passwordLabel.style.color = '#FA5B5B';
+        confirmPassword.style.border = '1px solid #979797';
+      } else {
+        passwordLabel.style.color = '#85dd86';
+        confirmPassword.style.border = '1px solid #979797';
+      }
+    });
+
     const togglePass = document.querySelector('#togglePassword');
     const pass = document.querySelector('input[name="password"]');
 
@@ -103,11 +103,21 @@
       pass.setAttribute('type', type);
       this.classList.toggle('bi-eye');
     });
+
+    const confirmTogglePass = document.querySelector('#confirm-togglePassword');
+    const confirmPass = document.querySelector('input[name="confirm-password"]');
+
+    confirmTogglePass.addEventListener('click', function(e) {
+      const type = confirmPass.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPass.setAttribute('type', type);
+      this.classList.toggle('bi-eye');
+    });
   } 
 
   function checkForm() {
     let password = document.querySelector('input[name="password"]');
     let email = document.querySelector('input[name="email"]');
+    let confirmPassword = document.querySelector('input[name="confirm-password"]');
     console.log(password.value);
     if (!email.value.includes ('@') || !email.value.includes('.')) {
       email.style.border = '1px solid #FA5B5B';
@@ -117,7 +127,11 @@
       password.style.border = '1px solid #FA5B5B';
     }
 
-    if (!email.value.includes ('@') || !email.value.includes('.') || password.value.length <= 10) {
+    if (password.value !== confirmPassword.value || confirmPassword.value.length <= 10) {
+      confirmPassword.style.border = '1px solid #FA5B5B';
+    }
+
+    if (!email.value.includes ('@') || !email.value.includes('.') || password.value.length <= 10 || password.value !== confirmPassword.value) {
       return false;
     } else {
       document.forms["signup"].submit();
@@ -128,6 +142,16 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+  p {
+    font-family: Montserrat;
+    font-weight: 400;
+    margin: auto;
+    line-height: 1.75;
+    text-align: center;
+    width: 90%;
+    color: #FA5B5B;
+  }
 
   form i {
     position: absolute;

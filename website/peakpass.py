@@ -21,15 +21,14 @@ async def login():
     if(request.method == 'POST'):
         if(await correct_login_information(request.form['email'], request.form['password'])):
             login_user(User.query.filter_by(id=request.form['email']).first(), remember=True)
-            flash('Logged in successfully.')
+            flash('Logged in successfully. You may now access your dashboard below.')
             return redirect(url_for('dashboard'))
 
-        flash('Incorrect login information.', 'error')
-        return render_template('login.html')
+        return render_template('login.html', error_message='Incorrect email/password. Please try again.')
 
     elif(request.method == 'GET'):
         if(current_user.is_authenticated):
-            flash('You are already logged in.')
+            flash('You are already logged in. Please access your dashboard below.')
             return redirect(url_for('dashboard'))
 
         return render_template('login.html')
@@ -43,10 +42,10 @@ async def login():
 async def signup():
     if(request.method == 'POST'):
         if await add_user(request.form['email'], await hash_new_pass(request.form['password'])):
-            flash('Account created successfully. Please login to continue.')
-            return redirect(url_for('login'))
+            # redirect(url_for('login'))
+            return render_template('login.html', success_message='Account created successfully. Please login to continue.')
         else:
-            flash('That email is already taken.', 'error')
+            return render_template('signup.html', error_message='Email already taken, please try again with a different email address.')
 
     return render_template('signup.html')
 
