@@ -40,7 +40,7 @@
           <li><a class="dash" href="">Dashboard</a></li>
           <li><a href="">Tools</a></li>
         </ul>
-        <img src="images/user_pfp.png" class="user-pfp" alt="User Profile Picture">
+        <img src="images/pfp_p.png" class="user-pfp" alt="User Profile Picture">
       </nav>
     </header>  
 
@@ -54,21 +54,44 @@
       </thead>
       <tbody>
         <tr>
-          <td><img src="images/user_pfp.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
+          <td><img src="images/pfp_a.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
         </tr>
         <tr>
-          <td><img src="images/user_pfp.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
+          <td><img src="images/pfp_b.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Bitwarden</a></td>
         </tr>
         <tr>
-          <td><img src="images/user_pfp.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
+          <td><img src="images/pfp_w.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Walmart</a></td>
         </tr>
         <tr>
-          <td><img src="images/user_pfp.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
+          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
         </tr>
       </tbody>
     </table>
   </body>
 </html>
+
+<script>
+  window.onload = function() {
+  var searchInput = document.querySelector('.search-input');
+  var table = document.querySelector('.content-table');
+  var tr = table.querySelectorAll('tr');
+
+  searchInput.addEventListener('keyup', function(e) {
+    var searchValue = e.target.value.toLowerCase();
+    tr.forEach(function(tr) {
+      var td = tr.querySelector('td');
+      if (td) {
+        var textValue = td.textContent || td.innerText;
+        if (textValue.toLowerCase().indexOf(searchValue) > -1) {
+          tr.style.display = '';
+        } else {
+          tr.style.display = 'none';
+        }
+      }
+    });
+  });
+  }
+</script>
 
 <style>
 
@@ -197,13 +220,14 @@
   }
 
   .user-pfp {
+    border-radius: 50%;
     width: 50px;
+    height: 50px;
     margin: 7px 80px 7px 0;
     background-color: rgb(38, 39, 48);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease 0s;
-    clip-path: circle();
   }
 
   @media (max-width: 970px) {
@@ -218,14 +242,14 @@
   /* TABLE STARTS HERE  */
 
   .content-table {
-  border-collapse: collapse;
-  margin: 75px auto 25px auto;
-  font-size: 0.9em;
-  min-width: 800px;
-  border-radius: 5px 5px 0 0;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
+    border-collapse: collapse;
+    margin: 75px auto 25px auto;
+    font-size: 0.9em;
+    min-width: 800px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
 
   .content-table thead tr {
     background-color: #85dd86;
@@ -279,10 +303,11 @@
   }
 
   .item-pfp {
+    border-radius: 50%;
     width: 60px;
+    height: 60px;
     margin: 0 40px 0 0;
     border: none;
     cursor: pointer;
-    clip-path: circle();
   } 
 </style>
