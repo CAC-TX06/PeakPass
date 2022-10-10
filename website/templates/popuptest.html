@@ -15,12 +15,12 @@
 <body>
     <div class="bg-modal">
         <div class="modal-content">
-            <div class="close">+</div>
+            <a class="close" href="">+</a>
             <form action="">
                 <input class="popup-input" type="text" placeholder="Item Name">
                 <input class="popup-input" type="text" placeholder="Password">
-                <a href="" class="save">Save</a>\
-                <a href="" class="cancel">Cancel</a>
+                <button class="save" type="submit" value="submit">Save</button>
+                <a class="cancel" href="">Cancel</a>
             </form>
         </div>
     </div>
@@ -33,18 +33,17 @@
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><img src="images/pfp_a.png" class="item-pfp" alt="Item Image"><a id="button" class="item-name" href="openPopup()">Amazon</a></td>
+        <tbody> 
+            <td><img src="images/pfp_a.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
           </tr>
           <tr>
-            <td><img src="images/pfp_b.png" class="item-pfp" alt="Item Image"><a id="button" class="item-name" href="openPopup()">Bitwarden</a></td>
+            <td><img src="images/pfp_b.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Bitwarden</a></td>
           </tr>
           <tr>
-            <td><img src="images/pfp_w.png" class="item-pfp" alt="Item Image"><a id="button" class="item-name" href="openPopup()">Walmart</a></td>
+            <td><img src="images/pfp_w.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Walmart</a></td>
           </tr>
           <tr>
-            <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a id="button" class="item-name" href="openPopup()">Twitter</a></td>
+            <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
           </tr>
           <tr>
         </tbody>
@@ -75,156 +74,160 @@
   });
   }
 
-  document.getElementById('button').addEventListener("click", function() {
-	document.querySelector('.bg-modal').style.display = "flex";
-  });
+  document.addEventListener('click', function (event) {
+    // If the clicked element doesn't have the right selector, bail
+    if (event.target.matches('.close')) {
+      event.preventDefault();
+      document.querySelector('.bg-modal').style.display = 'none';
+    }
 
-  document.querySelector('.close').addEventListener("click", function() {
-	document.querySelector('.bg-modal').style.display = "none";
-  });
+    if (event.target.matches('.item-name')) {
+      event.preventDefault();
+      document.querySelector('.bg-modal').style.display = 'flex';
+    }
+  }, false);
 </script>
 
 <style>
 
-    * {
-        margin: 0;
-        padding: 0;
-        font-family: Montserrat;
-    }
+  * {
+      margin: 0;
+      padding: 0;
+      font-family: Montserrat;
+  }
 
-    body {
-        background-color: rgb(50, 52, 63);
-    }
+  body {
+      background-color: rgb(50, 52, 63);
+  }
 
-    li, a, button {
-    font-family: "Montserrat", sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    color: #edf0f1;
-    text-decoration: none;
-    }
+  li, a, button {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #edf0f1;
+  text-decoration: none;
+  }
 
-    .content-table {
-        border-collapse: collapse;
-        margin: 75px auto 25px auto;
-        font-size: 0.9em;
-        min-width: 800px;
-        border-radius: 5px 5px 0 0;
-        overflow: hidden;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    }
+  .content-table {
+      border-collapse: collapse;
+      margin: 75px auto 25px auto;
+      font-size: 0.9em;
+      min-width: 800px;
+      border-radius: 5px 5px 0 0;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
 
-    .content-table thead tr {
-        background-color: #85dd86;
-        color: white;
-        text-align: left;
-        font-weight: bold;
-    }
+  .content-table thead tr {
+      background-color: #85dd86;
+      color: white;
+      text-align: left;
+      font-weight: bold;
+  }
 
-    .search-input {
-        border: none;
-        outline: none;
-        background-color: #85dd86;
-        color: white;
-        font-weight: 700;
-    }
+  .search-input {
+      border: none;
+      outline: none;
+      background-color: #85dd86;
+      color: white;
+      font-weight: 700;
+  }
 
-    .search-input::placeholder {
-        color: white;
-        opacity: 0.9;
-    }
+  .search-input::placeholder {
+      color: white;
+      opacity: 0.9;
+  }
 
-    .content-table th {
-        font-size: 40px;
-    }
+  .content-table th {
+      font-size: 40px;
+  }
 
-    .content-table td {
-        font-size: 20px;
-    }
+  .content-table td {
+      font-size: 20px;
+  }
 
-    .content-table th,
-    .content-table td {
-        padding: 12px 15px;
-    }
+  .content-table th,
+  .content-table td {
+      padding: 12px 15px;
+  }
 
-    .item-name {
-        font-size: 20px;
-        padding-left: 100px;
-    }
+  .item-name {
+      font-size: 20px;
+      padding-left: 100px;
+  }
 
-    .content-table tbody tr {
-        background-color: rgb(38, 39, 48);
-        border-bottom: 2px solid rgb(50, 52, 63);
-        color: #fff;
-    }
+  .content-table tbody tr {
+      background-color: rgb(38, 39, 48);
+      border-bottom: 2px solid rgb(50, 52, 63);
+      color: #fff;
+  }
 
-    .item-pfp {
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        margin: 0 40px 0 0;
-        border: none;
-        cursor: pointer;
-    } 
+  .item-pfp {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      margin: 0 40px 0 0;
+      border: none;
+      cursor: pointer;
+  } 
 
-    a:hover {
-        color: #91f093;
-        text-decoration: none;
-    }
+  a:hover {
+      color: #91f093;
+      text-decoration: none;
+  }
 
-    .bg-modal {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        position: absolute;
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        display: none;
-    }
+  .bg-modal {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      position: absolute;
+      top: 0;
+      justify-content: center;
+      align-items: center;
+      display: none;
+  }
 
-    .modal-content {
-        width: 600px;
-        height: 600px;
-        background-color: rgb(50, 52, 63);
-        border-radius: 8px;
-        padding: 20px;
-        position: relative;
-    }
+  .modal-content {
+      width: 600px;
+      height: 600px;
+      background-color: rgb(50, 52, 63);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+  }
 
-    .popup-input {
-        width: 50%;
-        display: block;
-        margin: 30px auto 20px auto; 
-    }
+  .popup-input {
+      width: 50%;
+      display: block;
+      margin: 30px auto 20px auto; 
+  }
 
-    .close {
-        position: absolute;
-        top: 0;
-        right: 13px;
-        font-size: 30px;
-        transform: rotate(45deg);
-        cursor: pointer;
-    }
+  .close {
+      position: absolute;
+      top: 0;
+      right: 13px;
+      font-size: 30px;
+      transform: rotate(45deg);
+      cursor: pointer;
+  }
 
-    .save {
-        position: absolute;
-        top: 0;
-        font-size: 20px;
-        cursor: pointer;
-        margin-top: 550px;
-        padding: 5px 10px;
-        background-color: rgb(38, 39, 48);
-        border-radius: 8px;
-    }
+  .save {
+      position: absolute;
+      top: 0;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 550px;
+      padding: 5px 10px;
+      background-color: rgb(38, 39, 48);
+      border-radius: 8px;
+  }
 
-    .cancel {
-        position: absolute;
-        top: 0;
-        font-size: 20px;
-        cursor: pointer;
-        margin: 550px 0px 0px 75px;
-        padding: 5px 10px;
-    }
+  .cancel {
+      position: absolute;
+      top: 0;
+      font-size: 20px;
+      cursor: pointer;
+      margin: 550px 0px 0px 75px;
+      padding: 5px 10px;
+  }
 </style>
