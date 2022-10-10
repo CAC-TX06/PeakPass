@@ -10,17 +10,45 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
     crossorigin="anonymous"
     />
+    <script src="https://kit.fontawesome.com/a6e4faf2bf.js" crossorigin="anonymous"></script>
     <title>Test</title>
 </head>
 <body>
     <div class="bg-modal">
         <div class="modal-content">
-            <a class="close" href="">+</a>
             <form action="">
-                <input class="popup-input" type="text" placeholder="Item Name">
-                <input class="popup-input" type="text" placeholder="Password">
-                <button class="save" type="submit" value="submit">Save</button>
-                <a class="cancel" href="">Cancel</a>
+                <div class="modal-header">
+                    <h2 class="modal-title">Edit Item</h2>
+                    <button class="close" type="button" data-dismiss="modal" title="close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="name">Name</label>
+                            <input id="name" class="popup-input" type="text" name="Name" required="">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="username">Username</label>
+                            <input id="username" class="popup-input" type="text" name="Username" required="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="password">Password</label>
+                            <input id="password" class="popup-input" type="text" name="Password" required="">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="url">URL</label>
+                            <input id="url" class="popup-input" type="text" name="URL" required="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="save" type="submit" value="submit">Save</button>
+                    <a class="cancel" href="">Cancel</a>
+                </div>
             </form>
         </div>
     </div>
@@ -101,11 +129,11 @@
   }
 
   li, a, button {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  color: #edf0f1;
-  text-decoration: none;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      color: #edf0f1;
+      text-decoration: none;
   }
 
   .content-table {
@@ -139,7 +167,7 @@
   }
 
   .content-table th {
-      font-size: 40px;
+      font-size: 25px;
   }
 
   .content-table td {
@@ -172,8 +200,14 @@
   } 
 
   a:hover {
+        transition: all 0.5s ease;
       color: #91f093;
       text-decoration: none;
+  }
+
+  label {
+    font-size: 15px;
+    color: white;
   }
 
   .bg-modal {
@@ -188,46 +222,74 @@
   }
 
   .modal-content {
-      width: 600px;
-      height: 600px;
+      width: 800px;
+      height: 400px;
       background-color: rgb(50, 52, 63);
       border-radius: 8px;
-      padding: 20px;
       position: relative;
   }
 
+  .modal-header {
+    color: white;
+  }
+
   .popup-input {
-      width: 50%;
+      width: 100%;
       display: block;
-      margin: 30px auto 20px auto; 
+      color: white;
+      background-color: rgb(58, 59, 73);
+      border: 1px solid rgb(38, 39, 48);
+      border-radius: 4px;
+      padding: .375rem .75rem;
+  }
+
+  .popup-input:focus {
+    outline: none;
   }
 
   .close {
-      position: absolute;
-      top: 0;
-      right: 13px;
-      font-size: 30px;
-      transform: rotate(45deg);
+      font-size: 20px;
+      color: white;
       cursor: pointer;
+  }
+
+  .modal-header .close {
+    padding: 1.75rem 1.75rem 1rem 1rem;
+  }
+
+  .close:hover {
+    color: #f3f3f3;
+    text-decoration: none;
+  }
+
+  .modal-footer {
+    justify-content: flex-start;
   }
 
   .save {
       position: absolute;
       top: 0;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
-      margin-top: 550px;
-      padding: 5px 10px;
+      margin-top: 320px;
+      padding: 8px 10px;
       background-color: rgb(38, 39, 48);
-      border-radius: 8px;
+      border-radius: 4px;
+      border: none;
+  }
+
+  .save:hover {
+    transition: all 0.5s ease;
+    color: #91f093;
+    text-decoration: none;
   }
 
   .cancel {
       position: absolute;
       top: 0;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
-      margin: 550px 0px 0px 75px;
-      padding: 5px 10px;
+      margin: 320px 0px 0px 75px;
+      padding: 8px 10px;
   }
 </style>
