@@ -11,9 +11,11 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(500), nullable=False)
 
 class Password(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    password = db.Column(db.String(500), nullable=False)
-    website = db.Column(db.String(1000), nullable=False)
+    id = db.Column(db.String(500), unique=True, primary_key=True, nullable=False) # Name
+    owner = db.Column(db.String(100), nullable=True) # Email of the owner
+    username = db.Column(db.String(100), unique=False, nullable=True) # Username
+    password = db.Column(db.String(500), nullable=True)
+    url = db.Column(db.String(5000), nullable=True)
 
 
 def create_website():

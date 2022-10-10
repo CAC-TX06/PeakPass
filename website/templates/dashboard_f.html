@@ -35,54 +35,15 @@
     <header>
       <nav>
         <a>
-          <img class="logo" src="images/peakpass_logo.png" alt="logo">
+          <img class="logo" src={{ url_for('static', filename='peakpass_logo.png') }} alt="logo">
         </a>
         <ul class="nav_links">
           <li><a class="dash" href="">Dashboard</a></li>
           <li><a href="">Tools</a></li>
         </ul>
-        <img src="images/pfp_p.png" class="user-pfp" alt="User Profile Picture">
+        <img src={{ path }} class="user-pfp" alt="User Profile Picture">
       </nav>
-    </header>  
-
-    <div class="bg-modal">
-      <div class="modal-content">
-          <form action="">
-              <div class="modal-header">
-                  <h2 class="modal-title">Edit Item</h2>
-                  <button class="close" type="button" data-dismiss="modal" title="close">
-                      <i class="fa-solid fa-xmark"></i>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                      <div class="col-6 form-group">
-                          <label for="name">Name</label>
-                          <input id="name" class="popup-input" type="text" name="Name" required="">
-                      </div>
-                      <div class="col-6 form-group">
-                          <label for="username">Username</label>
-                          <input id="username" class="popup-input" type="text" name="Username" required="">
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-6 form-group">
-                          <label for="password">Password</label>
-                          <input id="password" class="popup-input" type="text" name="Password" required="">
-                      </div>
-                      <div class="col-6 form-group">
-                          <label for="url">URL</label>
-                          <input id="url" class="popup-input" type="text" name="URL" required="">
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button class="save" type="submit" value="submit">Save</button>
-                  <a class="cancel" href="">Cancel</a>
-              </div>
-          </form>
-      </div>
-  </div>
+    </header>
 
   <table class="content-table">
       <thead>
@@ -92,58 +53,50 @@
           </th>
         </tr>
       </thead>
-      <tbody> 
+      <tbody>
+        {% for i in data %}
         <tr>
-          <td><img src="images/pfp_a.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
+          <td><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i.id }}><a class="item-name" data-target=#{{ i.id }}>{{ i.id }}</a></td>
         </tr>
-        <tr>
-          <td><img src="images/pfp_b.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Bitwarden</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_w.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Walmart</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
-        <tr>
-          <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
-        </tr>
+
+        <div id={{ i.id }} class="bg-modal" hidden> 
+          <div class="modal-content">
+              <form action="" method="POST" name="update">
+                  <div class="modal-header">
+                      <h2 class="modal-title">Edit Item</h2>
+                      <a class="fa-solid fa-xmark" href=""></a>
+                  </div>
+                  <div class="modal-body">
+                      <div class="row">
+                          <div class="col-6 form-group">
+                              <label for="name">Name</label>
+                              <input id="name" class="popup-input" type="text" name="Name" value={{ i.id }} required>
+                          </div>
+                          <div class="col-6 form-group">
+                              <label for="username">Username</label>
+                              <input id="username" class="popup-input" type="text" name="Username" value={{ i.username if i.username !=None }}>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-6 form-group">
+                              <label for="password">Password</label>
+                              <input id="password" class="popup-input" type="password" name="Password" value={{ i.password if i.password !=None }}>
+                          </div>
+                          <div class="col-6 form-group">
+                              <label for="url">URL</label>
+                              <input id="url" class="popup-input" type="text" name="URL" value={{ i.url if i.url !=None }}>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button class="save" type="submit" value="submit">Save</button>
+                      <a class="cancel" href="">Cancel</a>
+                  </div>
+              </form>
+          </div>
+        </div>
+
+        {% endfor %}
       </tbody>
     </table>
   </body>
@@ -169,20 +122,62 @@
       }
     });
   });
+
+  const btns = document.querySelectorAll("[data-target]");
+  const close_btns = document.querySelectorAll(".fa-xmark");
+
+  btns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      document.querySelector(btn.dataset.target).removeAttribute("hidden");
+    });
+  });
+
+  close_btns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const modal = btn.closest(".bg-modal");
+      modal.setAttribute("hidden", true);
+    });
+  });
+}
+
+  function checkForm() {
+    let name = document.getElementById('name');
+    let username = document.getElementById('username');
+    let password = document.getElementById('password');
+    let url = document.getElementById('url');
+
+    if (name.value.length == 0) {
+      name.style.border = '1px solid #FA5B5B';
+    }
+
+    if (username.value.length == 0) {
+      username.style.border = '1px solid #FA5B5B';
+    } 
+    
+    if (password.value.length == 0) {
+      password.style.border = '1px solid #FA5B5B';
+    }
+
+    if (url.value.length == 0) {
+      url.style.border = '1px solid #FA5B5B';
+    }
+
+    if (name.value.length == 0 || username.value.length == 0 || password.value.length == 0 || 
+    url.value.length == 0 || (!url.value.includes('http://') && !url.value.includes('https://'))) {
+      return false;
+    } else {
+      document.forms["update"].submit();
+    }
+
+    // const togglePass = document.querySelector('#togglePassword');
+    // const pass = document.querySelector('input[name="password"]');
+
+    // togglePass.addEventListener('click', function(e) {
+    //   const type = pass.getAttribute('type') === 'password' ? 'text' : 'password';
+    //   pass.setAttribute('type', type);
+    //   this.classList.toggle('bi-eye');
+    // });
   }
-
-  document.addEventListener('click', function (event) {
-    // If the clicked element doesn't have the right selector, bail
-    if (event.target.matches('.close')) {
-      event.preventDefault();
-      document.querySelector('.bg-modal').style.display = 'none';
-    }
-
-    if (event.target.matches('.item-name')) {
-      event.preventDefault();
-      document.querySelector('.bg-modal').style.display = 'flex';
-    }
-  }, false);
 </script>
 
 <style>
@@ -378,7 +373,7 @@
 
   .item-name {
     font-size: 20px;
-    padding-left: 100px;
+    cursor: pointer;
   }
 
   .content-table tbody tr {
@@ -391,7 +386,7 @@
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    margin: 0 40px 0 0;
+    margin: 0 140px 0 0;
     border: none;
     cursor: pointer;
   } 
@@ -415,7 +410,7 @@
     top: 0;
     justify-content: center;
     align-items: center;
-    display: none;
+    display: flex;
   }
 
   .modal-content {

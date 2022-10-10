@@ -11,25 +11,6 @@
     />
     <!-- <title>{% block title %}Home{% endblock %}</title> -->
   </head>
-  <body>
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %} {% if category ==
-    'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
-  </body>
   <script
   src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
   integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -85,7 +66,6 @@
   function checkForm() {
     let password = document.querySelector('input[name="password"]');
     let email = document.querySelector('input[name="email"]');
-    console.log(password.value);
     if (email.value.length == 0) {
       email.style.border = '1px solid #FA5B5B';
     } 
