@@ -59,12 +59,24 @@
           <td><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i.id }}><a class="item-name" data-target=#{{ i.id }}>{{ i.id }}</a></td>
         </tr>
 
+        <tr>
+          <td><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i.id }}><a class="item-name" data-target=#{{ i.id }}>{{ i.id }}</a></td>
+        </tr>
+
+        <tr>
+          <td><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i.id }}><a class="item-name" data-target=#{{ i.id }}>{{ i.id }}</a></td>
+        </tr>
+
+        <tr>
+          <td><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i.id }}><a class="item-name" data-target=#{{ i.id }}>{{ i.id }}</a></td>
+        </tr>
+
         <div id={{ i.id }} class="bg-modal" hidden> 
           <div class="modal-content">
               <form action="" method="POST" name="update">
                   <div class="modal-header">
                       <h2 class="modal-title">Edit Item</h2>
-                      <a class="fa-solid fa-xmark" href=""></a>
+                      <a class="fa-solid fa-xmark"></a>
                   </div>
                   <div class="modal-body">
                       <div class="row">
@@ -124,18 +136,32 @@
   });
 
   const btns = document.querySelectorAll("[data-target]");
-  const close_btns = document.querySelectorAll(".fa-xmark");
+  const close_btns = document.querySelectorAll(".fa-xmark")
+  const cancel_btns = document.querySelectorAll(".cancel");
 
   btns.forEach(btn => {
     btn.addEventListener("click", function() {
+      event.preventDefault();
       document.querySelector(btn.dataset.target).removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
     });
   });
 
   close_btns.forEach(btn => {
     btn.addEventListener("click", function() {
+      event.preventDefault();
       const modal = btn.closest(".bg-modal");
       modal.setAttribute("hidden", true);
+      document.body.style.overflow = "auto";
+    });
+  });
+
+  cancel_btns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      event.preventDefault();
+      const modal = btn.closest(".bg-modal");
+      modal.setAttribute("hidden", true);
+      document.body.style.overflow = "auto";
     });
   });
 }
@@ -406,7 +432,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    position: absolute;
+    position: fixed;
     top: 0;
     justify-content: center;
     align-items: center;
@@ -484,4 +510,10 @@
     margin: 320px 0px 0px 75px;
     padding: 8px 10px;
   }
+
+  .fa-xmark {
+    font-size: 20px;
+    cursor: pointer;
+  }
+
 </style>

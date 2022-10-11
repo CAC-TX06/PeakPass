@@ -71,7 +71,7 @@ def dashboard():
 
             data.append({'img':img_path, 'id':i.id, 'username':i.username, 'password':i.password, 'url':i.url})
 
-        return render_template('dashboard.html', path=path, data=data)
+        return render_template('dashboard_f.html', path=path, data=data)
         
     return redirect(url_for('login'))
 
