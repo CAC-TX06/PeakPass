@@ -55,24 +55,69 @@ user_pfp_path = {'a':'pfp_a.png', 'b':'pfp_b.png', 'c':'pfp_c.png', 'd':'pfp_d.p
 'x':'pfp_x.png', 'y':'pfp_y.png', 'z':'pfp_z.png'}
 
 # If there is a current user, redirect to the dashboard, otherwise redirect to the login page
-@app.route('/dashboard', methods=['GET'])
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    if current_user:
-        path = user_pfp_path[current_user.id[0].lower()]
-        path = url_for('static', filename=path)
+    if(request.method == 'GET'):
+        if current_user:
+            path = user_pfp_path[current_user.id[0].lower()]
+            path = url_for('static', filename=path)
 
-        data = []
-        # Get all of the password data
-        data_unfiltered = Password.query.filter_by(owner=current_user.id).all()
-        for i in data_unfiltered:
-            img_path = user_pfp_path[i.id[0].lower()]
-            img_path = url_for('static', filename=img_path)
+            data = []
+            # Get all of the password data
+            data_unfiltered = Password.query.filter_by(owner=current_user.id).all()
+            for i in data_unfiltered:
+                img_path = user_pfp_path[i.id[0].lower()]
+                img_path = url_for('static', filename=img_path)
 
-            data.append({'img':img_path, 'id':i.id, 'username':i.username, 'password':i.password, 'url':i.url})
+                data.append({'img':img_path, 'id':i.id, 'username':i.username, 'password':i.password, 'url':i.url})
 
-        return render_template('dashboard_f.html', path=path, data=data)
+            return render_template('dashboard.html', path=path, data=data)
+            
+        return redirect(url_for('login'))
+
+    elif(request.method == 'POST'):
+        if current_user:
+            # Get the data from the form
+            id = request.form['name']
+            username = request.form['username']
+            password = request.form['password']
+            url = request.form['url']
+
+            # Add the data to the database
+            try:
+                new_item = Password(id=id, username=username, password=password, url=url, owner=current_user.id)
+                db.session.add(new_item)
+                db.session.commit()
+            except sqlalchemy.exc.IntegrityError:
+                print("Error: Duplicate ID")  
+
+            return redirect(url_for('dashboard'))
         
+        return redirect(url_for('login'))
+
+
+#Add items to the database (from the 'Add Item' button on the dashboard)
+@app.route('/add-item', methods=['POST'])
+@login_required
+def add_item():
+    if current_user:
+        # Get the data from the form
+        id = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        url = request.form['url']
+
+        # Add the data to the database
+        try:
+            new_item = Password(id=id, username=username, password=password, url=url, owner=current_user.id)
+            db.session.add(new_item)
+            db.session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            print("Error: Duplicate ID")  
+
+        return redirect(url_for('dashboard'))
+    
     return redirect(url_for('login'))
 
 # Logout the user and redirect to the index page
