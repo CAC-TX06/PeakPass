@@ -38,10 +38,16 @@
           <img class="logo" src="images/peakpass_logo.png" alt="logo">
         </a>
         <ul class="nav_links">
-          <li><a class="dash" href="">Dashboard</a></li>
+          <li><a class="dash" href="#">Dashboard</a></li>
           <li><a href="">Tools</a></li>
         </ul>
-        <img src="images/pfp_p.png" class="user-pfp" alt="User Profile Picture">
+        <div class="dropdown">
+          <img src="images/pfp_p.png" id="myBtn" class="user-pfp" alt="User Profile Picture">
+          <div id="myDropdown" class="dropdown-content">
+            <a class="account" href="#">Account Settings</a>
+            <a class="logout" href="#">Logout</a>
+          </div>
+        </div>
       </nav>
     </header>  
 
@@ -90,59 +96,117 @@
           <th>
             <input type="text" class="search-input" placeholder="Search">
           </th>
+          <th class="add-item">
+            <button type="submit" class="add-btn" value="submit" data-target="#add-new-item">Add Item</button>
+          </th>
+          <div id="add-new-item" class="bg-modal" hidden>
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Add Item</h2>
+                        <button class="close" type="button" data-dismiss="modal" title="close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="name">Name</label>
+                                <input id="name" class="popup-input" type="text" name="Name" required="">
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="username">Username</label>
+                                <input id="username" class="popup-input" type="text" name="Username" required="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="password">Password</label>
+                                <input id="password" class="popup-input" type="text" name="Password" required="">
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="url">URL</label>
+                                <input id="url" class="popup-input" type="text" name="URL" required="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="save" type="submit" value="submit">Add</button>
+                        <a class="cancel" href="">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
         </tr>
       </thead>
       <tbody> 
         <tr>
           <td><img src="images/pfp_a.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Amazon</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_b.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Bitwarden</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_w.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Walmart</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
         <tr>
           <td><img src="images/pfp_t.png" class="item-pfp" alt="Item Image"><a class="item-name" href="">Twitter</a></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -169,20 +233,76 @@
       }
     });
   });
+
+  const btns = document.querySelectorAll("[data-target]");
+  const close_btns = document.querySelectorAll(".fa-xmark");
+
+  btns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      document.querySelector(btn.dataset.target).removeAttribute("hidden");
+    });
+  });
+
+  close_btns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const modal = btn.closest(".bg-modal");
+      modal.setAttribute("hidden", true);
+    });
+  });
+}
+
+  function checkForm() {
+    let name = document.getElementById('name');
+    let username = document.getElementById('username');
+    let password = document.getElementById('password');
+    let url = document.getElementById('url');
+
+    if (name.value.length == 0) {
+      name.style.border = '1px solid #FA5B5B';
+    }
+
+    if (username.value.length == 0) {
+      username.style.border = '1px solid #FA5B5B';
+    } 
+    
+    if (password.value.length == 0) {
+      password.style.border = '1px solid #FA5B5B';
+    }
+
+    if (url.value.length == 0) {
+      url.style.border = '1px solid #FA5B5B';
+    }
+
+    if (name.value.length == 0 || username.value.length == 0 || password.value.length == 0 || 
+    url.value.length == 0 || (!url.value.includes('http://') && !url.value.includes('https://'))) {
+      return false;
+    } else {
+      document.forms["update"].submit();
+    }
   }
 
-  document.addEventListener('click', function (event) {
-    // If the clicked element doesn't have the right selector, bail
-    if (event.target.matches('.close')) {
-      event.preventDefault();
-      document.querySelector('.bg-modal').style.display = 'none';
-    }
+  // Get the button, and when the user clicks on it, execute myFunction
+document.getElementById("myBtn").onclick = function() {myFunction()};
 
-    if (event.target.matches('.item-name')) {
-      event.preventDefault();
-      document.querySelector('.bg-modal').style.display = 'flex';
+/* myFunction toggles between adding and removing the show class, which is used to hide and show the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.user-pfp')) {
+
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
-  }, false);
+}
 </script>
 
 <style>
@@ -225,7 +345,7 @@
   /* PeakPass Logo */
   .logo {
     max-width: 60px;
-    margin-left: 80px;
+    margin: 10px 0 10px 80px;
     background-color: rgb(38, 39, 48);
   }
 
@@ -241,7 +361,7 @@
     display: flex;
     top:0;
     width: 100%;
-    overflow: auto;
+    /* overflow: auto; */
     height: auto;
     background-color: rgb(38, 39, 48);
   }
@@ -315,11 +435,12 @@
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    margin: auto 80px auto 0;
+    margin: 15px 80px 15px 0;
     background-color: rgb(38, 39, 48);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease 0s;
+    position: relative;
   }
 
   @media (max-width: 970px) {
@@ -327,6 +448,50 @@
       display: flex;
       flex-wrap: wrap;
     }
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: rgb(50, 52, 63);
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .account {
+    color: white !important;
+  }
+
+  .account:hover {
+    background-color: rgb(38, 39, 48);
+  }
+
+  .logout {
+    background-color: #FA5B5B;
+    color: white !important;
+  }
+  
+  .logout:hover {
+    background-color: #b64242;
+    color: white !important;
+  }
+
+  .show {
+    display:block;
   }
 
   /* NAVBAR ENDS HERE */
@@ -344,7 +509,7 @@
   }
 
   .content-table thead tr {
-    background-color: #85dd86;
+    background-color: #91f093;
     color: white;
     text-align: left;
     font-weight: bold;
@@ -353,7 +518,7 @@
   .search-input {
     border: none;
     outline: none;
-    background-color: #85dd86;
+    background-color: #91f093;
     color: white;
     font-weight: 700;
   }
@@ -361,6 +526,27 @@
   .search-input::placeholder {
       color: white;
       opacity: 0.9;
+  }
+
+  .add-item {
+    width: 135px;
+    padding-bottom: 5px;
+  }
+
+  .add-btn {
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    font-size: 17px;
+    background-color: #73c276;
+    color: white;
+    font-weight: 700;
+    padding: 10px;
+  }
+
+  .add-btn:hover {
+    background-color: #538d55;
+    transition: all 0.5s ease;
   }
 
   .content-table th {
@@ -415,7 +601,7 @@
     top: 0;
     justify-content: center;
     align-items: center;
-    display: none;
+    display: flex;
   }
 
   .modal-content {
