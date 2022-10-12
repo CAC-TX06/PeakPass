@@ -62,7 +62,7 @@
           </th>
           <div id="add-new-item" class="bg-modal" hidden>
             <div class="modal-content">
-                <form action="/add-item" method="POST">
+                <form action="/add-item" method="POST" name="save">
                     <div class="modal-header">
                         <h2 class="modal-title">Add Item</h2>
                         <button class="close" type="button" data-dismiss="modal" title="close">
@@ -72,22 +72,23 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="name">Name</label>
-                                <input id="name" class="popup-input" type="text" name="name" required="">
+                                <label for="name-save">Name</label>
+                                <input name="name-save" class="popup-input" type="text">
+                                <label for="name-save" id="name-save-check">Between 1 and 50 characters</label>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="username">Username</label>
-                                <input id="username" class="popup-input" type="text" name="username" required="">
+                                <label for="username-save">Username</label>
+                                <input name="username-save" class="popup-input" type="text">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="password">Password</label>
-                                <input id="password" class="popup-input" type="text" name="password" required="">
+                                <label for="password-save">Password</label>
+                                <input name="password-save" class="popup-input" type="text">
                             </div>
                             <div class="col-6 form-group">
-                                <label for="url">URL</label>
-                                <input id="url" class="popup-input" type="text" name="url" required="">
+                                <label for="url-save">URL</label>
+                                <input name="url-save" class="popup-input" type="text">
                             </div>
                         </div>
                     </div>
@@ -104,37 +105,43 @@
         {% if data %}
           {% for i in data %}
           <tr>
-            <td class="item-name" data-target=#{{ i.id }}><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i.id }}>{{ i.id }}</td>
+            <td class="item-name" data-target=#{{ i['name'] }}><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i['name'] }}>{{ i['name'] }}</td>
             <td></td>
           </tr>
 
-          <div id={{ i.id }} class="bg-modal" hidden> 
+          <div id={{ i['name'] }} class="bg-modal" hidden> 
             <div class="modal-content">
-                <form action="" method="POST" name="update" onsubmit="event.preventDefault(); checkForm();">
+                <form action="/update-item" method="POST" name="update">
                     <div class="modal-header">
                         <h2 class="modal-title">Edit Item</h2>
                         <a class="fa-solid fa-xmark"></a>
+                        {% if error_msg %}
+                        <p> {{ error_msg }} </p>
+                        {% endif %}
                     </div>
                     <div class="modal-body">
                         <div class="row">
+                          <input name="id" hidden value={{ i['id'] }}>
                             <div class="col-6 form-group">
-                                <label for="name">Name *</label>
-                                <input id="name-update" class="popup-input" type="text" name="name" value={{ i.id }}>
-                                <label for="name" id="name-label">Between 1 and 50 characters</label>
+                                <label for="name-update">Name *</label>
+                                <input name="name-update" class="popup-input" type="text" value={{ i['name'] }}>
+                                <label for="name-update" id="name-update-check">Between 1 and 50 characters</label>
+                                <!-- style="background-color: rgba(0, 0, 0, 0.2);" readonly -->
+                                <!-- <label for="name-update" id="name-update-check">You cannot change the name of your item.</label> -->
                             </div>
                             <div class="col-6 form-group">
-                                <label for="username">Username</label>
-                                <input id="username-update" class="popup-input" type="text" name="username" value={{ i.username if i.username !=None }}>
+                                <label for="username-update">Username</label>
+                                <input name="username-update" class="popup-input" type="text" value={{ i['username'] if i['username'] !='' }}>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="password">Password</label>
-                                <input id="password-update" class="popup-input" type="password" name="password" value={{ i.password if i.password !=None }}>
+                                <label for="password-update">Password</label>
+                                <input name="password-update" class="popup-input" type="password" value={{ i['password'] if i['password'] !='' }}>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="url">URL</label>
-                                <input id="url-update" class="popup-input" type="text" name="url" value={{ i.url if i.url !=None }}>
+                                <label for="url-update">URL</label>
+                                <input name="url-update" class="popup-input" type="text" value={{ i['url'] if i['url'] !='' }}>
                             </div>
                         </div>
                     </div>
@@ -207,19 +214,50 @@
         document.body.style.overflow = "auto";
       });
     });
-
-    let name = document.getElementById('name-update');
-    name.addEventListener('input', () => {
-      let nameLabel = document.getElementById('name-label');
-      if (name.value.length > 50 || name.value.length < 1) {
-        nameLabel.style.color = '#FA5B5B';
-        name.style.border = '1px solid #262730';
-      } else {
-        nameLabel.style.color = '#85dd86';
-        name.style.border = '1px solid #262730';
-      }
+    
+    const name_update = document.querySelectorAll("[name='name-update']");
+    name_update.forEach(name => {
+      name.addEventListener("input", function() {
+        const name_update_check = name.closest(".modal-body").querySelector("#name-update-check");
+        if (name.value.length > 50 || name.value.length < 1) {
+          name_update_check.style.color = "#FA5B5B";
+          name.style.border = '1px solid #262730';
+        } else {
+          name_update_check.style.color = "#85dd86";
+          name.style.border = '1px solid #262730';
+        }
+      });
     });
 
+    const update_forms = document.querySelectorAll("[name='update']");
+    update_forms.forEach(form => {
+      form.addEventListener("submit", function() {        
+        const name_update = form.querySelector("[name='name-update']");
+        const name_update_check = name_update.closest(".modal-body").querySelector("#name-update-check");
+
+        if (name_update.value.length > 50 || name_update.value.length < 1) {
+          name_update_check.style.color = "#FA5B5B";
+          name_update.style.border = '1px solid #FA5B5B';
+          form.preventDefault();
+        }
+
+        if (name_update.value.length <= 50 && name_update.value.length >= 1) {
+          form.submit();
+        }
+      });
+    });
+
+    let name_save = document.getElementsByName("name-save")[0];
+    name_save.addEventListener('input', () => {
+      let nameLabel = document.getElementById('name-save-check');
+      if (name_save.value.length > 50 || name_save.value.length < 1) {
+        nameLabel.style.color = '#FA5B5B';
+        name_save.style.border = '1px solid #262730';
+      } else {
+        nameLabel.style.color = '#85dd86';
+        name_save.style.border = '1px solid #262730';
+      }
+    });
   } 
 
   // Get the button, and when the user clicks on it, execute toggleShow
@@ -242,26 +280,6 @@
               }
           }
       }
-  }
-
-
-  function checkForm() {
-    let name = document.getElementById('name-update');
-    let username = document.getElementById('username-update');
-    let password = document.getElementById('password-update');
-    let url = document.getElementById('url-update');
-
-    if (name.value.length < 1) {
-      return name.style.border = '1px solid #FA5B5B';
-    }
-
-    if (name.value.length > 50) {
-      return name.style.border = '1px solid #FA5B5B';
-    }
-    
-    else {
-      document.forms["update"].submit();
-    }
   }
 </script>
 

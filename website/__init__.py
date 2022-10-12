@@ -1,35 +1,49 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin,LoginManager
+import flask_login
+from flask_login import UserMixin
+import psycopg2
 from reader import USER, PASSWORD, DATABASE, HOST
+from sqlalchemy.ext.declarative import declarative_base
 
 db = SQLAlchemy()
 
-class User(db.Model, UserMixin):
-    id = db.Column(db.String(100), unique=True, primary_key=True, nullable=False)
-    password = db.Column(db.String(500), nullable=False)
-
-class Password(db.Model):
-    id = db.Column(db.String(500), unique=True, primary_key=True, nullable=False) # Name
-    owner = db.Column(db.String(100), nullable=True) # Email of the owner
-    username = db.Column(db.String(100), unique=False, nullable=True) # Username
-    password = db.Column(db.String(500), nullable=True)
-    url = db.Column(db.String(5000), nullable=True)
-
+class User(UserMixin):
+    pass
+   
+class Password():
+    pass
 
 def create_website():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.urandom(32)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}/{DATABASE}'
-    db.init_app(app)
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'login'
+    login_manager = flask_login.LoginManager()
     login_manager.init_app(app)
 
+    conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+    cur = conn.cursor()
+
+    cur.execute("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, password VARCHAR(100))")
+    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100) NOT NULL, name VARCHAR(50) NOT NULL, username VARCHAR(1000), password VARCHAR(1000), url VARCHAR(100))")
+
+    conn.commit()
+    conn.close()
+
     @login_manager.user_loader
-    def load_user(id):
-        return User.query.get(id)
+    def load_user(email):
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        cur = conn.cursor()
+
+        # Check to see if the email is in the database
+        cur.execute("SELECT email FROM users WHERE email = %s", (email,))
+        email = cur.fetchone()
+        conn.close()
+
+        if email:
+            user = User()
+            user.id = email[0]
+            return user
         
     return app

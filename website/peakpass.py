@@ -1,10 +1,12 @@
 from flask_login import current_user, login_user, login_required, logout_user
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 import sqlalchemy
 from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
 from __init__ import create_website
-from __init__ import User, Password, db
+from __init__ import User
+import psycopg2
+from reader import USER, PASSWORD, DATABASE, HOST
 
 # Create the actual flask app (imported from __init__.py)
 app = create_website()
@@ -21,7 +23,9 @@ async def login():
     # If the login information is correct, redirect to the dashboard page, otherwise alert the user
     if(request.method == 'POST'):
         if(await correct_login_information(request.form['email'], request.form['password'])):
-            login_user(User.query.filter_by(id=request.form['email']).first(), remember=True)
+            user = User()
+            user.id = request.form['email']
+            login_user(user, remember=True)
             return redirect(url_for('dashboard'))
 
         return render_template('login.html', error_message='Incorrect email/password. Please try again.')
@@ -48,6 +52,7 @@ async def signup():
 
     return render_template('signup.html')
 
+
 user_pfp_path = {'a':'pfp_a.png', 'b':'pfp_b.png', 'c':'pfp_c.png', 'd':'pfp_d.png', 'e':'pfp_e.png', 
 'f':'pfp_f.png', 'g':'pfp_g.png', 'h':'pfp_h.png', 'i':'pfp_i.png', 'j':'pfp_j.png', 'k':'pfp_k.png', 
 'l':'pfp_l.png', 'm':'pfp_m.png', 'n':'pfp_n.png', 'o':'pfp_o.png', 'p':'pfp_p.png', 'q':'pfp_q.png', 
@@ -55,46 +60,34 @@ user_pfp_path = {'a':'pfp_a.png', 'b':'pfp_b.png', 'c':'pfp_c.png', 'd':'pfp_d.p
 'x':'pfp_x.png', 'y':'pfp_y.png', 'z':'pfp_z.png'}
 
 # If there is a current user, redirect to the dashboard, otherwise redirect to the login page
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
-    if(request.method == 'GET'):
-        if current_user:
-            path = user_pfp_path[current_user.id[0].lower()]
-            path = url_for('static', filename=path)
+    if current_user:
+        path = user_pfp_path[current_user.id[0].lower()]
+        path = url_for('static', filename=path)
 
-            data = []
-            # Get all of the password data
-            data_unfiltered = Password.query.filter_by(owner=current_user.id).all()
-            for i in data_unfiltered:
-                img_path = user_pfp_path[i.id[0].lower()]
-                img_path = url_for('static', filename=img_path)
+        # Get all of the password data
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        cur = conn.cursor()
+        cur.execute("SELECT owner, name, username, password, url, id FROM passwords WHERE owner = %s", (current_user.id,))
+        data = cur.fetchall()
+        conn.close()
 
-                data.append({'img':img_path, 'id':i.id, 'username':i.username, 'password':i.password, 'url':i.url})
+        data_list = []
 
-            return render_template('dashboard.html', path=path, data=data)
-            
-        return redirect(url_for('login'))
+        for i in data:
+            i = list(i)
+            img_path = user_pfp_path[i[1][0].lower()]
+            img_path = url_for('static', filename=img_path)
 
-    elif(request.method == 'POST'):
-        if current_user:
-            # Get the data from the form
-            id = request.form['name']
-            username = request.form['username']
-            password = request.form['password']
-            url = request.form['url']
+            data_list.append({'img':img_path, 'name':i[1], 'username':i[2], 'password':i[3], 'url':i[4], 'id':i[5]})
 
-            # Add the data to the database
-            try:
-                new_item = Password(id=id, username=username, password=password, url=url, owner=current_user.id)
-                db.session.add(new_item)
-                db.session.commit()
-            except sqlalchemy.exc.IntegrityError:
-                print("Error: Duplicate ID")  
+        print(data_list)
 
-            return redirect(url_for('dashboard'))
+        return render_template('dashboard.html', path=path, data=data_list)
         
-        return redirect(url_for('login'))
+    return redirect(url_for('login'))
 
 
 #Add items to the database (from the 'Add Item' button on the dashboard)
@@ -103,22 +96,52 @@ def dashboard():
 def add_item():
     if current_user:
         # Get the data from the form
-        id = request.form['name']
-        username = request.form['username']
-        password = request.form['password']
-        url = request.form['url']
+        name = request.form['name-save']
+        username = request.form['username-save']
+        password = request.form['password-save']
+        url = request.form['url-save']
 
         # Add the data to the database
         try:
-            new_item = Password(id=id, username=username, password=password, url=url, owner=current_user.id)
-            db.session.add(new_item)
-            db.session.commit()
+            conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+            cur = conn.cursor()
+
+            cur.execute("INSERT INTO passwords (owner, name, username, password, url) VALUES (%s, %s, %s, %s, %s)", (current_user.id, name, username, password, url))
+            conn.commit()
+            conn.close()
+
         except sqlalchemy.exc.IntegrityError:
             print("Error: Duplicate ID")  
 
         return redirect(url_for('dashboard'))
     
     return redirect(url_for('login'))
+    
+
+#Update an item already in the database
+@app.route('/update-item', methods=['POST'])
+@login_required
+def update_item():
+    if current_user:
+        # Get the data from the form
+        id = request.form['id']
+        name = request.form['name-update']
+        username = request.form['username-update']
+        password = request.form['password-update']
+        url = request.form['url-update']
+
+        # Update the data in the database
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        cur = conn.cursor()
+
+        cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, url, id, current_user.id))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('dashboard'))
+    
+    return redirect(url_for('login'))
+
 
 # Logout the user and redirect to the index page
 @app.route('/logout', methods=['GET'])
