@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script src="https://kit.fontawesome.com/a6e4faf2bf.js" crossorigin="anonymous"></script>
+    <title>{% block title %}Home{% endblock %}</title>
+  </head>
+
+  <body>
+    <div id="add-new-item" class="bg-modal" hidden></div>
+        <div class="modal-content">
+            <form action="/add-item" method="POST">
+                <div class="modal-header">
+                    <h2 class="modal-title">My Account</h2>
+                </div>
+                <div class="modal-body">
+                    <h2 class="email-title">Change Email</h2>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="name">Current Email</label>
+                            <input id="name" class="popup-input" type="text" name="name" required="">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="username">New Email</label>
+                            <input id="username" class="popup-input" type="text" name="username" required="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="password">Confirm New Email</label>
+                            <input id="password" class="popup-input" type="text" name="password" required="">
+                        </div>
+                        <div class="col-6 form-group">
+                            <button class="save" type="submit" value="submit">Update</button>
+                            <a class="cancel" href="">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </body>
+
+  <style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: Montserrat;
+}
+
+body {
+	background-color: rgb(50, 52, 63);
+}
+
+.modal-title {
+	font-weight: 600;
+}
+
+.email-title {
+	font-size: 1.5rem;
+	color: white;
+	border-bottom: 1px solid #dee2e6;
+	padding-bottom: 5px;
+	margin-bottom: 1rem;
+	width: 175px;
+}
+
+.content-table {
+	border-collapse: collapse;
+	margin: 75px auto 25px auto;
+	font-size: 0.9em;
+	width: 800px;
+	border-radius: 5px 5px 0 0;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+	background-color: #91f093;
+	color: white;
+	text-align: left;
+	font-weight: bold;
+}
+
+.search-input {
+	border: none;
+	outline: none;
+	background-color: #91f093;
+	color: white;
+	font-weight: 700;
+}
+
+.search-input::placeholder {
+	color: white;
+	opacity: 0.9;
+}
+
+.add-item {
+	width: 135px;
+	padding-bottom: 5px;
+}
+
+.add-btn {
+	border: none;
+	border-radius: 4px;
+	outline: none;
+	font-size: 17px;
+	background-color: #73c276;
+	color: white;
+	font-weight: 700;
+	padding: 10px;
+}
+
+.add-btn:hover {
+	background-color: #538d55;
+	transition: all 0.5s ease;
+}
+
+.content-table th {
+	font-size: 25px;
+}
+
+.content-table td {
+	font-size: 20px;
+}
+
+.content-table th,.content-table td {
+	padding: 12px 15px;
+}
+
+.item-name {
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.content-table tbody tr {
+	background-color: rgb(38, 39, 48);
+	border-bottom: 2px solid rgb(50, 52, 63);
+	color: #fff;
+}
+
+.item-pfp {
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	margin: 0 140px 0 0;
+	border: none;
+	cursor: pointer;
+}
+
+.fa-arrow-up {
+	font-size: 20px;
+	display: flex;
+	justify-content: center;
+}
+
+a:hover {
+	transition: all 0.5s ease;
+	color: #91f093;
+	text-decoration: none;
+}
+
+label {
+	font-size: 15px;
+	color: white;
+}
+
+.bg-modal {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	position: fixed;
+	top: 0;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	border: none;
+}
+
+.modal-body {
+	flex: none;
+	border-bottom: 1px solid #dee2e6;
+}
+
+.modal-content {
+	width: 800px;
+	height: 400px;
+	background-color: rgb(50, 52, 63);
+	border-radius: 8px;
+	position: relative;
+	border: none;
+}
+
+.modal-header {
+	color: white;
+}
+
+.popup-input {
+	width: 100%;
+	display: block;
+	color: white;
+	background-color: rgb(58, 59, 73);
+	border: 1px solid rgb(38, 39, 48);
+	border-radius: 4px;
+	padding: .375rem .75rem;
+}
+
+.popup-input:focus {
+	outline: none;
+}
+
+.close {
+	font-size: 20px;
+	color: white;
+	cursor: pointer;
+}
+
+.modal-header .close {
+	padding: 1.75rem 1.75rem 1rem 1rem;
+}
+
+.close:hover {
+	color: #f3f3f3;
+	text-decoration: none;
+}
+
+.modal-footer {
+	justify-content: flex-start;
+}
+
+.save {
+	color: white;
+	position: absolute;
+	top: 0;
+	font-size: 18px;
+	cursor: pointer;
+	margin-top: 30px;
+	padding: .375rem .75rem;
+	background-color: rgb(38, 39, 48);
+	border-radius: 4px;
+	border: none;
+}
+
+.save:hover {
+	transition: all 0.5s ease;
+	color: #91f093;
+	text-decoration: none;
+}
+
+.cancel {
+	color: white;
+	position: absolute;
+	top: 0;
+	font-size: 18px;
+	cursor: pointer;
+	margin: 30px 0 0 100px;
+	padding: .375rem .75rem;
+}
+
+.fa-xmark {
+	font-size: 20px;
+	cursor: pointer;
+}
+
+  </style>
