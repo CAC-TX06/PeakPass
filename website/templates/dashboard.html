@@ -229,20 +229,19 @@
       });
     });
 
-    const update_forms = document.querySelectorAll("[name='update']");
-    update_forms.forEach(form => {
-      form.addEventListener("submit", function() {        
+    const full_update_form = document.querySelectorAll("[name='update']");
+    full_update_form.forEach(form => {
+      form.addEventListener("submit", function() {
         const name_update = form.querySelector("[name='name-update']");
-        const name_update_check = name_update.closest(".modal-body").querySelector("#name-update-check");
-
-        if (name_update.value.length > 50 || name_update.value.length < 1) {
-          name_update_check.style.color = "#FA5B5B";
-          name_update.style.border = '1px solid #FA5B5B';
-          form.preventDefault();
-        }
-
-        if (name_update.value.length <= 50 && name_update.value.length >= 1) {
-          form.submit();
+        try {
+          if (name_update.value.length <= 50 && name_update.value.length >= 1) {
+            return form.submit()
+          } else {
+            name_update.style.border = '1px solid #FA5B5B';
+            return event.preventDefault();
+          }
+        } catch (e) {
+          return event.preventDefault()
         }
       });
     });
