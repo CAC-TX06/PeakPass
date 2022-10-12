@@ -45,7 +45,7 @@
           <img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
           <div id="myDropdown" class="dropdown-content">
             <a class="account" href="#">Account Settings</a>
-            <a class="logout" href="#">Logout</a>
+            <a class="logout" href="/logout">Logout</a>
           </div>
         </div>      
       </nav>
@@ -58,7 +58,7 @@
             <input type="text" class="search-input" placeholder="Search">
           </th>
           <th class="add-item">
-            <button type="submit" class="add-btn" value="submit" data-target="#add-new-item">Add Item</button>
+            <button class="add-btn" value="submit" data-target="#add-new-item">Add Item</button>
           </th>
           <div id="add-new-item" class="bg-modal" hidden>
             <div class="modal-content">
@@ -231,22 +231,26 @@
 
     const full_update_form = document.querySelectorAll("[name='update']");
     full_update_form.forEach(form => {
+      console.log(form)
       form.addEventListener("submit", function() {
-        const name_update = form.querySelector("[name='name-update']");
+        const name_update = form[1];
+        console.log(name_update)
         try {
           if (name_update.value.length <= 50 && name_update.value.length >= 1) {
             return form.submit()
           } else {
             name_update.style.border = '1px solid #FA5B5B';
+            console.log(name_update)
             return event.preventDefault();
           }
         } catch (e) {
+          console.log(e)
           return event.preventDefault()
         }
       });
     });
 
-    let name_save = document.getElementsByName("name-save")[0];
+    const name_save = document.getElementsByName("name-save")[0];
     name_save.addEventListener('input', () => {
       let nameLabel = document.getElementById('name-save-check');
       if (name_save.value.length > 50 || name_save.value.length < 1) {
@@ -255,6 +259,17 @@
       } else {
         nameLabel.style.color = '#85dd86';
         name_save.style.border = '1px solid #262730';
+      }
+    });
+
+    const full_save_form = document.getElementsByName("save")[0];
+    full_save_form.addEventListener('submit', () => {
+      console.log(name_save.value)
+      if (name_save.value.length <= 50 && name_save.value.length >= 1) {
+        return name_save.submit()
+      } else {
+        name_save.style.border = '1px solid #FA5B5B';
+        return event.preventDefault();
       }
     });
   } 
