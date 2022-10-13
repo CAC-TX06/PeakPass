@@ -44,7 +44,7 @@
         <div class="dropdown">
           <img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
           <div id="myDropdown" class="dropdown-content">
-            <a class="account" href="#">Account Settings</a>
+            <a class="account" href="/account-settings">Account Settings</a>
             <a class="logout" href="/logout">Logout</a>
           </div>
         </div>      
@@ -54,6 +54,8 @@
   <table class="content-table">
       <thead>
         <tr>
+          <th>
+          </th>
           <th>
             <input type="text" class="search-input" placeholder="Search">
           </th>
@@ -74,21 +76,24 @@
                             <div class="col-6 form-group">
                                 <label for="name-save">Name</label>
                                 <input name="name-save" class="popup-input" type="text">
-                                <label for="name-save" id="name-save-check">Between 1 and 50 characters</label>
+                                <label for="name-save" id="name-save-check">Between 1 and 100 characters</label>
                             </div>
                             <div class="col-6 form-group">
                                 <label for="username-save">Username</label>
                                 <input name="username-save" class="popup-input" type="text">
+                                <label for="username-save" id="username-save-check" hidden>Length cannot exceed 500 characters</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
                                 <label for="password-save">Password</label>
                                 <input name="password-save" class="popup-input" type="text">
+                                <label for="password-save" id="password-save-check" hidden>Length cannot exceed 500 characters</label>
                             </div>
                             <div class="col-6 form-group">
                                 <label for="url-save">URL</label>
                                 <input name="url-save" class="popup-input" type="text">
+                                <label for="url-save" id="url-save-check" hidden>Length cannot exceed 500 characters</label>
                             </div>
                         </div>
                     </div>
@@ -105,7 +110,8 @@
         {% if data %}
           {% for i in data %}
           <tr>
-            <td class="item-name" data-target=#{{ i['name'] }}><img src={{ i['img'] }} class="item-pfp" alt="Item Image" data-target=#{{ i['name'] }}>{{ i['name'] }}</td>
+            <td class="item-pfp"><img src={{ i['img'] }} alt="Item Image" data-target=#{{ i['name'] }}></td>
+            <td class="item-name" data-target=#{{ i['name'] }}>{{ i['name'] }}</td>
             <td></td>
           </tr>
 
@@ -125,24 +131,27 @@
                             <div class="col-6 form-group">
                                 <label for="name-update">Name *</label>
                                 <input name="name-update" class="popup-input" type="text" value={{ i['name'] }}>
-                                <label for="name-update" id="name-update-check">Between 1 and 50 characters</label>
+                                <label for="name-update" id="name-update-check">Between 1 and 100 characters</label>
                                 <!-- style="background-color: rgba(0, 0, 0, 0.2);" readonly -->
                                 <!-- <label for="name-update" id="name-update-check">You cannot change the name of your item.</label> -->
                             </div>
                             <div class="col-6 form-group">
                                 <label for="username-update">Username</label>
                                 <input name="username-update" class="popup-input" type="text" value={{ i['username'] if i['username'] !='' }}>
-                            </div>
+                                <label for="username-update" id="username-update-check" hidden>Length cannot exceed 500 characters</label>
+                              </div>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
                                 <label for="password-update">Password</label>
                                 <input name="password-update" class="popup-input" type="password" value={{ i['password'] if i['password'] !='' }}>
-                            </div>
+                                <label for="password-update" id="password-update-check" hidden>Length cannot exceed 500 characters</label>
+                              </div>
                             <div class="col-6 form-group">
                                 <label for="url-update">URL</label>
                                 <input name="url-update" class="popup-input" type="text" value={{ i['url'] if i['url'] !='' }}>
-                            </div>
+                                <label for="url-update" id="url-update-check" hidden>Length cannot exceed 500 characters</label>
+                              </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -155,6 +164,7 @@
           {% endfor %}
         {% else %}
           <tr>
+            <td></td>
             <td>You do not currently have any items. Add your passwords by clicking the "Add Item" button above.</td>
             <td><i class="fa-solid fa-arrow-up"></i></td>
           </tr>
@@ -215,62 +225,189 @@
       });
     });
     
-    const name_update = document.querySelectorAll("[name='name-update']");
-    name_update.forEach(name => {
-      name.addEventListener("input", function() {
-        const name_update_check = name.closest(".modal-body").querySelector("#name-update-check");
-        if (name.value.length > 50 || name.value.length < 1) {
-          name_update_check.style.color = "#FA5B5B";
-          name.style.border = '1px solid #262730';
-        } else {
-          name_update_check.style.color = "#85dd86";
-          name.style.border = '1px solid #262730';
-        }
-      });
-    });
-
     const full_update_form = document.querySelectorAll("[name='update']");
     full_update_form.forEach(form => {
-      console.log(form)
-      form.addEventListener("submit", function() {
-        const name_update = form[1];
-        console.log(name_update)
-        try {
-          if (name_update.value.length <= 50 && name_update.value.length >= 1) {
-            return form.submit()
+      const name = form[1];
+      const username = form[2];
+      const password = form[3];
+      const url = form[4];
+
+      name.addEventListener("input", function() {
+        const name_update_check = name.closest(".col-6").querySelector("#name-update-check");
+          if (name.value.length > 100 || name.value.length < 1) {
+            name_update_check.style.color = "#FA5B5B";
+            name.style.border = '1px solid #262730';
           } else {
-            name_update.style.border = '1px solid #FA5B5B';
-            console.log(name_update)
-            return event.preventDefault();
+            name_update_check.style.color = "#85dd86";
+            name.style.border = '1px solid #262730';
           }
-        } catch (e) {
-          console.log(e)
-          return event.preventDefault()
+      });
+      username.addEventListener("input", function() {
+        const username_update_check = username.closest(".col-6").querySelector("#username-update-check");
+          if (username.value.length > 500) {
+            username_update_check.removeAttribute("hidden");
+            username_update_check.style.color = "#FA5B5B";
+            username.style.border = '1px solid #262730';
+          } else {
+            username_update_check.setAttribute("hidden", true);
+            username_update_check.style.color = "#85dd86";
+            username.style.border = '1px solid #262730';
+          }
+      });
+      password.addEventListener("input", function() {
+        const password_update_check = password.closest(".col-6").querySelector("#password-update-check");
+          if (password.value.length > 500) {
+            password_update_check.removeAttribute("hidden");
+            password_update_check.style.color = "#FA5B5B";
+            password.style.border = '1px solid #262730';
+          } else {
+            password_update_check.setAttribute("hidden", true);
+            password_update_check.style.color = "#85dd86";
+            password.style.border = '1px solid #262730';
+          }
+      });
+      url.addEventListener("input", function() {
+        const url_update_check = url.closest(".col-6").querySelector("#url-update-check");
+          if (url.value.length > 500) {
+            url_update_check.removeAttribute("hidden");
+            url_update_check.style.color = "#FA5B5B";
+            url.style.border = '1px solid #262730';
+          } else {
+            url_update_check.setAttribute("hidden", true);
+            url_update_check.style.color = "#85dd86";
+            url.style.border = '1px solid #262730';
+          }
+      });
+
+      form.addEventListener("submit", function() {
+        const username_update = form[2];
+        const username_update_check = form[2].closest(".modal-body").querySelector("#username-update-check");
+        if (username_update.value.length > 500) {
+          username_update.style.border = '1px solid #FA5B5B';
+          username_update_check.removeAttribute("hidden");
+          username_update_check.style.color = "#FA5B5B";
         }
+
+        const password_update = form[3];
+        const password_update_check = form[3].closest(".modal-body").querySelector("#password-update-check");
+        if (password_update.value.length > 500) {
+          password_update.style.border = '1px solid #FA5B5B';
+          password_update_check.removeAttribute("hidden");
+          password_update_check.style.color = "#FA5B5B";
+        }
+
+        const url_update = form[4];
+        const url_update_check = form[4].closest(".modal-body").querySelector("#url-update-check");
+        if (url_update.value.length > 500) {
+          url_update.style.border = '1px solid #FA5B5B';
+          url_update_check.removeAttribute("hidden");
+          url_update_check.style.color = "#FA5B5B";
+        }
+
+        const name_update = form[1];
+        if (name_update.value.length > 100 || name_update.value.length < 1) {
+          name_update.style.border = '1px solid #FA5B5B';
+        }
+
+        if (name_update.value.length <= 100 && name_update.value.length >= 1 && username_update.value.length <= 500 && password_update.value.length <= 500 && url_update.value.length <= 500) {
+            return form.submit()
+          } 
+        
+        return event.preventDefault();
       });
     });
 
-    const name_save = document.getElementsByName("name-save")[0];
-    name_save.addEventListener('input', () => {
-      let nameLabel = document.getElementById('name-save-check');
-      if (name_save.value.length > 50 || name_save.value.length < 1) {
-        nameLabel.style.color = '#FA5B5B';
-        name_save.style.border = '1px solid #262730';
-      } else {
-        nameLabel.style.color = '#85dd86';
-        name_save.style.border = '1px solid #262730';
-      }
+    const full_create_form = document.querySelector("[name='save']");
+    const name = full_create_form[1];
+    const username = full_create_form[2];
+    const password = full_create_form[3];
+    const url = full_create_form[4];
+
+    name.addEventListener("input", function() {
+      const name_create_check = name.closest(".col-6").querySelector("#name-save-check");
+        if (name.value.length > 100 || name.value.length < 1) {
+          name_create_check.style.color = "#FA5B5B";
+          name.style.border = '1px solid #262730';
+        } else {
+          name_create_check.style.color = "#85dd86";
+          name.style.border = '1px solid #262730';
+        }
     });
 
-    const full_save_form = document.getElementsByName("save")[0];
-    full_save_form.addEventListener('submit', () => {
-      console.log(name_save.value)
-      if (name_save.value.length <= 50 && name_save.value.length >= 1) {
-        return name_save.submit()
-      } else {
-        name_save.style.border = '1px solid #FA5B5B';
-        return event.preventDefault();
+    username.addEventListener("input", function() {
+      const username_create_check = username.closest(".col-6").querySelector("#username-save-check");
+        if (username.value.length > 500) {
+          username_create_check.removeAttribute("hidden");
+          username_create_check.style.color = "#FA5B5B";
+          username.style.border = '1px solid #262730';
+        } else {
+          username_create_check.setAttribute("hidden", true);
+          username_create_check.style.color = "#85dd86";
+          username.style.border = '1px solid #262730';
+        }
+    });
+
+    password.addEventListener("input", function() {
+      const password_create_check = password.closest(".col-6").querySelector("#password-save-check");
+        if (password.value.length > 500) {
+          password_create_check.removeAttribute("hidden");
+          password_create_check.style.color = "#FA5B5B";
+          password.style.border = '1px solid #262730';
+        } else {
+          password_create_check.setAttribute("hidden", true);
+          password_create_check.style.color = "#85dd86";
+          password.style.border = '1px solid #262730';
+        }
+    });
+
+    url.addEventListener("input", function() {
+      const url_create_check = url.closest(".col-6").querySelector("#url-save-check");
+        if (url.value.length > 500) {
+          url_create_check.removeAttribute("hidden");
+          url_create_check.style.color = "#FA5B5B";
+          url.style.border = '1px solid #262730';
+        } else {
+          url_create_check.setAttribute("hidden", true);
+          url_create_check.style.color = "#85dd86";
+          url.style.border = '1px solid #262730';
+        }
+    });
+
+    full_create_form.addEventListener("submit", function() {
+      const name_create = full_create_form[1];
+      if (name_create.value.length > 100 || name_create.value.length < 1) {
+        name_create.style.border = '1px solid #FA5B5B';
       }
+
+      const username_create = full_create_form[2];
+      const username_create_check = full_create_form[2].closest(".modal-body").querySelector("#username-save-check");
+      if (username_create.value.length > 500) {
+        username_create.style.border = '1px solid #FA5B5B';
+        username_create_check.removeAttribute("hidden");
+        username_create_check.style.color = "#FA5B5B";
+      }
+
+      const password_create = full_create_form[3];
+      const password_create_check = full_create_form[3].closest(".modal-body").querySelector("#password-save-check");
+      if (password_create.value.length > 500) {
+        password_create.style.border = '1px solid #FA5B5B';
+        password_create_check.removeAttribute("hidden");
+        password_create_check.style.color = "#FA5B5B";
+      }
+
+      const url_create = full_create_form[4];
+      const url_create_check = full_create_form[4].closest(".modal-body").querySelector("#url-save-check");
+      if (url_create.value.length > 500) {
+        url_create.style.border = '1px solid #FA5B5B';
+        url_create_check.removeAttribute("hidden");
+        url_create_check.style.color = "#FA5B5B";
+      }
+
+      if (name_create.value.length <= 100 && name_create.value.length >= 1 && username_create.value.length <= 500 && password_create.value.length <= 500 && url_create.value.length <= 500) {
+          return full_create_form.submit()
+        } 
+      
+      return event.preventDefault();
     });
   } 
 
@@ -495,7 +632,6 @@
     font-size: 0.9em;
     width: 800px;
     border-radius: 5px 5px 0 0;
-    overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   }
 
@@ -554,8 +690,10 @@
   }
 
   .item-name {
-    font-size: 20px;
+    max-width: 1px; /* Just to define a limit, needs to be here so that it doesnt flow outside of 800 */
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .content-table tbody tr {
@@ -564,11 +702,10 @@
     color: #fff;
   }
 
-  .item-pfp {
+  .item-pfp img {
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    margin: 0 140px 0 0;
     border: none;
     cursor: pointer;
   } 
@@ -649,6 +786,7 @@
   }
 
   .modal-footer {
+    border: none;
     justify-content: flex-start;
   }
 
@@ -657,7 +795,7 @@
     top: 0;
     font-size: 18px;
     cursor: pointer;
-    margin-top: 320px;
+    margin-top: 350px;
     padding: 8px 10px;
     background-color: rgb(38, 39, 48);
     border-radius: 4px;
@@ -675,7 +813,7 @@
     top: 0;
     font-size: 18px;
     cursor: pointer;
-    margin: 320px 0px 0px 75px;
+    margin: 350px 0px 0px 75px;
     padding: 8px 10px;
   }
 

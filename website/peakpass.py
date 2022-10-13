@@ -1,3 +1,4 @@
+import re
 from flask_login import current_user, login_user, login_required, logout_user
 from flask import redirect, render_template, request, url_for, flash
 import sqlalchemy
@@ -44,9 +45,14 @@ async def login():
 @app.route('/signup', methods = ['POST', 'GET'])
 async def signup():
     if(request.method == 'POST'):
-        if await add_user(request.form['email'], await hash_new_pass(request.form['password'])):
-            # redirect(url_for('login'))
+        response = await add_user(request.form['email'], request.form['password'])
+        print(response)
+        if response == True:
             return render_template('login.html', success_message='Account created successfully. Please login to continue.')
+        elif response == "Email too long":
+            return render_template('signup.html', error_message='Email too long. Email addresses must be less than 100 characters. Please try again.')
+        elif response == "Password too long":
+            return render_template('signup.html', error_message='Password too long. Passwords must be less than 100 characters. Please try again.')
         else:
             return render_template('signup.html', error_message='Email already taken, please try again with a different email address.')
 
@@ -78,17 +84,26 @@ def dashboard():
 
         for i in data:
             i = list(i)
-            img_path = user_pfp_path[i[1][0].lower()]
-            img_path = url_for('static', filename=img_path)
 
-            data_list.append({'img':img_path, 'name':i[1], 'username':i[2], 'password':i[3], 'url':i[4], 'id':i[5]})
+            if i[1]:
+                img_path = user_pfp_path[i[1][0].lower()]
+                img_path = url_for('static', filename=img_path)
 
-        print(data_list)
+                data_list.append({'img':img_path, 'name':i[1], 'username':i[2], 'password':i[3], 'url':i[4], 'id':i[5]})
+
 
         return render_template('dashboard.html', path=path, data=data_list)
-        
-    return redirect(url_for('login'))
 
+
+@app.route('/account-settings', methods=['GET'])
+@login_required
+def account_settings():
+    if current_user:
+        path = user_pfp_path[current_user.id[0].lower()]
+        path = url_for('static', filename=path)
+
+        return render_template('settings.html')
+        
 
 #Add items to the database (from the 'Add Item' button on the dashboard)
 @app.route('/add-item', methods=['POST'])
@@ -106,17 +121,15 @@ def add_item():
             conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
             cur = conn.cursor()
 
-            cur.execute("INSERT INTO passwords (owner, name, username, password, url) VALUES (%s, %s, %s, %s, %s)", (current_user.id, name, username, password, url))
-            conn.commit()
-            conn.close()
-
-        except sqlalchemy.exc.IntegrityError:
-            print("Error: Duplicate ID")  
+            if name:
+                cur.execute("INSERT INTO passwords (owner, name, username, password, url) VALUES (%s, %s, %s, %s, %s)", (current_user.id, name, username, password, url))
+                conn.commit()
+                conn.close()
+        except:
+            pass
 
         return redirect(url_for('dashboard'))
-    
-    return redirect(url_for('login'))
-    
+
 
 #Update an item already in the database
 @app.route('/update-item', methods=['POST'])
@@ -134,13 +147,14 @@ def update_item():
         conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
         cur = conn.cursor()
 
-        cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, url, id, current_user.id))
-        conn.commit()
-        conn.close()
+        try:
+            cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, url, id, current_user.id))
+            conn.commit()
+            conn.close()
+        except:
+            pass
 
         return redirect(url_for('dashboard'))
-    
-    return redirect(url_for('login'))
 
 
 # Logout the user and redirect to the index page
@@ -156,6 +170,14 @@ def logout():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html')
+
+@app.errorhandler(401)
+def unauthorized(e):
+    return redirect(url_for('login'))
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return redirect(url_for('index'))
 
 @app.errorhandler(500)
 def error_500(e):

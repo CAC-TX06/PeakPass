@@ -25,8 +25,8 @@ def create_website():
     conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
     cur = conn.cursor()
 
-    cur.execute("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, password VARCHAR(100))")
-    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100) NOT NULL, name VARCHAR(50) NOT NULL, username VARCHAR(1000), password VARCHAR(1000), url VARCHAR(100))")
+    cur.execute("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, password CHAR(60) NOT NULL)")
+    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, username VARCHAR(500), password VARCHAR(500), url VARCHAR(500))")
 
     conn.commit()
     conn.close()
