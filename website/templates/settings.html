@@ -13,6 +13,25 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
 
+  <header>
+	<nav>
+	  <a>
+		<img class="logo" src="images/peakpass_logo.png" alt="logo">
+	  </a>
+	  <ul class="nav_links">
+		<li><a class="dash" href="#">Dashboard</a></li>
+		<li><a href="">Tools</a></li>
+	  </ul>
+	  <div class="dropdown">
+		<img src="images/pfp_p.png" id="myBtn" class="user-pfp" alt="User Profile Picture">
+		<div id="myDropdown" class="dropdown-content">
+		  <a class="account" href="#">Account Settings</a>
+		  <a class="logout" href="#">Logout</a>
+		</div>
+	  </div>
+	</nav>
+  </header> 
+
   <body>
     <div id="add-new-item" class="bg-modal" hidden></div>
         <div class="modal-content">
@@ -21,7 +40,7 @@
                     <h2 class="modal-title">My Account</h2>
                 </div>
                 <div class="modal-body">
-                    <h2 class="email-title">Change Email</h2>
+                    <h2 id="email-title" class="subtitle-header">Change Email</h2>
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="name">Current Email</label>
@@ -43,9 +62,57 @@
                     </div>
                 </div>
             </form>
+			<form action="/add-item" method="POST">
+                <div class="modal-body">
+                    <h2 id="password-title" class="subtitle-header">Change Password</h2>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="name">Current Password</label>
+                            <input id="name" class="popup-input" type="text" name="name" required="">
+                        </div>
+                    </div>
+                    <div class="row">
+						<div class="col-6 form-group">
+                            <label for="username">New Password</label>
+                            <input id="username" class="popup-input" type="text" name="username" required="">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="password">Confirm New Password</label>
+                            <input id="password" class="popup-input" type="text" name="password" required="">
+                        </div>
+                        <div class="col-6 form-group">
+                            <button class="save" type="submit" value="submit">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
   </body>
+
+  <script>
+	document.getElementById("myBtn").onclick = function() {myFunction()};
+
+	/* myFunction toggles between adding and removing the show class, which is used to hide and show the dropdown content */
+	function myFunction() {
+		document.getElementById("myDropdown").classList.toggle("show");
+	}
+
+	// Close the dropdown if the user clicks outside of it
+	window.onclick = function(event) {
+		if (!event.target.matches('.user-pfp')) {
+
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+	}
+  </script>
 
   <style>
 
@@ -61,17 +128,196 @@ body {
 	background-color: rgb(50, 52, 63);
 }
 
+li, a, button {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #edf0f1;
+    text-decoration: none;
+  }
+
+a:hover {
+color: #91f093;
+text-decoration: none;
+}
+
+header {
+    background-color: rgb(38, 39, 48);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10%;
+  }
+
+.logo {
+    max-width: 60px;
+    margin: 10px 0 10px 80px;
+    background-color: rgb(38, 39, 48);
+  }
+
+  @media (max-width: 970px) {
+    .logo {
+      margin: 0;
+      width: 60px;
+    }
+  }
+
+  /* Changes the navbar color to dark */
+  nav {   
+    display: flex;
+    top:0;
+    width: 100%;
+    height: auto;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .nav_links {
+    flex: 1 1 200px;
+    list-style: none;
+    background-color: rgb(38, 39, 48);
+    margin-bottom: 0;
+  }
+
+  .nav_links li {
+    display: inline-block;
+    text-align: center;
+    padding: 26px 24px 24px 24px;
+    text-decoration: none;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .dash {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 970px) {
+    .nav_links li {
+      -webkit-box-align: center;
+      -moz-box-align: center;
+      -o-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      padding-inline-end: 0px;
+      margin: 10px;
+      margin-right: 40px;
+      text-align: center;
+      padding-left: 20px;
+      font-size: 2px;
+    }
+  }
+
+  .nav_links li a {
+    transition: all 0.3s ease 0s; 
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .nav_links li a:hover {
+    color: #91f093;
+    text-decoration: none;
+  }
+
+  @media (max-width: 970px) {
+    .nav_links li a{
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 970px) {
+    .home-button {
+      padding-left: 14px;
+    }
+  }
+
+  .cta {
+    margin-right: 70px;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .user-pfp {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 15px 80px 15px 0;
+    background-color: rgb(38, 39, 48);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    position: relative;
+  }
+
+  @media (max-width: 970px) {
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: rgb(50, 52, 63);
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .account {
+    color: white !important;
+  }
+
+  .account:hover {
+    background-color: rgb(38, 39, 48);
+  }
+
+  .logout {
+    background-color: #FA5B5B;
+    color: white !important;
+  }
+  
+  .logout:hover {
+    background-color: #b64242;
+    color: white !important;
+  }
+
+  .show {
+    display:block;
+  }
+
 .modal-title {
 	font-weight: 600;
 }
 
-.email-title {
+.subtitle-header {
 	font-size: 1.5rem;
 	color: white;
 	border-bottom: 1px solid #dee2e6;
 	padding-bottom: 5px;
-	margin-bottom: 1rem;
+	margin: 1rem 0 1rem 0;
 	width: 175px;
+}
+
+#email-title {
+	margin-top: 10px;
+}
+
+#password-title {
+	width: 225px;
 }
 
 .content-table {
@@ -188,19 +434,17 @@ label {
 
 .modal-body {
 	flex: none;
-	padding-top: 1.3rem
 }
 
 .modal-content {
+	border-collapse: collapse;
+	margin: 85px auto;
+	font-size: 0.9em;
 	width: 800px;
-	height: 400px;
+	height: 675px;
 	background-color: rgb(50, 52, 63);
-	border-radius: 8px;
-	position: absolute;
-	left: 50%;
-  	top: 50%;
-  	transform: translate(-50%, -50%);
-	border: none;
+	border-radius: 5px 5px 0 0;
+	overflow: hidden;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -245,7 +489,7 @@ label {
 	color: white;
 	position: absolute;
 	top: 0;
-	font-size: 18px;
+	font-size: 15px;
 	cursor: pointer;
 	padding: .375rem .75rem;
 	background-color: rgb(38, 39, 48);
@@ -273,5 +517,7 @@ label {
 	font-size: 20px;
 	cursor: pointer;
 }
+
+
 
   </style>
