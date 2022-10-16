@@ -13,7 +13,8 @@
       rel="stylesheet" 
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" 
     />
-    <!-- <title>{% block title %}Home{% endblock %}</title> -->
+    <title>PeakPass | Signup</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
   <script
   src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -62,11 +63,11 @@
     email.addEventListener('input', () => {
       let emailLabel = document.querySelector('label[for="email"]');
       // If the input is not a valid email address, change the label color to red
-      if (!email.value.includes ('@') || !email.value.includes('.')) {
-        emailLabel.style.color = '#FA5B5B';
+      if (email.value.includes ('@') && email.value.includes('.')) {
+        emailLabel.style.color = '#85dd86';
         email.style.border = '1px solid #979797';
       } else {
-        emailLabel.style.color = '#85dd86';
+        emailLabel.style.color = '#FA5B5B';
         email.style.border = '1px solid #979797';
       }
     });
@@ -74,11 +75,11 @@
     let password = document.querySelector('input[name="password"]');
     password.addEventListener('input', () => {
       let passwordLabel = document.querySelector('label[for="password"]');
-      if (password.value.length <= 10) {
-        passwordLabel.style.color = '#FA5B5B';
+      if (password.value.length >= 10) {
+        passwordLabel.style.color = '#85dd86';
         password.style.border = '1px solid #979797';
       } else {
-        passwordLabel.style.color = '#85dd86';
+        passwordLabel.style.color = '#FA5B5B';
         password.style.border = '1px solid #979797';
       }
     });
@@ -86,11 +87,11 @@
     let confirmPassword = document.querySelector('input[name="confirm-password"]');
     confirmPassword.addEventListener('input', () => {
       let passwordLabel = document.querySelector('label[for="confirm-password"]');
-      if (password.value != confirmPassword.value) {
-        passwordLabel.style.color = '#FA5B5B';
+      if (password.value == confirmPassword.value) {
+        passwordLabel.style.color = '#85dd86';
         confirmPassword.style.border = '1px solid #979797';
       } else {
-        passwordLabel.style.color = '#85dd86';
+        passwordLabel.style.color = '#FA5B5B';
         confirmPassword.style.border = '1px solid #979797';
       }
     });
@@ -123,15 +124,15 @@
       email.style.border = '1px solid #FA5B5B';
     } 
     
-    if (password.value.length <= 10) {
+    if (10 > password.value.length) {
       password.style.border = '1px solid #FA5B5B';
     }
 
-    if (password.value !== confirmPassword.value || confirmPassword.value.length <= 10) {
+    if (password.value !== confirmPassword.value || 10 > confirmPassword.value.length) {
       confirmPassword.style.border = '1px solid #FA5B5B';
     }
 
-    if (!email.value.includes ('@') || !email.value.includes('.') || password.value.length <= 10 || password.value !== confirmPassword.value) {
+    if (!email.value.includes ('@') || !email.value.includes('.') || 10 > password.value.length || password.value !== confirmPassword.value) {
       return false;
     } else {
       document.forms["signup"].submit();

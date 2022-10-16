@@ -9,24 +9,25 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://kit.fontawesome.com/a6e4faf2bf.js" crossorigin="anonymous"></script>
-    <title>{% block title %}Home{% endblock %}</title>
+    <title>PeakPass | Settings</title>
   </head>
-
+  
   <header>
 	<nav>
 	  <a>
 		  <img class="logo" src={{ url_for('static', filename='peakpass_logo.png') }} alt="logo">
 	  </a>
 	  <ul class="nav_links">
-      <li><a class="dash" href="#">Dashboard</a></li>
-      <li><a href="">Tools</a></li>
+      <li><a class="dash" href="/dashboard">Dashboard</a></li>
+      <li><a href="/tools">Tools</a></li>
 	  </ul>
 	  <div class="dropdown">
 		<img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
 		<div id="myDropdown" class="dropdown-content">
-		  <a class="account" href="#">Account Settings</a>
-		  <a class="logout" href="#">Logout</a>
+		  <a class="account" href="/account-settings">Account Settings</a>
+		  <a class="logout" href="/logout">Logout</a>
 		</div>
 	  </div>
 	</nav>
@@ -462,7 +463,8 @@ header {
   }
 
   .show {
-    display:block;
+    display: block;
+    z-index: 1;
   }
 
 .modal-title {
