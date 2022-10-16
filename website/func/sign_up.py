@@ -1,7 +1,8 @@
 import bcrypt
+import sqlite3
+import hashlib
 import psycopg2
 import psycopg2
-from __init__ import db, User
 from reader import USER, PASSWORD, DATABASE, HOST
 
 def hash_new_pass(password: str):
@@ -18,6 +19,16 @@ async def add_user(email, password):
 
     if len(password) > 100:
         return "Password too long"
+
+    hash512 = hashlib.sha512(password.encode('utf-8')).hexdigest()[:256]
+    conn = sqlite3.connect('breach_passwords.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM breached_passwords WHERE password LIKE ?", (hash512,))
+    data = cur.fetchall()
+    conn.close()
+
+    if data:
+        return "Bad Password"
 
     password = hash_new_pass(password)
 
