@@ -59,7 +59,7 @@
                             <input name="confirm-email-update" class="popup-input" type="text">
                             <label for="confirm-email-update" id="confirm-email-update-check">• Emails match</label>
                         </div>
-                        <div class="col-6 form-group">
+                        <div id="email-update-wrapper" class="col-6 form-group">
                             <button class="save" type="submit" value="submit">Update</button>
                             {% if error_message %}
                               <p class="error"> {{ error_message }} </p>
@@ -214,13 +214,19 @@
 }
 
 .error {
+  font-size: 15px;
   font-family: Montserrat;
   font-weight: 400;
-  margin-left: 50px;
-  margin-bottom: 0;
-  line-height: 1.75;
-  text-align: center;
+  padding-top: 5px;
+  margin: 5px 0px 0px 100px;
   color: #FA5B5B;
+  text-align: left;
+}
+
+#email-update-wrapper {
+  max-width: 100%;
+  flex: 1;
+  margin-bottom: 0;
 }
 
 body {
