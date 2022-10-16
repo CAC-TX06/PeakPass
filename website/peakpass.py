@@ -92,7 +92,6 @@ def dashboard():
 
                 data_list.append({'img':img_path, 'name':i[1], 'username':i[2], 'password':i[3], 'url':i[4], 'id':i[5]})
 
-
         return render_template('dashboard.html', path=path, data=data_list)
 
 
@@ -103,10 +102,10 @@ def account_settings():
         path = user_pfp_path[current_user.id[0].lower()]
         path = url_for('static', filename=path)
 
-        return render_template('settings.html')
+        return render_template('settings.html', email=current_user.id, path=path)
         
 
-#Add items to the database (from the 'Add Item' button on the dashboard)
+# Add items to the database (from the 'Add Item' button on the dashboard)
 @app.route('/add-item', methods=['POST'])
 @login_required
 def add_item():
@@ -132,7 +131,7 @@ def add_item():
         return redirect(url_for('dashboard'))
 
 
-#Update an item already in the database
+# Update an item already in the database
 @app.route('/update-item', methods=['POST'])
 @login_required
 def update_item():
@@ -156,6 +155,50 @@ def update_item():
             pass
 
         return redirect(url_for('dashboard'))
+
+
+# Update the users email address
+@app.route('/update-email', methods=['POST'])
+@login_required
+def update_email():
+    if current_user:
+        # Get the data from the form
+        email = request.form['new-email-update']
+
+        # Update the data in the database
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        cur = conn.cursor()
+
+        try:
+            cur.execute("UPDATE users SET email = %s WHERE email = %s", (email, current_user.id))
+            conn.commit()
+            conn.close()
+        except psycopg2.errors.UniqueViolation:
+            return render_template('settings.html', email=current_user.id, error_message='Email already taken, please try again with a different email address.')
+
+        return redirect(url_for('account_settings'))
+
+
+# Update the users password
+@app.route('/update-password', methods=['POST'])
+@login_required
+def update_password():
+    if current_user:
+        # Get the data from the form
+        password = request.form['password-update']
+
+        # Update the data in the database
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        cur = conn.cursor()
+
+        try:
+            cur.execute("UPDATE users SET password = %s WHERE email = %s", (password, current_user.id))
+            conn.commit()
+            conn.close()
+        except:
+            pass
+
+        return redirect(url_for('account_settings'))
 
 
 # Logout the user and redirect to the index page

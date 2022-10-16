@@ -16,14 +16,14 @@
   <header>
 	<nav>
 	  <a>
-		<img class="logo" src="images/peakpass_logo.png" alt="logo">
+		  <img class="logo" src={{ url_for('static', filename='peakpass_logo.png') }} alt="logo">
 	  </a>
 	  <ul class="nav_links">
-		<li><a class="dash" href="#">Dashboard</a></li>
-		<li><a href="">Tools</a></li>
+      <li><a class="dash" href="#">Dashboard</a></li>
+      <li><a href="">Tools</a></li>
 	  </ul>
 	  <div class="dropdown">
-		<img src="images/pfp_p.png" id="myBtn" class="user-pfp" alt="User Profile Picture">
+		<img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
 		<div id="myDropdown" class="dropdown-content">
 		  <a class="account" href="#">Account Settings</a>
 		  <a class="logout" href="#">Logout</a>
@@ -35,7 +35,7 @@
   <body>
     <div id="add-new-item" class="bg-modal" hidden></div>
         <div class="modal-content">
-            <form action="/add-item" method="POST">
+            <form action="/update-email" method="POST" onsubmit="event.preventDefault(); checkEmailForm();" name="update-email-form" id={{ email }}>
                 <div class="modal-header">
                     <h2 class="modal-title">My Account</h2>
                 </div>
@@ -43,26 +43,32 @@
                     <h2 id="email-title" class="subtitle-header">Change Email</h2>
                     <div class="row">
                         <div class="col-6 form-group">
-                            <label for="name">Current Email</label>
-                            <input id="name" class="popup-input" type="text" name="name" required="">
+                            <label for="cur-email-update">Current Email</label>
+                            <input name="cur-email-update" class="popup-input" type="text">
+                            <label for="cur-email-update" id="cur-email-update-check">• Your current email</label>
                         </div>
                     </div>
                     <div class="row">
-						<div class="col-6 form-group">
-                            <label for="username">New Email</label>
-                            <input id="username" class="popup-input" type="text" name="username" required="">
+						            <div class="col-6 form-group">
+                            <label for="new-email-update">New Email</label>
+                            <input name="new-email-update" class="popup-input" type="text">
+                            <label for="new-email-update" id="new-email-update-check">• Valid email address</label>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="password">Confirm New Email</label>
-                            <input id="password" class="popup-input" type="text" name="password" required="">
+                            <label for="confirm-email-update">Confirm New Email</label>
+                            <input name="confirm-email-update" class="popup-input" type="text">
+                            <label for="confirm-email-update" id="confirm-email-update-check">• Emails match</label>
                         </div>
                         <div class="col-6 form-group">
                             <button class="save" type="submit" value="submit">Update</button>
+                            {% if error_message %}
+                              <p class="error"> {{ error_message }} </p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </form>
-			<form action="/add-item" method="POST">
+			      <form action="/add-item" method="POST">
                 <div class="modal-body">
                     <h2 id="password-title" class="subtitle-header">Change Password</h2>
                     <div class="row">
@@ -72,7 +78,7 @@
                         </div>
                     </div>
                     <div class="row">
-						<div class="col-6 form-group">
+						            <div class="col-6 form-group">
                             <label for="username">New Password</label>
                             <input id="username" class="popup-input" type="text" name="username" required="">
                         </div>
@@ -90,7 +96,90 @@
     </div>
   </body>
 
-  <script>
+<script>
+  window.onload = function() {
+    let updateEmailForm = document.getElementsByName("update-email-form")[0];
+    let realEmail = updateEmailForm.id;
+
+    let originalEmail = document.getElementsByName("cur-email-update")[0];
+    let originalEmailLabel = document.getElementById("cur-email-update-check");
+    originalEmail.addEventListener("input", function(event) {
+      if (originalEmail.value == realEmail) {
+        originalEmailLabel.style.color = '#85dd86';
+        originalEmail.style.border = '1px solid #979797';
+      } else {
+        originalEmailLabel.style.color = '#FA5B5B';
+        originalEmail.style.border = '1px solid #979797';
+      }
+    });
+
+    let newEmail = document.getElementsByName("new-email-update")[0];
+    let newEmailLabel = document.getElementById("new-email-update-check");
+    newEmail.addEventListener("input", function(event) {
+      if (newEmail.value.includes("@") && newEmail.value.includes(".")) {
+        newEmailLabel.style.color = '#85dd86';
+        newEmail.style.border = '1px solid #979797';
+      } else {
+        newEmailLabel.style.color = '#FA5B5B';
+        newEmail.style.border = '1px solid #979797';
+      }
+    });
+
+    let confirmEmail = document.getElementsByName("confirm-email-update")[0];
+    let confirmEmailLabel = document.getElementById("confirm-email-update-check");
+    confirmEmail.addEventListener("input", function(event) {
+      if (confirmEmail.value == newEmail.value) {
+        confirmEmailLabel.style.color = '#85dd86';
+        confirmEmail.style.border = '1px solid #979797';
+      } else {
+        confirmEmailLabel.style.color = '#FA5B5B';
+        confirmEmail.style.border = '1px solid #979797';
+      }
+    });
+  }
+
+  function checkEmailForm(){
+    let updateEmailForm = document.getElementsByName("update-email-form")[0];
+    let realEmail = updateEmailForm.id;
+
+    let originalEmail = document.getElementsByName("cur-email-update")[0];
+    let originalEmailLabel = document.getElementById("cur-email-update-check");
+    if (originalEmail.value != realEmail) {
+      originalEmailLabel.style.color = '#FA5B5B';
+      originalEmail.style.border = '1px solid #FA5B5B';
+    } 
+
+    let newEmail = document.getElementsByName("new-email-update")[0];
+    let newEmailLabel = document.getElementById("new-email-update-check");
+    if (!newEmail.value.includes("@") || !newEmail.value.includes(".")) {
+      newEmailLabel.style.color = '#FA5B5B';
+      newEmail.style.border = '1px solid #FA5B5B';
+    }
+
+    let confirmEmail = document.getElementsByName("confirm-email-update")[0];
+    let confirmEmailLabel = document.getElementById("confirm-email-update-check");
+    if (confirmEmail.value != newEmail.value || !newEmail.value) {
+      confirmEmailLabel.style.color = '#FA5B5B';
+      confirmEmail.style.border = '1px solid #FA5B5B';
+    }
+
+    if (originalEmail.value == realEmail && newEmail.value.includes("@") && newEmail.value.includes(".") && confirmEmail.value == newEmail.value) {
+      document.forms["update-email-form"].submit();
+    } else {
+      return false;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
 	document.getElementById("myBtn").onclick = function() {myFunction()};
 
 	/* myFunction toggles between adding and removing the show class, which is used to hide and show the dropdown content */
@@ -112,7 +201,7 @@
 			}
 		}
 	}
-  </script>
+</script>
 
   <style>
 
@@ -122,6 +211,16 @@
 	margin: 0;
 	padding: 0;
 	font-family: Montserrat;
+}
+
+.error {
+  font-family: Montserrat;
+  font-weight: 400;
+  margin-left: 50px;
+  margin-bottom: 0;
+  line-height: 1.75;
+  text-align: center;
+  color: #FA5B5B;
 }
 
 body {
