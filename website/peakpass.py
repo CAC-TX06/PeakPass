@@ -6,6 +6,7 @@ from func.sign_up import add_user, hash_new_pass
 from __init__ import create_website
 from __init__ import User
 import psycopg2
+import bcrypt
 from reader import USER, PASSWORD, DATABASE, HOST
 
 # Create the actual flask app (imported from __init__.py)
@@ -174,7 +175,9 @@ def update_email():
             conn.commit()
             conn.close()
         except psycopg2.errors.UniqueViolation:
-            return render_template('settings.html', email=current_user.id, error_message='Email already taken, please try again with a different email address.')
+            path = user_pfp_path[current_user.id[0].lower()]
+            path = url_for('static', filename=path)
+            return render_template('settings.html', path=path, email=current_user.id, email_error='Email already taken, please try again with a different email address.')
 
         return redirect(url_for('account_settings'))
 
@@ -185,18 +188,38 @@ def update_email():
 def update_password():
     if current_user:
         # Get the data from the form
-        password = request.form['password-update']
+        cur_pass = request.form['cur-password-update']
+        new_pass = request.form['new-password-update']
+
+        if cur_pass == new_pass:
+            path = user_pfp_path[current_user.id[0].lower()]
+            path = url_for('static', filename=path)
+            return render_template('settings.html', path=path, email=current_user.id, pass_error='New password cannot be the same as your current password, please try again.')
 
         # Update the data in the database
         conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
         cur = conn.cursor()
 
-        try:
-            cur.execute("UPDATE users SET password = %s WHERE email = %s", (password, current_user.id))
-            conn.commit()
-            conn.close()
-        except:
-            pass
+        # Get the users current password from the DB
+        cur.execute("SELECT password FROM users WHERE email = %s", (current_user.id,))
+        data = cur.fetchone()
+        current_password = data[0]
+
+        # Make sure the cur_pass and current_password match using the bcrpyt.checkpw function
+        if bcrypt.checkpw(cur_pass.encode('utf-8'), current_password.encode('utf-8')):
+            try:
+                password = hash_new_pass(new_pass)
+                cur.execute("UPDATE users SET password = %s WHERE email = %s", (password, current_user.id))
+                conn.commit()
+                conn.close()
+            except:
+                path = user_pfp_path[current_user.id[0].lower()]
+                path = url_for('static', filename=path)
+                return render_template('settings.html', path=path, email=current_user.id, pass_error='An error occured, please try again later.')
+        else:
+            path = user_pfp_path[current_user.id[0].lower()]
+            path = url_for('static', filename=path)
+            return render_template('settings.html', path=path, email=current_user.id, pass_error='The password you entered was not your current password. Please try again.')
 
         return redirect(url_for('account_settings'))
 

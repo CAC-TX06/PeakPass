@@ -45,49 +45,54 @@
                         <div class="col-6 form-group">
                             <label for="cur-email-update">Current Email</label>
                             <input name="cur-email-update" class="popup-input" type="text">
-                            <label for="cur-email-update" id="cur-email-update-check">• Your current email</label>
+                            <label for="cur-email-update" id="cur-email-update-check" class="label-check">• Your current email</label>
                         </div>
                     </div>
                     <div class="row">
 						            <div class="col-6 form-group">
                             <label for="new-email-update">New Email</label>
                             <input name="new-email-update" class="popup-input" type="text">
-                            <label for="new-email-update" id="new-email-update-check">• Valid email address</label>
+                            <label for="new-email-update" id="new-email-update-check" class="label-check">• Valid email address</label>
                         </div>
                         <div class="col-6 form-group">
                             <label for="confirm-email-update">Confirm New Email</label>
                             <input name="confirm-email-update" class="popup-input" type="text">
-                            <label for="confirm-email-update" id="confirm-email-update-check">• Emails match</label>
+                            <label for="confirm-email-update" id="confirm-email-update-check" class="label-check">• Emails match</label>
                         </div>
-                        <div id="email-update-wrapper" class="col-6 form-group">
+                        <div id="update-wrapper" class="col-6 form-group">
                             <button class="save" type="submit" value="submit">Update</button>
-                            {% if error_message %}
-                              <p class="error"> {{ error_message }} </p>
+                            {% if email_error %}
+                              <p class="error"> {{ email_error }} </p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </form>
-			      <form action="/add-item" method="POST">
-                <div class="modal-body">
+			      <form action="/update-password" method="POST" onsubmit="event.preventDefault(); checkPasswordForm();" name="update-password-form">
+                <div id="update-pass-wrapper" class="modal-body">
                     <h2 id="password-title" class="subtitle-header">Change Password</h2>
                     <div class="row">
                         <div class="col-6 form-group">
-                            <label for="name">Current Password</label>
-                            <input id="name" class="popup-input" type="text" name="name" required="">
+                            <label for="cur-password-update">Current Password</label>
+                            <input name="cur-password-update" class="popup-input" type="text">
                         </div>
                     </div>
                     <div class="row">
 						            <div class="col-6 form-group">
-                            <label for="username">New Password</label>
-                            <input id="username" class="popup-input" type="text" name="username" required="">
+                            <label for="new-password-update">New Password</label>
+                            <input name="new-password-update" class="popup-input" type="text">
+                            <label for="new-password-update" id="new-password-update-check" class="label-check">• At least 10 characters in length</label>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="password">Confirm New Password</label>
-                            <input id="password" class="popup-input" type="text" name="password" required="">
-                        </div>
-                        <div class="col-6 form-group">
+                            <label for="confirm-password-update">Confirm New Password</label>
+                            <input name="confirm-password-update" class="popup-input" type="text">
+                            <label for="confirm-password-update" id="confirm-password-update-check" class="label-check">• Passwords match</label>
+                          </div>
+                        <div id="update-wrapper" class="col-6 form-group">
                             <button class="save" type="submit" value="submit">Update</button>
+                            {% if pass_error %}
+                              <p class="error"> {{ pass_error }} </p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -136,6 +141,37 @@
         confirmEmail.style.border = '1px solid #979797';
       }
     });
+
+    // Password checks
+
+    let curPassword = document.getElementsByName("cur-password-update")[0];
+    curPassword.addEventListener("input", function(event) {
+      curPassword.style.border = '1px solid #979797';
+    });
+
+    let newPassword = document.getElementsByName("new-password-update")[0];
+    let newPasswordLabel = document.getElementById("new-password-update-check");
+    newPassword.addEventListener("input", function(event) {
+      if (newPassword.value.length >= 10) {
+        newPasswordLabel.style.color = '#85dd86';
+        newPassword.style.border = '1px solid #979797';
+      } else {
+        newPasswordLabel.style.color = '#FA5B5B';
+        newPassword.style.border = '1px solid #979797';
+      }
+    });
+
+    let confirmPassword = document.getElementsByName("confirm-password-update")[0];
+    let confirmPasswordLabel = document.getElementById("confirm-password-update-check");
+    confirmPassword.addEventListener("input", function(event) {
+      if (confirmPassword.value == newPassword.value) {
+        confirmPasswordLabel.style.color = '#85dd86';
+        confirmPassword.style.border = '1px solid #979797';
+      } else {
+        confirmPasswordLabel.style.color = '#FA5B5B';
+        confirmPassword.style.border = '1px solid #979797';
+      }
+    });
   }
 
   function checkEmailForm(){
@@ -170,15 +206,32 @@
     }
   }
 
+  function checkPasswordForm(){
+    let curPassword = document.getElementsByName("cur-password-update")[0];
+    if (!curPassword.value) {
+      curPassword.style.border = '1px solid #FA5B5B';
+    }
 
+    let newPassword = document.getElementsByName("new-password-update")[0];
+    let newPasswordLabel = document.getElementById("new-password-update-check");
+    if (newPassword.value.length < 10) {
+      newPasswordLabel.style.color = '#FA5B5B';
+      newPassword.style.border = '1px solid #FA5B5B';
+    }
 
+    let confirmPassword = document.getElementsByName("confirm-password-update")[0];
+    let confirmPasswordLabel = document.getElementById("confirm-password-update-check");
+    if (confirmPassword.value != newPassword.value || !newPassword.value) {
+      confirmPasswordLabel.style.color = '#FA5B5B';
+      confirmPassword.style.border = '1px solid #FA5B5B';
+    }
 
-
-
-
-
-
-
+    if (newPassword.value.length >= 10 && confirmPassword.value == newPassword.value && curPassword.value) {
+      document.forms["update-password-form"].submit();
+    } else {
+      return false;
+    }
+  }
 
 	document.getElementById("myBtn").onclick = function() {myFunction()};
 
@@ -213,20 +266,28 @@
 	font-family: Montserrat;
 }
 
+.label-check {
+  color: #979797;
+}
+
 .error {
+  position: absolute;
   font-size: 15px;
   font-family: Montserrat;
   font-weight: 400;
-  padding-top: 5px;
-  margin: 5px 0px 0px 100px;
+  margin: 5px 0px 15px 100px;
   color: #FA5B5B;
   text-align: left;
 }
 
-#email-update-wrapper {
+#update-wrapper {
   max-width: 100%;
   flex: 1;
-  margin-bottom: 0;
+  margin: 0;
+}
+
+#update-pass-wrapper {
+  margin-top: 40px;
 }
 
 body {
@@ -546,7 +607,7 @@ label {
 	margin: 85px auto;
 	font-size: 0.9em;
 	width: 800px;
-	height: 675px;
+	height: 770px;
 	background-color: rgb(50, 52, 63);
 	border-radius: 5px 5px 0 0;
 	overflow: hidden;
