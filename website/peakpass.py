@@ -96,6 +96,16 @@ def dashboard():
         return render_template('dashboard.html', path=path, data=data_list)
 
 
+@app.route('/tools', methods=['GET'])
+@login_required
+def tools():
+    if current_user:
+        path = user_pfp_path[current_user.id[0].lower()]
+        path = url_for('static', filename=path)
+
+        return render_template('tools.html', path=path)
+
+
 @app.route('/account-settings', methods=['GET'])
 @login_required
 def account_settings():
