@@ -1,6 +1,7 @@
+import sqlite3
+import hashlib
 from flask_login import current_user, login_user, login_required, logout_user
 from flask import redirect, render_template, request, url_for, flash
-import sqlalchemy
 from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
 from __init__ import create_website
@@ -98,12 +99,12 @@ def dashboard():
 
 @app.route('/tools', methods=['GET'])
 @login_required
-def tools():
+def tools(breached=False):
     if current_user:
         path = user_pfp_path[current_user.id[0].lower()]
         path = url_for('static', filename=path)
 
-        return render_template('tools.html', path=path)
+        return render_template('tools.html', path=path, breached=breached)
 
 
 @app.route('/account-settings', methods=['GET'])
@@ -125,6 +126,7 @@ def add_item():
         name = request.form['name-save']
         username = request.form['username-save']
         password = request.form['password-save']
+        hash = hashlib.sha512(password.encode()).hexdigest()
         url = request.form['url-save']
 
         # Add the data to the database
@@ -133,7 +135,7 @@ def add_item():
             cur = conn.cursor()
 
             if name:
-                cur.execute("INSERT INTO passwords (owner, name, username, password, url) VALUES (%s, %s, %s, %s, %s)", (current_user.id, name, username, password, url))
+                cur.execute("INSERT INTO passwords (owner, name, username, password, hash, url) VALUES (%s, %s, %s, %s, %s)", (current_user.id, name, username, password, hash, url))
                 conn.commit()
                 conn.close()
         except:
@@ -232,6 +234,42 @@ def update_password():
             return render_template('settings.html', path=path, email=current_user.id, pass_error='The password you entered was not your current password. Please try again.')
 
         return redirect(url_for('account_settings'))
+
+
+# Create the password breach check route
+@app.route('/check-passwords', methods=['POST'])
+@login_required
+def check_passwords():
+    if current_user:
+        # Get all of the users passwords from the database
+
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        cur = conn.cursor()
+        cur.execute("SELECT password FROM passwords WHERE owner = %s", (current_user.id,))
+        data = cur.fetchall()
+        conn.close()
+
+        breach_conn = sqlite3.connect('breached_passwords.db')
+        breach_cur = breach_conn.cursor()
+
+        # Create a list of all of the users passwords
+        breached = []
+        for password in data:
+            # See if the password is in the breached_passwords database
+            breach_cur.execute("SELECT * FROM breached_passwords WHERE password = ?", (password[0],))
+            data = breach_cur.fetchone()
+
+            # If the password is in the breached_passwords database, add it to the list
+            if data:
+                cur.execute("SELECT password FROM breached_passwords WHERE password = %s", (password[0],))
+                name = cur.fetchone()
+                breached.append(name[0])
+
+        breach_conn.close()
+
+        # Load the tools route and pass the breached passwords list to it
+        print(breached)
+        return render_template('tools.html', breached=breached)
 
 
 # Logout the user and redirect to the index page
