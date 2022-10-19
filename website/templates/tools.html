@@ -34,7 +34,8 @@
   </header> 
 
   <body>
-    <div class="gene-container">
+    <div class="wrapper">
+      <div class="gene-container">
         <h2>Password Generator</h2>
         <div class="pass-content-wrapper">
           <div class="input-box">
@@ -73,6 +74,21 @@
           <button class="generate-btn">Generate Password</button>
         </div>
       </div>
+      <div class="breach-container">
+        <h2>Password Breach Detector</h2>
+        <div class="breach-content-wrapper">
+          <button class="check-btn">Check Now?</button>
+          <table class="breach-table">
+            <tbody>
+              <tr>
+                <td class="item-name">Your Twitter.com username has been BREACHED</td>
+              </tr>
+              <tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
@@ -112,10 +128,10 @@
       text-decoration: none;
     }
   
-  a:hover {
-  color: #91f093;
-  text-decoration: none;
-  }
+    a:hover {
+    color: #91f093;
+    text-decoration: none;
+    }
   
     header {
       background-color: rgb(38, 39, 48);
@@ -277,6 +293,11 @@
 
     /* PASSWORD GENERATOR START */
 
+    .wrapper {
+      display: flex;
+      flex-direction: row; 
+    }
+
     label {
       color: white;
       font-size: 20px;
@@ -285,11 +306,11 @@
 
     .gene-container{
       width: 800px;
-      height: 650px;
+      height: 600px;
       background-color: rgb(38, 39, 48);
       border-radius: 8px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-      margin: 95px 0 95px 100px
+      margin: 95px 0 95px 150px
     }
 
     .gene-container h2{
@@ -306,7 +327,7 @@
 
     .pass-content-wrapper .input-box{
       position: relative;
-      margin-top: 50px;
+      margin-top: 40px;
     }
 
     .input-box input{
@@ -440,4 +461,68 @@
       background: #91f093;
       border-radius: 4px;
     }
+
+    .breach-container {
+      width: 650px;
+      height: 600px;
+      background-color: rgb(38, 39, 48);
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      margin: 95px 0 95px 150px;
+    }
+
+    .breach-container h2 {
+      font-weight: 600;
+      font-size: 30px;
+      padding: 16px 30px;
+      border-bottom: 1px solid #d4dbe5;
+      color: white;
+    }
+
+    .breach-content-wrapper {
+      margin: 20px 30px;
+    }
+
+    .breach-content-wrapper .check-btn {
+      width: 100%;
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background: #73c276;
+      font-size: 20px;
+      padding: 10px 0;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    
+    table {
+      display: block;
+      overflow: auto;
+      height: 405px;
+      width: 100%;
+    }
+
+    .breach-table {
+      width: 100%;
+      background-color: rgb(27, 27, 34);
+      padding-top: 5px;
+      margin-top: 20px;
+      color: white;
+      border-radius: 4px;
+    }
+
+    .breach-table td {
+      padding: 12px 15px;
+      width: 50%;
+    }
+
+    .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .breach-table tbody tr {
+    border-bottom: 2px solid rgb(50, 52, 63);
+  }
 </style>
