@@ -26,7 +26,7 @@ def create_website():
     cur = conn.cursor()
 
     cur.execute("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, password CHAR(60) NOT NULL)")
-    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, username VARCHAR(500), password VARCHAR(500), hash VARCHAR(600), url VARCHAR(500))")
+    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100) NOT NULL, name TEXT NOT NULL, username TEXT, password TEXT, hash TEXT, url TEXT)")
 
     conn.commit()
     conn.close()
