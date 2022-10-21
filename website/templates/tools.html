@@ -12,19 +12,20 @@
     <script src="https://kit.fontawesome.com/a6e4faf2bf.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <title>PeakPass | Tools</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
 
   <header>
 	<nav>
 	  <a>
-		<img class="logo" src="images/peakpass_logo.png" alt="logo">
+		<img class="logo" src="{{ url_for('static', filename='peakpass_logo.png') }}" alt="logo">
 	  </a>
 	  <ul class="nav_links">
-		<li><a class="dash" href="#">Dashboard</a></li>
-		<li><a href="">Tools</a></li>
+		<li><a class="dash" href="/dashboard">Dashboard</a></li>
+		<li><a href="/tools">Tools</a></li>
 	  </ul>
 	  <div class="dropdown">
-		<img src="images/pfp_p.png" id="myBtn" class="user-pfp" alt="User Profile Picture">
+		<img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
 		<div id="myDropdown" class="dropdown-content">
 		  <a class="account" href="#">Account Settings</a>
 		  <a class="logout" href="#">Logout</a>
@@ -430,7 +431,7 @@
     }
     
     .pass-length .slider{
-      width: 90%;
+      width: 93%;
       height: 5px;
     }
     

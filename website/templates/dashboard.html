@@ -118,19 +118,19 @@
                             </div>
                             <div class="col-6 form-group">
                                 <label for="username-update">Username</label>
-                                <input name="username-update" class="popup-input" type="text" value={{ i['username'] if i['username'] !='' }}>
+                                <input name="username-update" class="popup-input" type="text" value={{ i['username'] }}>
                                 <label for="username-update" id="username-update-check" hidden>Length cannot exceed 500 characters</label>
                               </div>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
                                 <label for="password-update">Password</label>
-                                <input name="password-update" class="popup-input" type="password" value={{ i['password'] if i['password'] !='' }}>
+                                <input name="password-update" class="popup-input" type="password" value={{ i['password'] }}>
                                 <label for="password-update" id="password-update-check" hidden>Length cannot exceed 500 characters</label>
                               </div>
                             <div class="col-6 form-group">
                                 <label for="url-update">URL</label>
-                                <input name="url-update" class="popup-input" type="text" value={{ i['url'] if i['url'] !='' }}>
+                                <input name="url-update" class="popup-input" type="text" value={{ i['url'] }}>
                                 <label for="url-update" id="url-update-check" hidden>Length cannot exceed 500 characters</label>
                               </div>
                         </div>
@@ -183,7 +183,9 @@
     btns.forEach(btn => {
       btn.addEventListener("click", function() {
         event.preventDefault();
-        document.querySelector(btn.dataset.target).removeAttribute("hidden");
+        // Create a variable called 'target', which is btn.dataset.target, but all numbers and special characters are escaped
+        var target = btn.dataset.target.replace(/[^a-zA-Z0-9]/g, '\\$&');
+        document.querySelector(id=[target]).removeAttribute("hidden");
         document.body.style.overflow = "hidden";
       });
     });
@@ -299,10 +301,11 @@
     });
 
     const full_create_form = document.querySelector("[name='save']");
-    const name = full_create_form[1];
-    const username = full_create_form[2];
-    const password = full_create_form[3];
-    const url = full_create_form[4];
+
+    const name = full_create_form[0];
+    const username = full_create_form[1];
+    const password = full_create_form[2];
+    const url = full_create_form[3];
 
     name.addEventListener("input", function() {
       const name_create_check = name.closest(".col-6").querySelector("#name-save-check");
@@ -355,29 +358,29 @@
     });
 
     full_create_form.addEventListener("submit", function() {
-      const name_create = full_create_form[1];
+      const name_create = full_create_form[0];
       if (name_create.value.length > 100 || name_create.value.length < 1) {
         name_create.style.border = '1px solid #FA5B5B';
       }
 
-      const username_create = full_create_form[2];
-      const username_create_check = full_create_form[2].closest(".modal-body").querySelector("#username-save-check");
+      const username_create = full_create_form[1];
+      const username_create_check = full_create_form[1].closest(".modal-body").querySelector("#username-save-check");
       if (username_create.value.length > 500) {
         username_create.style.border = '1px solid #FA5B5B';
         username_create_check.removeAttribute("hidden");
         username_create_check.style.color = "#FA5B5B";
       }
 
-      const password_create = full_create_form[3];
-      const password_create_check = full_create_form[3].closest(".modal-body").querySelector("#password-save-check");
+      const password_create = full_create_form[2];
+      const password_create_check = full_create_form[2].closest(".modal-body").querySelector("#password-save-check");
       if (password_create.value.length > 500) {
         password_create.style.border = '1px solid #FA5B5B';
         password_create_check.removeAttribute("hidden");
         password_create_check.style.color = "#FA5B5B";
       }
 
-      const url_create = full_create_form[4];
-      const url_create_check = full_create_form[4].closest(".modal-body").querySelector("#url-save-check");
+      const url_create = full_create_form[3];
+      const url_create_check = full_create_form[3].closest(".modal-body").querySelector("#url-save-check");
       if (url_create.value.length > 500) {
         url_create.style.border = '1px solid #FA5B5B';
         url_create_check.removeAttribute("hidden");

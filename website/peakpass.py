@@ -2,7 +2,7 @@ import base64
 import sqlite3
 import hashlib
 from flask_login import current_user, login_user, login_required, logout_user
-from flask import redirect, render_template, request, url_for, flash
+from flask import redirect, render_template, request, url_for
 from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
 from __init__ import create_website
@@ -11,6 +11,7 @@ import psycopg2
 import bcrypt
 from reader import USER, PASSWORD, DATABASE, HOST
 from cryptography.fernet import Fernet
+import hashlib
 
 # Create the actual flask app (imported from __init__.py)
 app = create_website()
@@ -32,11 +33,13 @@ async def login():
             user = User()
             user.id = request.form['email']
             login_user(user, remember=True)
-            hashed_pass = hash_new_pass(request.form['password'])
-            # Save the first 32 characters of the hashed password as the key
+
+            # Hash the password in sha512, turn it into a bytes object, and then encode it in base64
+            hashed_pass = hashlib.sha512(request.form['password'].encode()).hexdigest()
             hashed_pass = bytes(hashed_pass[:32], 'utf-8')
             hashed_pass = base64.b64encode(hashed_pass)
             user_keys[user.id] = hashed_pass
+
             return redirect(url_for('dashboard'))
 
         return render_template('login.html', error_message='Incorrect email/password. Please try again.')
@@ -46,6 +49,7 @@ async def login():
             return redirect(url_for('dashboard'))
 
         return render_template('login.html')
+
 
 # Create the signup route
 # If the user attempts to sign up, try to add the new information to the DB, if it fails, then the 
@@ -82,13 +86,16 @@ user_pfp_path = {'a':'pfp_a.png', 'b':'pfp_b.png', 'c':'pfp_c.png', 'd':'pfp_d.p
 @login_required
 def dashboard():
     if current_user:
-        path = user_pfp_path[current_user.id[0].lower()]
+        try:
+            path = user_pfp_path[current_user.id[0].lower()]
+        except KeyError:
+            path = 'pfp_question.png'
         path = url_for('static', filename=path)
 
         # Get all of the password data
         conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
         cur = conn.cursor()
-        cur.execute("SELECT owner, name, username, password, url, id FROM passwords WHERE owner = %s", (current_user.id,))
+        cur.execute("SELECT id, owner, name, username, password, url FROM passwords WHERE owner = %s", (current_user.id,))
         data = cur.fetchall()
         conn.close()
 
@@ -103,13 +110,15 @@ def dashboard():
             name = fernet.decrypt(i[2]).decode('utf-8')
             username = fernet.decrypt(i[3]).decode('utf-8')
             password = fernet.decrypt(i[4]).decode('utf-8')
-            url = fernet.decrypt(i[5]).decode('utf-8')    
+            url = fernet.decrypt(i[5]).decode('utf-8')
 
-            if i[1]:
-                img_path = user_pfp_path[i[1][0].lower()]
-                img_path = url_for('static', filename=img_path)
+            try:
+                img_path = user_pfp_path[name[0].lower()]
+            except KeyError:
+                img_path = 'pfp_question.png'
+            img_path = url_for('static', filename=img_path)
 
-                data_list.append({'img':img_path, 'name':name, 'username':username, 'password':password, 'url':url, 'id':i[5]})
+            data_list.append({'img':img_path, 'name':name, 'username':username, 'password':password, 'url':url, 'id':i[0]})
 
         return render_template('dashboard.html', path=path, data=data_list)
 
@@ -118,7 +127,10 @@ def dashboard():
 @login_required
 def tools(breached=False):
     if current_user:
-        path = user_pfp_path[current_user.id[0].lower()]
+        try:
+            path = user_pfp_path[current_user.id[0].lower()]
+        except KeyError:
+            path = 'pfp_question.png'
         path = url_for('static', filename=path)
 
         return render_template('tools.html', path=path, breached=breached)
@@ -128,7 +140,10 @@ def tools(breached=False):
 @login_required
 def account_settings():
     if current_user:
-        path = user_pfp_path[current_user.id[0].lower()]
+        try:
+            path = user_pfp_path[current_user.id[0].lower()]
+        except KeyError:
+            path = 'pfp_question.png'
         path = url_for('static', filename=path)
 
         return render_template('settings.html', email=current_user.id, path=path)
@@ -139,31 +154,29 @@ def account_settings():
 @login_required
 def add_item():
     if current_user:
-        fernet = Fernet(user_keys[current_user.id])
         # Get the data from the form
-        name = request.form['name-save']
-        username = request.form['username-save']
-        password = request.form['password-save']
-        url = request.form['url-save']
+        name_form = request.form['name-save']
+        username_form = request.form['username-save']
+        password_form = request.form['password-save']
+        url_form = request.form['url-save']
 
         # Encrypt it
-        name = fernet.encrypt(name.encode()).decode()
-        username = fernet.encrypt(username.encode()).decode()
-        password = fernet.encrypt(password.encode()).decode()
-        hash = hashlib.sha512(password.encode()).hexdigest()
+        fernet = Fernet(user_keys[current_user.id])
+        name = fernet.encrypt(name_form.encode()).decode()
+        username = fernet.encrypt(username_form.encode()).decode()
+        password = fernet.encrypt(password_form.encode()).decode()
+        hash = hashlib.sha512(request.form['password-save'].encode()).hexdigest()
         hash = fernet.encrypt(hash.encode()).decode()
-        url = fernet.encrypt(url.encode()).decode()
+        url = fernet.encrypt(url_form.encode()).decode()
 
         # Add the data to the database
         try:
             conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
             cur = conn.cursor()
 
-            if name:
-                print("NAME")
-                cur.execute("INSERT INTO passwords (owner, name, username, password, hash, url) VALUES (%s, %s, %s, %s, %s, %s)", (current_user.id, name, username, password, hash, url))
-                conn.commit()
-                conn.close()
+            cur.execute("INSERT INTO passwords (owner, name, username, password, hash, url) VALUES (%s, %s, %s, %s, %s, %s)", (current_user.id, name, username, password, hash, url))
+            conn.commit()
+            conn.close()
         except:
             pass
 
@@ -237,7 +250,10 @@ def update_password():
         new_pass = request.form['new-password-update']
 
         if cur_pass == new_pass:
-            path = user_pfp_path[current_user.id[0].lower()]
+            try:
+                path = user_pfp_path[current_user.id[0].lower()]
+            except KeyError:
+                path = 'pfp_question.png'
             path = url_for('static', filename=path)
             return render_template('settings.html', path=path, email=current_user.id, pass_error='New password cannot be the same as your current password, please try again.')
 
@@ -258,11 +274,17 @@ def update_password():
                 conn.commit()
                 conn.close()
             except:
-                path = user_pfp_path[current_user.id[0].lower()]
+                try:
+                    path = user_pfp_path[current_user.id[0].lower()]
+                except KeyError:
+                    path = 'pfp_question.png'
                 path = url_for('static', filename=path)
                 return render_template('settings.html', path=path, email=current_user.id, pass_error='An error occured, please try again later.')
         else:
-            path = user_pfp_path[current_user.id[0].lower()]
+            try:
+                path = user_pfp_path[current_user.id[0].lower()]
+            except KeyError:
+                path = 'pfp_question.png'
             path = url_for('static', filename=path)
             return render_template('settings.html', path=path, email=current_user.id, pass_error='The password you entered was not your current password. Please try again.')
 
@@ -286,22 +308,25 @@ def check_passwords():
 
         # Create a list of all of the users passwords
         breached = []
+        fernet = Fernet(user_keys[current_user.id])
         for password in data:
+            decrypted_password = fernet.decrypt(str(password[0]).encode()).decode()
+
             # See if the password is in the breached_passwords database
-            breach_cur.execute("SELECT * FROM breached_passwords WHERE password = ?", (password[0],))
+            breach_cur.execute("SELECT * FROM breached_passwords WHERE password = ?", (decrypted_password,))
             data = breach_cur.fetchone()
 
             # If the password is in the breached_passwords database, add it to the list
             if data:
                 cur.execute("SELECT name FROM passwords WHERE hash = %s", (password[0],))
                 name = cur.fetchone()
-                breached.append(name[0])
+                name = fernet.decrypt(str(name).encode()).decode()
+                breached.append(f'"{name}"')
 
         conn.close()
         breach_conn.close()
 
         # Load the tools route and pass the breached passwords list to it
-        print(breached)
         return render_template('tools.html', breached=breached)
 
 

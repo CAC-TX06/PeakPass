@@ -1,13 +1,9 @@
 import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-import flask_login
-from flask_login import UserMixin
 import psycopg2
+import flask_login
+from flask import Flask
+from flask_login import UserMixin
 from reader import USER, PASSWORD, DATABASE, HOST
-from sqlalchemy.ext.declarative import declarative_base
-
-db = SQLAlchemy()
 
 class User(UserMixin):
     pass
@@ -26,8 +22,8 @@ def create_website():
     cur = conn.cursor()
 
     cur.execute("CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, password CHAR(60) NOT NULL)")
-    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100) NOT NULL, name TEXT NOT NULL, username TEXT, password TEXT, hash TEXT, url TEXT)")
-
+    cur.execute("CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, owner VARCHAR(100), name TEXT NOT NULL, username TEXT, password TEXT, hash TEXT, url TEXT)")
+    
     conn.commit()
     conn.close()
 
