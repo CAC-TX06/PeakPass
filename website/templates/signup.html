@@ -31,9 +31,9 @@
       <img src="{{ url_for('static', filename='peakpass_text_logo.png') }}">
       <h1>Sign Up</h1>
       <form name="signup" onsubmit="event.preventDefault(); checkForm();" action="/signup" method="POST">
-        <input class="input-box" name="email" placeholder="Your Email">
+        <input class="email-box" name="email" placeholder="Your Email">
         <label for="email">• Valid email address</label>
-        <input type="password" class="input-box" name="password" type="password" placeholder="Your Password">
+        <input type="password" class="input-box" name="password" placeholder="Your Password">
         <i class="bi bi-eye-slash" id="togglePassword"></i>
         <label for="password">• At least 10 characters in length</label>
         <input type="password" class="input-box" name="confirm-password" placeholder="Confirm Password">
@@ -41,7 +41,7 @@
         <label for="confirm-password">• Passwords match</label>
 
         {% if error_message %}
-        <p> {{ error_message }} </p>
+        <p class="error"> {{ error_message }} </p>
         {% endif %}
         
         <button type="submit" value="submit" class="sign-up-btn">Sign Up</button>
@@ -144,7 +144,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
-  p {
+  .error {
     font-family: Montserrat;
     font-weight: 400;
     margin: auto;
@@ -208,7 +208,7 @@
   }
 
   /* Changes the 'Your Email' and 'Your Password' boxes */
-  .input-box {
+  .email-box {
     color: white;
     font-family: Montserrat;
     background-color: rgb(70, 72, 88);
@@ -218,6 +218,18 @@
     width: 90%;
     border: 1px solid rgb(151, 151, 151);
     outline: none;
+  }
+
+  .input-box {
+    color: white;
+    font-family: Montserrat;
+    background-color: rgb(70, 72, 88);
+    border-radius: 8px;
+    margin: 10px;
+    width: 90%;
+    border: 1px solid rgb(151, 151, 151);
+    outline: none;
+    padding: 10px 40px 10px 10px;
   }
 
   /* Changes the 'Sign Up' Button */

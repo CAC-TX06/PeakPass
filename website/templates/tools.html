@@ -41,7 +41,7 @@
         <div class="pass-content-wrapper">
           <div class="input-box">
             <input type="text" id="password" disabled>
-            <i class="fa-regular fa-copy"></i>
+            <i class="fa-solid fa-copy"></i>
           </div>
           <div class="pass-options">
             <label class="options-title">Password Options</label>
@@ -162,6 +162,10 @@
       password += randomCharacter;
     }
 
+    if (!lowercase && !uppercase && !numbers && !symbols) {
+      password = "Please select at least one option";
+    }
+
     document.getElementById("password").value = password;
   }
 
@@ -171,9 +175,17 @@
   }
 
   function copyPassword() {
-    var password = document.getElementById("password");
-    password.select();
-    document.execCommand("copy");
+    navigator.clipboard.writeText(document.getElementById("password").value);
+    // Change the copy icon to a checkmark
+    copyBtn.classList.remove("fa-copy");
+    copyBtn.classList.add("fa-check");
+    copyBtn.style.color = "#91f093";
+    // Change the copy icon back to a copy icon after 1.5 seconds
+    setTimeout(function() {
+      copyBtn.classList.remove("fa-check");
+      copyBtn.classList.add("fa-copy");
+      copyBtn.style.color = "#fff";
+    }, 1500);
   }
 </script>
 <style>
@@ -414,7 +426,16 @@
       padding: 0 50px 0 20px;
     }
 
-    .input-box .fa-copy{
+    .input-box .fa-copy {
+      font-size: 20px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      color: #d4dbe5;
+    }
+
+    .input-box .fa-check {
       font-size: 20px;
       position: absolute;
       top: 15px;
