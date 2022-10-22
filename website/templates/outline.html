@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script src="https://kit.fontawesome.com/a6e4faf2bf.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <title>PeakPass | Tools</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  </head>
+
+  <header>
+	<nav>
+	  <a>
+		<img class="logo" src="{{ url_for('static', filename='peakpass_logo.png') }}" alt="logo">
+	  </a>
+	  <ul class="nav_links">
+		<li><a class="dash" href="/dashboard">Dashboard</a></li>
+		<li><a href="/tools">Tools</a></li>
+	  </ul>
+	  <div class="dropdown">
+		<img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
+		<div id="myDropdown" class="dropdown-content">
+		  <a class="account" href="#">Account Settings</a>
+		  <a class="logout" href="#">Logout</a>
+		</div>
+	  </div>
+	</nav>
+  </header> 
+
+  <body>
+    
+    <div class="wrapper">
+        <h1 class="main-title">Lorem ipsum</h1>
+        <p class="author">By: Parker Meinershagen</p>
+        <img class="blog-image" src="/website/templates/images/white-square.png" alt="Blog Image">
+        <div class="blog-section">
+            <h2 class="subtitle">Lorem ipsum</h2>
+                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo sem sit amet dui condimentum, at dictum risus gravida. Cras eu nunc velit. Aenean non egestas sapien. Vivamus suscipit, mi a ultrices blandit, dui augue placerat eros, a rhoncus ligula libero a quam. Curabitur ut rhoncus mi. Proin finibus, leo in eleifend posuere, ipsum turpis venenatis odio, ut finibus massa massa in erat. Sed id metus vel ante consectetur porta sit amet quis velit.</p>
+        </div>
+        <div class="blog-section">
+            <h2 class="subtitle">Lorem ipsum</h2>
+                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo sem sit amet dui condimentum, at dictum risus gravida. Cras eu nunc velit. Aenean non egestas sapien. Vivamus suscipit, mi a ultrices blandit, dui augue placerat eros, a rhoncus ligula libero a quam. Curabitur ut rhoncus mi. Proin finibus, leo in eleifend posuere, ipsum turpis venenatis odio, ut finibus massa massa in erat. Sed id metus vel ante consectetur porta sit amet quis velit.</p>
+        </div>
+    </div>
+
+  </body>
+
+</html>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+  
+  * {
+      margin: 0;
+      padding: 0;
+      font-family: Montserrat;
+  }
+
+  body {
+      background-color: rgb(50, 52, 63);
+      min-height: 100vh;
+  }
+
+  li, a, button {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #edf0f1;
+    text-decoration: none;
+  }
+
+  a:hover {
+  color: #91f093;
+  text-decoration: none;
+  }
+
+  header {
+    background-color: rgb(38, 39, 48);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10%;
+  }
+
+  .logo {
+    max-width: 60px;
+    margin: 10px 0 10px 80px;
+    background-color: rgb(38, 39, 48);
+  }
+
+  @media (max-width: 970px) {
+    .logo {
+      margin: 0;
+      width: 60px;
+    }
+  }
+
+  /* Changes the navbar color to dark */
+  nav {   
+    display: flex;
+    top:0;
+    width: 100%;
+    height: auto;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .nav_links {
+    flex: 1 1 200px;
+    list-style: none;
+    background-color: rgb(38, 39, 48);
+    margin-bottom: 0;
+  }
+
+  .nav_links li {
+    display: inline-block;
+    text-align: center;
+    padding: 26px 24px 24px 24px;
+    text-decoration: none;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .dash {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 970px) {
+    .nav_links li {
+      -webkit-box-align: center;
+      -moz-box-align: center;
+      -o-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      padding-inline-end: 0px;
+      margin: 10px;
+      margin-right: 40px;
+      text-align: center;
+      padding-left: 20px;
+      font-size: 2px;
+    }
+  }
+
+  .nav_links li a {
+    transition: all 0.3s ease 0s; 
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .nav_links li a:hover {
+    color: #91f093;
+    text-decoration: none;
+  }
+
+  @media (max-width: 970px) {
+    .nav_links li a{
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 970px) {
+    .home-button {
+      padding-left: 14px;
+    }
+  }
+
+  .cta {
+    margin-right: 70px;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .user-pfp {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 15px 80px 15px 0;
+    background-color: rgb(38, 39, 48);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    position: relative;
+  }
+
+  @media (max-width: 970px) {
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: rgb(50, 52, 63);
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .account {
+    color: white !important;
+  }
+
+  .account:hover {
+    background-color: rgb(38, 39, 48);
+  }
+
+  .logout {
+    background-color: #FA5B5B;
+    color: white !important;
+  }
+  
+  .logout:hover {
+    background-color: #b64242;
+    color: white !important;
+  }
+
+  .show {
+    display:block;
+  }
+
+  /* BLOG STARTS HERE */
+
+  .wrapper {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    text-align: center;
+    width: 55%;
+    margin: 0 auto;
+  }
+
+  .main-title {
+    font-weight: 600;
+    font-size: 60px;
+    padding: 20px 30px;
+    color: white;
+    margin-bottom: 0;
+    color: #91f093;
+  }
+
+  .author {
+    font-size: 16px;
+    color: white;
+    margin-bottom: 0;
+  }
+
+  .blog-image {
+    max-width: 60%;
+    margin: 20px auto;
+  }
+
+  .blog-section {
+    margin: 30px;
+    color: white;
+  }
+
+  .subtitle {
+    font-weight: 500;
+    font-size: 40px;
+    color: #91f093;
+  }
+
+  .body-text {
+    font-size: 20px;
+  }
+
+</style>
