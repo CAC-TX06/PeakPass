@@ -8,6 +8,92 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-    <h1>404 ERROR</h1>
+    <div class="wrapper">
+        <div class="middle">
+          <div class="content-wrapper">
+            <img class="err-img" src="/website/templates/images/404-graphic.png" alt="404 Graphic">
+            <h1 class="err-msg">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h1>
+            <button class="home-btn">Go Home</button>
+          </div>
+        </div>
+      </div>
 </body>
 </html>
+
+<style>
+    
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+  * {
+      margin: 0;
+      padding: 0;
+      font-family: Montserrat;
+  }
+
+  body {
+      background-color: rgb(50, 52, 63);
+      min-height: 100vh;
+  }
+
+  li, a, button {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #edf0f1;
+    text-decoration: none;
+  }
+
+  .wrapper {
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .middle {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35%;
+    padding: 25px;
+    border-radius: 8px;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .err-msg {
+    padding: 25px;
+    color: white;
+    font-size: 18px;
+    width: 55%;
+  }
+
+  .err-img {
+    width: 400px;
+    padding: 25px;
+  }
+
+  .home-btn {
+    width: 55%;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #73c276;
+    font-size: 18px;
+    padding: 10px 0;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+</style>
