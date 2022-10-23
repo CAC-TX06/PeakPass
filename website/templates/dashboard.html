@@ -37,7 +37,7 @@
       </nav>
     </header>
 
-  <table class="content-table">
+    <table class="content-table">
       <thead>
         <tr>
           <th>
@@ -96,12 +96,27 @@
         {% if data %}
           {% for i in data %}
           <tr>
-            <td class="item-pfp"><img src={{ i['img'] }} alt="Item Image" data-target=#{{ i['name'] }}></td>
-            <td class="item-name" data-target=#{{ i['name'] }}>{{ i['name'] }}</td>
-            <td><i class="bi bi-trash-fill"></i></td>
+            <td class="item-pfp"><img src={{ i['img'] }} alt="Item Image" data-target=#id-{{ i['id'] }}></td>
+            <td id="{{ i['owner'] }}" class="item-name" data-target=#id-{{ i['id'] }}>{{ i['name'] }}</td>
+            <td id="{{ i['id'] }}"><i class="bi bi-trash-fill"></i></td>
           </tr>
 
-          <div id={{ i['name'] }} class="bg-modal" hidden> 
+          <div id=del-{{ i['id'] }} class="bg-modal" hidden> 
+            <div class="delete-modal-content">
+              <div class="modal-header">
+                  <h2 id="delete-header" class="modal-title">Delete Item</h2>
+              </div>
+              <div class="modal-body">
+                  <p class="delete-confirm">Are you sure you would like to delete your item named: {{ i['name'] }}</p>
+              </div>
+              <div class="modal-footer">
+                  <button class="yes-btn">Yes</button>
+                  <a class="no-btn" href="">No</a>
+              </div>
+            </div>
+          </div>
+
+          <div id=id-{{ i['id'] }} class="bg-modal" hidden> 
             <div class="modal-content">
                 <form action="/update-item" method="POST" name="update">
                     <div class="modal-header">
@@ -180,31 +195,55 @@
       });
     });
 
-    // const trashButtons = document.querySelectorAll('.bi-trash-fill');
-    // trashButtons.forEach(function(button) {
-    //   button.addEventListener('click', function(e) {
-    //     var row = e.target.parentElement.parentElement;
-    //     var id = row.querySelector('td').getAttribute('data-target');
-    //     var modal = document.querySelector(id);
-    //     modal.style.display = 'flex';
-    //   });
-    // });
+    const trashButtons = document.querySelectorAll('.bi-trash-fill');
+    trashButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.parentElement.id;
+        // Remove the hidden element from the delete modal
+        const modal = document.querySelector(`#del-${id}`);
+        modal.removeAttribute('hidden');
+      });
+    });
+
+    const noButtons = document.querySelectorAll('.no-btn');
+    noButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        event.preventDefault();
+        const modal = btn.closest('.bg-modal');
+        modal.setAttribute('hidden', true);
+        document.body.style.overflow = "auto";
+      });
+    });
+
+    const yesButtons = document.querySelectorAll('.yes-btn');
+    yesButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.parentElement.parentElement.parentElement.id;
+        const modal = document.querySelector(`#${id}`);
+        modal.setAttribute('hidden', '');
+        const id_ = id.split('-')[1];
+        const owner = btn.parentElement.parentElement.parentElement.parentElement.querySelector('td:nth-child(2)').id;
+        // Send a delete request to the server
+        fetch(`/delete-item?id=${id_}&user=${owner}`, {
+          method: 'DELETE',
+        }).then(res => {
+          if (res.status === 200) {
+            window.location.reload();
+          }
+        });
+      });
+    });
 
     const btns = document.querySelectorAll("[data-target]");
-    const close_btns = document.querySelectorAll(".fa-xmark")
+    const close_btns = document.querySelectorAll(".fa-xmark");
     const cancel_btns = document.querySelectorAll(".cancel");
 
     btns.forEach(btn => {
       btn.addEventListener("click", function() {
         event.preventDefault();
-        // Escape every single character in the btn.dataset.target string
-        const target = btn.dataset.target.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-        // Escape all of the numbers in the btn.dataset.target string
-        const new_target = target.replace(/[0-9]/g, "\\$&");
-
-
-        document.querySelector(id=[new_target]).removeAttribute("hidden");
-        document.body.style.overflow = "hidden";
+        // Remove the hidden attribute from the modal
+        const modal = document.querySelector(btn.dataset.target);
+        modal.removeAttribute("hidden");
       });
     });
 
@@ -480,6 +519,7 @@
   }
 
   .bi-trash-fill {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     color: rgb(151, 151, 151);
@@ -487,6 +527,43 @@
 
   .bi-trash-fill:hover {
     color: #FA5B5B;
+  }
+
+  .delete-modal-content {
+    width: 450px;
+    height: 250px;
+    background-color: rgb(50, 52, 63);
+    border-radius: 8px;
+    position: relative;
+    border: none;
+  }
+
+  .delete-confirm {
+    text-align: center;
+    color: white;
+    font-size: 16px;
+  }
+
+  .yes-btn {
+    background-color: #FA5B5B;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 7px 10px;
+    border-radius: 4px;
+  }
+
+  .no-btn {
+    position: absolute;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 70px;
+  }
+
+  #delete-header {
+    width: 100%;
+    text-align: center;
   }
 
   body {
@@ -789,7 +866,7 @@
 
   .modal-content {
     width: 800px;
-    height: 400px;
+    height: 410px;
     background-color: rgb(50, 52, 63);
     border-radius: 8px;
     position: relative;

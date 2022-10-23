@@ -118,9 +118,11 @@ def dashboard():
                 img_path = 'pfp_question.png'
             img_path = url_for('static', filename=img_path)
 
-            data_list.append({'img':img_path, 'name':name, 'username':username, 'password':password, 'url':url, 'id':i[0]})
+            data_list.append({'owner':current_user.id, 'img':img_path, 'name':name, 'username':username, 'password':password, 'url':url, 'id':i[0]})
 
-        return render_template('dashboard.html', path=path, data=data_list)
+        data = sorted(data_list, key=lambda k: k['name'].lower())
+
+        return render_template('dashboard.html', path=path, data=data)
 
 
 @app.route('/tools', methods=['GET'])
@@ -181,6 +183,26 @@ def add_item():
             pass
 
         return redirect(url_for('dashboard'))
+
+
+# Add the delete-item route as a DELETE request with the URL parameters passed from the dashboard delete button
+@app.route('/delete-item', methods=['DELETE'])
+@login_required
+def delete_item():
+    if current_user:
+        # Get the data from the form
+        id = request.args.get('id')
+        user = request.args.get('user')
+
+        if current_user.id == user:
+            conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+            cur = conn.cursor()
+
+            cur.execute("DELETE FROM passwords WHERE id = %s", (id,))
+            conn.commit()
+            conn.close()
+    
+    return render_template('dashboard.html')
 
 
 # Update an item already in the database

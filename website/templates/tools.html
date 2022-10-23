@@ -27,8 +27,8 @@
 	  <div class="dropdown">
 		<img src={{ path }} id="myBtn" class="user-pfp" alt="User Profile Picture">
 		<div id="myDropdown" class="dropdown-content">
-		  <a class="account" href="#">Account Settings</a>
-		  <a class="logout" href="#">Logout</a>
+		  <a class="account" href="/account-settings">Account Settings</a>
+		  <a class="logout" href="/logout">Logout</a>
 		</div>
 	  </div>
 	</nav>
@@ -186,6 +186,28 @@
       copyBtn.classList.add("fa-copy");
       copyBtn.style.color = "#fff";
     }, 1500);
+  }
+
+  // Get the button, and when the user clicks on it, execute toggleShow
+  document.getElementById("myBtn").onclick = function() {toggleShow()};
+
+  // toggleShow toggles between adding and removing the show class, which is used to hide and show the dropdown content
+  function toggleShow() {
+      document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+      if (!event.target.matches('.user-pfp')) {
+          var dropdowns = document.getElementsByClassName("dropdown-content");
+          var i;
+          for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                  openDropdown.classList.remove('show');
+              }
+          }
+      }
   }
 </script>
 <style>

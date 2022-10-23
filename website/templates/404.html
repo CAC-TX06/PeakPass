@@ -11,9 +11,9 @@
     <div class="wrapper">
         <div class="middle">
           <div class="content-wrapper">
-            <img class="err-img" src="/website/templates/images/404-graphic.png" alt="404 Graphic">
+            <img class="err-img" src="{{ url_for('static', filename='404-graphic.png') }}" alt="404 Graphic">
             <h1 class="err-msg">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h1>
-            <button class="home-btn">Go Home</button>
+            <a class="home-btn" href="/">Go Home</a>
           </div>
         </div>
       </div>
