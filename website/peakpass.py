@@ -131,6 +131,12 @@ def blog():
     return render_template('blog/blog.html')
 
 
+# Create the blog post route
+@app.route('/blog/<post>', methods=['GET'])
+def blog_post(post):
+    return render_template('blog/' + post + '.html')
+
+
 @app.route('/tools', methods=['GET'])
 @login_required
 def tools(breached=False):
