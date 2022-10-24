@@ -125,6 +125,12 @@ def dashboard():
         return render_template('dashboard.html', path=path, data=data)
 
 
+# Create the blog route
+@app.route('/blog', methods=['GET'])
+def blog():
+    return render_template('blog/blog.html')
+
+
 @app.route('/tools', methods=['GET'])
 @login_required
 def tools(breached=False):

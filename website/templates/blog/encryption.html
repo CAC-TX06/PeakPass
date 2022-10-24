@@ -14,21 +14,24 @@
     <title>PeakPass | Tools</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
-
-  <body> 
+  <body>
     <div class="wrapper">
-        <h1 class="main-title">Lorem ipsum</h1>
+        <h1 class="main-title">Encryption</h1>
         <p class="author">By: Parker Meinershagen</p>
-        <img class="blog-image" src="/website/templates/images/white-square.png" alt="Blog Image">
         <div class="blog-section">
-            <h2 class="subtitle">Lorem ipsum</h2>
-                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo sem sit amet dui condimentum, at dictum risus gravida. Cras eu nunc velit. Aenean non egestas sapien. Vivamus suscipit, mi a ultrices blandit, dui augue placerat eros, a rhoncus ligula libero a quam. Curabitur ut rhoncus mi. Proin finibus, leo in eleifend posuere, ipsum turpis venenatis odio, ut finibus massa massa in erat. Sed id metus vel ante consectetur porta sit amet quis velit.</p>
+            <h2 class="subtitle">What is Encryption?</h2>
+                <p class="body-text">Encryption is the process of taking human readable text called plaintext, and turning it into a randomized string a characters called cyphertext.</p>
         </div>
         <div class="blog-section">
-            <h2 class="subtitle">Lorem ipsum</h2>
-                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo sem sit amet dui condimentum, at dictum risus gravida. Cras eu nunc velit. Aenean non egestas sapien. Vivamus suscipit, mi a ultrices blandit, dui augue placerat eros, a rhoncus ligula libero a quam. Curabitur ut rhoncus mi. Proin finibus, leo in eleifend posuere, ipsum turpis venenatis odio, ut finibus massa massa in erat. Sed id metus vel ante consectetur porta sit amet quis velit.</p>
+            <h2 class="subtitle">Why is it Needed?</h2>
+                <p class="body-text">Encryption is a tool that is necessary for safe and secure data transfer over the internet. Encryption allows text to be hidden or obscured from prying eyes like hackers. Without encryption, these bad parties would be able to intercept traffic and steal important data like your login information, credit card details, address, and more.</p>
+        <img class="blog-image" src="{{ url_for('static', filename='encryption.png') }}" alt="Blog Image">      
         </div>
-      </div>
+        <div class="blog-section">
+          <h2 class="subtitle">Different Encryption Standards</h2>
+              <p class="body-text">There are many different encryption standards that are chosen by cybersecurity professionals and government agencies like NIST (National Institute of Standards and Technology). Two examples of these standards is the RSA and AES encryption.<br><br>RSA encryption uses a public key in order to encrypt plaintext, this public key is able to be openly shared and is not required to be kept secret. In order to decrypt this message, a user will need a private key, which needs to always be kept safe. Most of the time, the private key is held on the server of the service you are visiting. RSA encryption is often used for VPN services, email providers, and web browsers.<br><br>AES encryption is a symmetric key encryption cipher. Symmetric key ciphers use the same key to both encrypt and decrypt data. This means that AES is not the preferred encryption standard for things like data transmission. However, AES shines in encrypting data that does not move, for example, encrypting hard drives/folders on your computer. AES encryption is much faster than many other encryption standards, and is commonly used in software like password managers, 7zip, WinZip, and WinRAR.</p>
+        </div>
+    </div>
   </body>
 </html>
 
@@ -88,8 +91,14 @@
     flex-direction: column; 
     justify-content: center;
     text-align: center;
-    width: 55%;
+    width: 40%;
     margin: 0 auto;
+  }
+
+  @media (max-width: 970px) {
+    .wrapper {
+      width: 55%;
+    }
   }
 
   .main-title {

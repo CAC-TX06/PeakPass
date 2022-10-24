@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script src="https://kit.fontawesome.com/a6e4faf2bf.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <title>PeakPass | Tutorials</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  </head>
+  <body>
+    
+    <div class="wrapper">
+        <h1 class="main-title">HTTPS (Hypertext Transfer Protocol Secure)</h1>
+        <p class="author">By: Parker Meinershagen</p>
+        <div class="blog-section">
+          <h2 class="subtitle">What is HTTPS?</h2>
+            <p class="body-text">HTTPS is the Hypertext transfer protocol secure, and is the secure and encrypted version of HTTP - the main protocol of data transmission on websites. HTTPS allows websites to securely communicate with your web browser, meaning you can safely login to your accounts without leaking your data.<br><br>Any website that requires you to login using your username/password combination should use HTTPS, especially ones that are crucial to your life like: banks, insurance providers, email services, etc.</p>
+        </div>
+        <div class="blog-section">
+          <h2 class="subtitle">How Does it Work?</h2>
+            <p class="body-text">HTTPS encrypts the traffic between your web browser and the server of the website you visit using the Transport Layer Secure (TLS) protocol. The protocol uses both public and private keys for encryption, this is called asymmetric public key infrastructure. The public is available to everyone, and is not a secret, this key is used to encrypt communications. The private key is the secret and is controlled solely by the website. The private key is used to decrypt the traffic from the web browser, which allows the server to process your information like your login.</p>
+      </div>
+        <div class="blog-section">
+           <h2 class="subtitle">How to Know if it's Enabled</h2>
+            <p class="body-text">You can determine if HTTPS is in use by looking in the top left corner of your web browser, just to the left of the link. If you see a closed lock, you are securely connected to that website. However, many browsers will use a lock that is opened, or text that says "Not Secure" to alert you that you are connected using the HTTPS protocol. If you see any of these signs DO NOT enter any of your information into that website, it is not safe to do so.</p>
+        </div>
+        <img class="blog-image" src="{{ url_for('static', filename='https_everywhere_logo.png') }}" alt="Blog Image">
+        <div class="blog-section">
+          <h2 class="subtitle">Tools for Enabling HTTPS</h2>
+            <p class="body-text">Sometimes, websites do not automatically use the HTTPS protocol even when it is available, in order to fix this issue you should install a browser extension to automatically attempt to connect to the HTTPS versions of the websites you visit. In order to do this, visit your browser extensions download page and search for the extension called "HTTPS Everywhere". This extension automatically attempts to connect you to the secure version of all sites you visit, so that you never accidentally connect to an insecure version.</p>
+        </div>
+    </div>
+
+  </body>
+
+</html>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+  
+  * {
+      margin: 0;
+      padding: 0;
+      font-family: Montserrat;
+  }
+
+  body {
+      background-color: rgb(50, 52, 63);
+      min-height: 100vh;
+  }
+
+  li, a, button {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #edf0f1;
+    text-decoration: none;
+  }
+
+  a:hover {
+  color: #73C276;
+  text-decoration: none;
+  }
+
+  header {
+    background-color: rgb(38, 39, 48);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10%;
+  }
+
+  .logo {
+    max-width: 60px;
+    margin: 10px 0 10px 80px;
+    background-color: rgb(38, 39, 48);
+  }
+
+  @media (max-width: 970px) {
+    .logo {
+      margin: 0;
+      width: 60px;
+    }
+  }
+
+  /* BLOG STARTS HERE */
+
+  .wrapper {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 970px) {
+    .wrapper {
+      width: 55%;
+    }
+  }
+
+  .main-title {
+    font-weight: 600;
+    font-size: 60px;
+    padding: 20px 30px;
+    color: white;
+    margin-bottom: 0;
+    color: #73C276;
+  }
+
+  .author {
+    font-size: 16px;
+    color: white;
+    margin-bottom: 0;
+  }
+
+  .blog-image {
+    max-width: 60%;
+    margin: 20px auto;
+  }
+
+  .blog-section {
+    margin: 30px;
+    color: white;
+  }
+
+  .subtitle {
+    font-weight: 500;
+    font-size: 40px;
+    color: #73C276;
+    text-align: left;
+  }
+
+  .body-text {
+    font-size: 20px;
+    text-align: left;
+  }
+
+</style>
