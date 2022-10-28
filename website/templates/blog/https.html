@@ -14,8 +14,26 @@
     <title>PeakPass | Tutorials</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
+
+  <header>
+    <nav>
+      <a href="/">
+      <img class="logo" src="{{ url_for('static', filename='peakpass_logo.png') }}" alt="logo">
+      </a>
+      <ul class="nav_links">
+      <li><a class="blog" href="/blog">Blog</a></li>
+      <li><a href="/documentation">Docs</a></li>
+      </ul>
+      <div id="login-signup-nav" class="nav_links">
+        <ul>
+          <li><a href="/signup">Sign Up</a></li>
+          <li><a href="/login">Log In</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
   <body>
-    
     <div class="wrapper">
         <h1 class="main-title">HTTPS (Hypertext Transfer Protocol Secure)</h1>
         <p class="author">By: Parker Meinershagen</p>
@@ -79,16 +97,78 @@
   }
 
   .logo {
-    max-width: 60px;
-    margin: 10px 0 10px 80px;
+    max-width: 80px;
+    margin: 10px 0 10px 0;
     background-color: rgb(38, 39, 48);
   }
 
-  @media (max-width: 970px) {
+  @media (max-width: 1024px) {
     .logo {
       margin: 0;
       width: 60px;
     }
+  }
+
+  /* Changes the navbar color to dark */
+  nav {   
+    display: flex;
+    top:0;
+    width: 100%;
+    height: auto;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .nav_links {
+    flex: 1 1 200px;
+    list-style: none;
+    background-color: rgb(38, 39, 48);
+    margin-bottom: 0;
+  }
+
+  .nav_links li {
+    display: inline-block;
+    text-align: center;
+    padding: 26px 24px 24px 24px;
+    margin: 10px 0;
+    text-decoration: none;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .blog {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    .nav_links li {
+      align-items: center;
+      padding-inline-end: 0px;
+      margin: 10px;
+      margin-right: 40px;
+      text-align: center;
+      padding-left: 20px;
+      font-size: 2px;
+    }
+  }
+
+  .nav_links li a {
+    transition: all 0.3s ease 0s; 
+    font-weight: 700;
+    font-size: 25px;
+  }
+
+  .nav_links li a:hover {
+    color: #73C276;
+    text-decoration: none;
+  }
+
+  @media (max-width: 1024px) {
+    .nav_links li a{
+      font-size: 12px;
+    }
+  }
+
+  #login-signup-nav {
+    text-align: right;
   }
 
   /* BLOG STARTS HERE */

@@ -137,6 +137,12 @@ def blog_post(post):
     return render_template('blog/' + post + '.html')
 
 
+# Create the documentation route
+@app.route('/documentation', methods=['GET'])
+def documentation():
+    return render_template('documentation.html')
+
+
 @app.route('/tools', methods=['GET'])
 @login_required
 def tools(breached=False):
@@ -148,6 +154,9 @@ def tools(breached=False):
         path = url_for('static', filename=path)
 
         return render_template('tools.html', path=path, breached=breached)
+
+    else:
+        return render_template('login.html')
 
 
 @app.route('/account-settings', methods=['GET'])
@@ -161,6 +170,9 @@ def account_settings():
         path = url_for('static', filename=path)
 
         return render_template('settings.html', email=current_user.id, path=path)
+
+    else:
+        return render_template('login.html')
         
 
 # Add items to the database (from the 'Add Item' button on the dashboard)

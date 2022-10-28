@@ -35,16 +35,20 @@
 
   <body> 
     <div class="wrapper">
-        <h1 class="main-title">Lorem ipsum</h1>
-        <p class="author">By: Parker Meinershagen</p>
-        <img class="blog-image" src="/website/templates/images/white-square.png" alt="Blog Image">
+        <h1 class="main-title">PeakPass Technical Documentation</h1>
+        <img class="blog-image" src="{{ url_for('static', filename='peakpass_text_logo.png') }}" alt="Blog Image">
+        <p class="author">By: Parker Meinershagen (Backend Developer)</p>
         <div class="blog-section">
-            <h2 class="subtitle">Lorem ipsum</h2>
-                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo sem sit amet dui condimentum, at dictum risus gravida. Cras eu nunc velit. Aenean non egestas sapien. Vivamus suscipit, mi a ultrices blandit, dui augue placerat eros, a rhoncus ligula libero a quam. Curabitur ut rhoncus mi. Proin finibus, leo in eleifend posuere, ipsum turpis venenatis odio, ut finibus massa massa in erat. Sed id metus vel ante consectetur porta sit amet quis velit.</p>
+            <h2 class="subtitle">What Technologies/Languages are Employed?</h2>
+                <p class="body-text">PeakPass employs the use of HTML, JS, and CSS for front end development. For back-end development we use Python's Flask library. Our websites are hosted with Apache2 on Ubuntu Server. For data storage we employ both SQLite for breached passwords, and a PostgreSQL database for user data.</p>
         </div>
         <div class="blog-section">
-            <h2 class="subtitle">Lorem ipsum</h2>
-                <p class="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam commodo sem sit amet dui condimentum, at dictum risus gravida. Cras eu nunc velit. Aenean non egestas sapien. Vivamus suscipit, mi a ultrices blandit, dui augue placerat eros, a rhoncus ligula libero a quam. Curabitur ut rhoncus mi. Proin finibus, leo in eleifend posuere, ipsum turpis venenatis odio, ut finibus massa massa in erat. Sed id metus vel ante consectetur porta sit amet quis velit.</p>
+            <h2 class="subtitle">How is Data Stored?</h2>
+                <p class="body-text">All login passwords are hashed using the bcrypt algorithm. All user associated information is securely encrypted using the Fernet - part of the Python Cryptography library - and stored within our PostgreSQL database.</p>
+        </div>
+        <div class="blog-section">
+            <h2 class="subtitle">What Information is Collected?</h2>
+                <p class="body-text">Information collected and stored includes your login username and password, as well as any information you enter into the form for creating new items, like: name, username, password, and url. We do not collect ANY other data, this cna be confirmed by auditing out code, available by clicking <a href="https://github.com/CAC-TX06/PeakPass" id="source-code-here">here</a>.</p>
         </div>
       </div>
   </body>
@@ -99,6 +103,68 @@
     }
   }
 
+  /* Changes the navbar color to dark */
+  nav {   
+    display: flex;
+    top:0;
+    width: 100%;
+    height: auto;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .nav_links {
+    flex: 1 1 200px;
+    list-style: none;
+    background-color: rgb(38, 39, 48);
+    margin-bottom: 0;
+  }
+
+  .nav_links li {
+    display: inline-block;
+    text-align: center;
+    padding: 26px 24px 24px 24px;
+    margin: 10px 0;
+    text-decoration: none;
+    background-color: rgb(38, 39, 48);
+  }
+
+  .blog {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    .nav_links li {
+      align-items: center;
+      padding-inline-end: 0px;
+      margin: 10px;
+      margin-right: 40px;
+      text-align: center;
+      padding-left: 20px;
+      font-size: 2px;
+    }
+  }
+
+  .nav_links li a {
+    transition: all 0.3s ease 0s; 
+    font-weight: 700;
+    font-size: 25px;
+  }
+
+  .nav_links li a:hover {
+    color: #73C276;
+    text-decoration: none;
+  }
+
+  @media (max-width: 1024px) {
+    .nav_links li a{
+      font-size: 12px;
+    }
+  }
+
+  #login-signup-nav {
+    text-align: right;
+  }
+
   /* BLOG STARTS HERE */
 
   .wrapper {
@@ -145,6 +211,10 @@
   .body-text {
     font-size: 20px;
     text-align: left;
+  }
+
+  #source-code-here:hover {
+    color: #73C276;
   }
 
 </style>

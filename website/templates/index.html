@@ -15,34 +15,30 @@
   
   <header>
     <nav>
-      <a>
-      <img class="logo" src="/website/templates/images/peakpass_logo.png" alt="logo">
+      <a href="/">
+      <img class="logo" src="{{ url_for('static', filename='peakpass_logo.png') }}" alt="logo">
       </a>
       <ul class="nav_links">
-      <li><a class="dash" href="/dashboard">Blog</a></li>
-      <li><a href="/tools">Docs</a></li>
+      <li><a class="blog" href="/blog">Blog</a></li>
+      <li><a href="/documentation">Docs</a></li>
       </ul>
       <div id="login-signup-nav" class="nav_links">
         <ul>
           <li><a href="/signup">Sign Up</a></li>
           <li><a href="/login">Log In</a></li>
         </ul>
-        <div id="myDropdown" class="dropdown-content">
-          <a class="account" href="#">Account Settings</a>
-          <a class="logout" href="#">Logout</a>
-        </div>
       </div>
     </nav>
   </header> 
 
   <body>
     <div class="intro-wrapper">
-      <img class="display-img" src="/website/templates/images/display-img.png" alt="Display Image">
+      <img class="display-img" src="{{ url_for('static', filename='display-img.png') }}" alt="Display Image">
       <div class="intro-info">
         <h1 class="intro-title">PeakPass</h1>
         <h2 class="intro-subtitle">The Most Protected Password Manager</h2>
-        <p class="intro-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim elit magna, nec luctus enim volupat.</p>
-        <button type="button" class="sign-up-btn"><a href="">Sign Up Now</a></button>
+        <p class="intro-paragraph">PeakPass keeps all of your passwords safe and secure using complex hashing and encryption methods to create the best password manager to date.</p>
+        <button type="button" class="sign-up-btn"><a href="/signup">Sign Up Now</a></button>
       </div>
     </div>
 
@@ -53,11 +49,11 @@
     <section class="section" id="1">
       <div class="section-inner">
         <div class="section-img">
-          <img src="/website/templates/images/display-img.png" alt="Password Manager"/>
+          <img src="{{ url_for('static', filename='display-img.png') }}" alt="Password Manager"/>
         </div>
         <div class="section-text">
           <h1>Secure Password Manager</h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo molestiae quam doloribus veritatis officiis dolor obcaecati ea, sed magni ducimus laudantium omnis, voluptate dolorem! Aut porro maiores sunt commodi quasi.</p>
+          <p>PeakPass makes sure that your passwords are secure by encrypting them; making them unreadable to anyone other than you. All of your data is securely stored, and we do not keep anything unless it is strictly necessary.</p>
         </div>
       </div>
   </section>   
@@ -65,22 +61,22 @@
   <section class="section">
       <div class="section-inner">
         <div class="section-img">
-          <img src="/website/templates/images/display-img.png" alt="Breach Detection"/>
+          <img src="{{ url_for('static', filename='display-img.png') }}" alt="Breach Detection"/>
         </div>
         <div class="section-text">
             <h1>Convenient Breach Detection</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo molestiae quam doloribus veritatis officiis dolor obcaecati ea, sed magni ducimus laudantium omnis, voluptate dolorem! Aut porro maiores sunt commodi quasi.</p>
+            <p>We use our database of over 14 million breached passwords to securely check those in your vault against passwords that have previously been breached.</p>
         </div>
       </div>
   </section>
   <section class="section">
       <div class="section-inner">
         <div class="section-img">
-          <img src="/website/templates/images/display-img.png" alt="Source Code"/>
+          <img src="{{ url_for('static', filename='display-img.png') }}" alt="Source Code"/>
         </div>
         <div class="section-text">
           <h1>Open Source Code</h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo molestiae quam doloribus veritatis officiis dolor obcaecati ea, sed magni ducimus laudantium omnis, voluptate dolorem! Aut porro maiores sunt commodi quasi.</p>
+          <p>All of our source code is public on GitHub to be audited by anyone who deems it necessary. You can view our source code by clicking <a href="https://github.com/CAC-TX06/PeakPass" id="source-code-here">here</a>.</p>
         </div>
       </div>
     </section>
@@ -88,11 +84,8 @@
     <footer>
       © 2022 PeakPass. All Rights Reserved.
     </footer>
-
   </body>
-  
 </html>
-
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
@@ -118,7 +111,7 @@
   }
 
   a:hover {
-    color: #91f093;
+    color: #73C276;
     text-decoration: none;
   }
 
@@ -172,7 +165,7 @@
     background-color: rgb(38, 39, 48);
   }
 
-  .dash {
+  .blog {
     padding-left: 20px;
   }
 
@@ -195,7 +188,7 @@
   }
 
   .nav_links li a:hover {
-    color: #91f093;
+    color: #73C276;
     text-decoration: none;
   }
 
@@ -205,78 +198,10 @@
     }
   }
 
-  @media (max-width: 1024px) {
-    .home-button {
-      padding-left: 14px;
-    }
-  }
-
   #login-signup-nav {
     text-align: right;
   }
 
-  .user-pfp {
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin: 15px 80px 15px 0;
-    background-color: rgb(38, 39, 48);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-    position: relative;
-  }
-
-  @media (max-width: 1024px) {
-    .cta {
-      display: flex;
-      flex-wrap: wrap;
-    }
-  }
-
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-
-  .dropdown-content {
-    border-radius: 4px;
-    display: none;
-    position: absolute;
-    background-color: rgb(50, 52, 63);
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
-  }
-
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-
-  .account {
-    color: white !important;
-  }
-
-  .account:hover {
-    background-color: rgb(38, 39, 48);
-  }
-
-  .logout {
-    background-color: #FA5B5B;
-    color: white !important;
-  }
-  
-  .logout:hover {
-    background-color: #b64242;
-    color: white !important;
-  }
-
-  .show {
-    display:block;
-  }
 
   /* MAIN IMG + TEXT STARTS HERE */
 
@@ -434,6 +359,18 @@
     line-height: 1.8em;
     margin-top: 5px;
   }
+
+  #source-code-here {
+    font-size: 20px;
+    color: #cacbcc;
+    line-height: 1.8em;
+    margin-top: 5px;
+  }
+
+  #source-code-here:hover {
+    color: #73C276
+  }
+
   @media (max-width: 1024px) {
     .section .section-inner .section-text p {
       text-align: center;
