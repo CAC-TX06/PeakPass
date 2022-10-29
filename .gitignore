@@ -2,3 +2,5 @@ config.yml
 __pycache__
 breached_passwords.db
 .DS_Store
+priv_key.pem
+origin_key.pem
