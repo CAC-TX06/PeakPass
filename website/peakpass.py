@@ -277,11 +277,18 @@ def update_email():
         try:
             cur.execute("UPDATE users SET email = %s WHERE email = %s", (email, current_user.id))
             conn.commit()
-            conn.close()
         except psycopg2.errors.UniqueViolation:
             path = user_pfp_path[current_user.id[0].lower()]
             path = url_for('static', filename=path)
+            conn.close()
             return render_template('settings.html', path=path, email=current_user.id, email_error='Email already taken, please try again with a different email address.')
+
+        all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = %s", (current_user.id,))
+        all_passwords = cur.fetchall()
+        for password in all_passwords:
+            cur.execute("UPDATE passwords SET owner = %s WHERE id = %s", (email, password[0]))
+        conn.commit()
+        conn.close()
 
         return redirect(url_for('account_settings'))
 
