@@ -28,7 +28,7 @@
   ></script>
   <body class="log-in-body">
     <div class="log-in-form">
-      <img src="{{ url_for('static', filename='peakpass_text_logo.png') }}">
+      <a href="/"><img src="{{ url_for('static', filename='peakpass_text_logo.png') }}"></a>
       <h1>Log In</h1>
       {% if success_message %}
       <p class="success"> {{ success_message }} </p>
