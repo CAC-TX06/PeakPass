@@ -3,7 +3,7 @@ import sqlite3
 import hashlib
 import psycopg2
 import psycopg2
-from reader import USER, PASSWORD, DATABASE, HOST
+from reader import CONNECTION_STRING
 
 def hash_new_pass(password: str):
     password = (bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())).decode('utf-8')
@@ -33,7 +33,7 @@ async def add_user(email, password):
     password = hash_new_pass(password)
 
     try:
-        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
 
         cur.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, password))

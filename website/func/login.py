@@ -1,9 +1,9 @@
 import bcrypt
 import psycopg2
-from reader import USER, PASSWORD, DATABASE, HOST
+from reader import CONNECTION_STRING
 
 async def correct_login_information(email: str, password: str):
-    conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+    conn = psycopg2.connect(CONNECTION_STRING)
     cur = conn.cursor()
 
     cur.execute("SELECT password FROM users WHERE email = %s", (email,))

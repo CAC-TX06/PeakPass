@@ -9,7 +9,7 @@ from __init__ import create_website
 from __init__ import User
 import psycopg2
 import bcrypt
-from reader import USER, PASSWORD, DATABASE, HOST
+from reader import CONNECTION_STRING
 from cryptography.fernet import Fernet
 import hashlib
 
@@ -93,7 +93,7 @@ def dashboard():
         path = url_for('static', filename=path)
 
         # Get all of the password data
-        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
         cur.execute("SELECT id, owner, name, username, password, url FROM passwords WHERE owner = %s", (current_user.id,))
         data = cur.fetchall()
@@ -197,7 +197,7 @@ def add_item():
 
         # Add the data to the database
         try:
-            conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+            conn = psycopg2.connect(CONNECTION_STRING)
             cur = conn.cursor()
 
             cur.execute("INSERT INTO passwords (owner, name, username, password, hash, url) VALUES (%s, %s, %s, %s, %s, %s)", (current_user.id, name, username, password, hash, url))
@@ -219,7 +219,7 @@ def delete_item():
         user = request.args.get('user')
 
         if current_user.id == user:
-            conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+            conn = psycopg2.connect(CONNECTION_STRING)
             cur = conn.cursor()
 
             cur.execute("DELETE FROM passwords WHERE id = %s", (id,))
@@ -249,7 +249,7 @@ def update_item():
         url = fernet.encrypt(url.encode()).decode()
 
         # Update the data in the database
-        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
 
         try:
@@ -271,7 +271,7 @@ def update_email():
         email = request.form['new-email-update']
 
         # Update the data in the database
-        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
 
         try:
@@ -304,7 +304,7 @@ def update_password():
             return render_template('settings.html', path=path, email=current_user.id, pass_error='New password cannot be the same as your current password, please try again.')
 
         # Update the data in the database
-        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
 
         # Get the users current password from the DB
@@ -344,7 +344,7 @@ def check_passwords():
     if current_user:
         # Get all of the users passwords from the database
 
-        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
+        conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
         cur.execute("SELECT hash FROM passwords WHERE owner = %s", (current_user.id,))
         data = cur.fetchall()
