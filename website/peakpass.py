@@ -253,6 +253,8 @@ def update_item():
         name = fernet.encrypt(name.encode()).decode()
         username = fernet.encrypt(username.encode()).decode()
         password = fernet.encrypt(password.encode()).decode()
+        hash = hashlib.sha512(request.form['password-update'].encode()).hexdigest()
+        hash = fernet.encrypt(hash.encode()).decode()
         url = fernet.encrypt(url.encode()).decode()
 
         # Update the data in the database
@@ -260,7 +262,7 @@ def update_item():
         cur = conn.cursor()
 
         try:
-            cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, url, id, current_user.id))
+            cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, hash = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, hash, url, id, current_user.id))
             conn.commit()
             conn.close()
         except:
@@ -370,7 +372,8 @@ def check_passwords():
         breached = []
         fernet = Fernet(user_keys[current_user.id])
         for password in data:
-            decrypted_password = fernet.decrypt(str(password[0]).encode()).decode()
+            decrypted_password = fernet.decrypt(str(password)).decode()
+            print(decrypted_password)
 
             # See if the password is in the breached_passwords database
             breach_cur.execute("SELECT * FROM breached_passwords WHERE password = ?", (decrypted_password,))
@@ -378,7 +381,7 @@ def check_passwords():
 
             # If the password is in the breached_passwords database, add it to the list
             if data:
-                cur.execute("SELECT name FROM passwords WHERE hash = %s", (password[0],))
+                cur.execute("SELECT name FROM passwords WHERE hash = %s", (password,))
                 name = cur.fetchone()
                 name = fernet.decrypt(str(name).encode()).decode()
                 breached.append(f'"{name}"')
@@ -387,7 +390,13 @@ def check_passwords():
         breach_conn.close()
 
         # Load the tools route and pass the breached passwords list to it
-        return render_template('tools.html', breached=breached)
+        try:
+            path = user_pfp_path[current_user.id[0].lower()]
+        except KeyError:
+            path = 'pfp_question.png'
+        path = url_for('static', filename=path)
+
+        return render_template('tools.html', path=path, breached=breached)
 
 
 # Logout the user and redirect to the index page
