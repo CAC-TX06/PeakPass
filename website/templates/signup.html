@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <script type="module" src="{{ url_for('static', filename='incompatible_width.js') }}"></script>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,7 +29,7 @@
   ></script>
   <body class="sign-up-body">
     <div class="sign-up-form">
-      <img src="{{ url_for('static', filename='peakpass_text_logo.png') }}">
+      <a href="/"><img src="{{ url_for('static', filename='peakpass_text_logo.png') }}"></a>
       <h1>Sign Up</h1>
       <form name="signup" onsubmit="event.preventDefault(); checkForm();" action="/signup" method="POST">
         <input class="email-box" name="email" placeholder="Your Email">
