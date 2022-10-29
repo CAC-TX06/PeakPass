@@ -23,6 +23,13 @@ user_keys = {} # "email": "password"
 def index():
     return render_template('index.html')
 
+
+# Create the incompatible_width route
+@app.route('/incompatible_width')
+def incompatible_width():
+    return render_template('incompatible_width.html')
+
+
 # Create the login app route
 @app.route('/login', methods = ['POST', 'GET'])
 async def login():
