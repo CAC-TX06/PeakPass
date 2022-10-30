@@ -74,8 +74,6 @@ async def signup():
             return render_template('signup.html', error_message='Email too long. Email addresses must be less than 100 characters. Please try again.')
         elif response == "Password too long":
             return render_template('signup.html', error_message='Password too long. Passwords must be less than 100 characters. Please try again.')
-        elif response == "Bad Password":
-            return render_template('signup.html', error_message='This password has been found in a data breach. Please try again with a different password.')
         else:
             return render_template('signup.html', error_message='Email already taken, please try again with a different email address.')
 
