@@ -180,6 +180,36 @@ def account_settings():
 
     else:
         return render_template('login.html')
+
+
+# Create the route for deleting an account
+@app.route('/delete-account', methods=['POST'])
+@login_required
+def delete_account():
+    if current_user:
+        conn = psycopg2.connect(CONNECTION_STRING)
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM passwords WHERE owner = %s", (current_user.id,))
+        data = cur.fetchall()
+
+        for i in data:            
+            cur.execute("DELETE FROM passwords WHERE id = %s", (i[0],))
+
+        # Delete the user from the database
+        cur.execute("DELETE FROM users WHERE email = %s", (current_user.id,))
+
+        conn.commit()
+        conn.close()
+
+        # Delete the user from the user_keys dict
+        del user_keys[current_user.id]
+
+        # Delete the user from the session
+        logout_user()
+
+        return redirect(url_for('index'))
+    else:
+        return render_template('login.html')
         
 
 # Add items to the database (from the 'Add Item' button on the dashboard)

@@ -35,79 +35,123 @@
   </header> 
 
   <body>
-    <div id="add-new-item" class="bg-modal" hidden></div>
-        <div class="modal-content">
-            <form action="/update-email" method="POST" onsubmit="event.preventDefault(); checkEmailForm();" name="update-email-form" id={{ email }}>
-                <div class="modal-header">
-                    <h2 class="modal-title">My Account</h2>
-                </div>
-                <div class="modal-body">
-                    <h2 id="email-title" class="subtitle-header">Change Email</h2>
-                    <div class="row">
-                        <div class="col-6 form-group">
-                            <label for="cur-email-update">Current Email</label>
-                            <input name="cur-email-update" class="popup-input" type="text">
-                            <label for="cur-email-update" id="cur-email-update-check" class="label-check">• Your current email</label>
-                        </div>
-                    </div>
-                    <div class="row">
-						            <div class="col-6 form-group">
-                            <label for="new-email-update">New Email</label>
-                            <input name="new-email-update" class="popup-input" type="text">
-                            <label for="new-email-update" id="new-email-update-check" class="label-check">• Valid email address</label>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="confirm-email-update">Confirm New Email</label>
-                            <input name="confirm-email-update" class="popup-input" type="text">
-                            <label for="confirm-email-update" id="confirm-email-update-check" class="label-check">• Emails match</label>
-                        </div>
-                        <div id="update-wrapper" class="col-6 form-group">
-                            <button class="save" type="submit" value="submit">Update</button>
-                            {% if email_error %}
-                              <p class="error"> {{ email_error }} </p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </form>
-			      <form action="/update-password" method="POST" onsubmit="event.preventDefault(); checkPasswordForm();" name="update-password-form">
-                <div id="update-pass-wrapper" class="modal-body">
-                    <h2 id="password-title" class="subtitle-header">Change Password</h2>
-                    <div class="row">
-                        <div class="col-6 form-group">
-                            <label for="cur-password-update">Current Password</label>
-                            <input name="cur-password-update" class="popup-input" type="text">
-                        </div>
-                    </div>
-                    <div class="row">
-						            <div class="col-6 form-group">
-                            <label for="new-password-update">New Password</label>
-                            <input name="new-password-update" class="popup-input" type="text">
-                            <label for="new-password-update" id="new-password-update-check" class="label-check">• At least 10 characters in length</label>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="confirm-password-update">Confirm New Password</label>
-                            <input name="confirm-password-update" class="popup-input" type="text">
-                            <label for="confirm-password-update" id="confirm-password-update-check" class="label-check">• Passwords match</label>
-                          </div>
-                        <div id="update-wrapper" class="col-6 form-group">
-                            <button class="save" type="submit" value="submit">Update</button>
-                            {% if pass_error %}
-                              <p class="error"> {{ pass_error }} </p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="delete-acct-btn">
-              <button class="delete" type="submit" value="submit">Delete Account</button>
+    <div class="modal-content">
+        <form action="/update-email" method="POST" onsubmit="event.preventDefault(); checkEmailForm();" name="update-email-form" id={{ email }}>
+            <div class="modal-header">
+                <h2 class="modal-title">My Account</h2>
             </div>
+            <div class="modal-body">
+                <h2 id="email-title" class="subtitle-header">Change Email</h2>
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label for="cur-email-update">Current Email</label>
+                        <input name="cur-email-update" class="popup-input" type="text">
+                        <label for="cur-email-update" id="cur-email-update-check" class="label-check">• Your current email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label for="new-email-update">New Email</label>
+                        <input name="new-email-update" class="popup-input" type="text">
+                        <label for="new-email-update" id="new-email-update-check" class="label-check">• Valid email address</label>
+                    </div>
+                    <div class="col-6 form-group">
+                        <label for="confirm-email-update">Confirm New Email</label>
+                        <input name="confirm-email-update" class="popup-input" type="text">
+                        <label for="confirm-email-update" id="confirm-email-update-check" class="label-check">• Emails match</label>
+                    </div>
+                    <div id="update-wrapper" class="col-6 form-group">
+                        <button class="save" type="submit" value="submit">Update</button>
+                        {% if email_error %}
+                          <p class="error"> {{ email_error }} </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form action="/update-password" method="POST" onsubmit="event.preventDefault(); checkPasswordForm();" name="update-password-form">
+            <div id="update-pass-wrapper" class="modal-body">
+                <h2 id="password-title" class="subtitle-header">Change Password</h2>
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label for="cur-password-update">Current Password</label>
+                        <input name="cur-password-update" class="popup-input" type="text">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label for="new-password-update">New Password</label>
+                        <input name="new-password-update" class="popup-input" type="text">
+                        <label for="new-password-update" id="new-password-update-check" class="label-check">• At least 10 characters in length</label>
+                    </div>
+                    <div class="col-6 form-group">
+                        <label for="confirm-password-update">Confirm New Password</label>
+                        <input name="confirm-password-update" class="popup-input" type="text">
+                        <label for="confirm-password-update" id="confirm-password-update-check" class="label-check">• Passwords match</label>
+                      </div>
+                    <div id="update-wrapper" class="col-6 form-group">
+                        <button class="save" type="submit" value="submit">Update</button>
+                        {% if pass_error %}
+                          <p class="error"> {{ pass_error }} </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="delete-acct-btn">
+          <button class="delete" type="submit" value="submit">Delete Account</button>
         </div>
     </div>
+
+    <div class="bg-modal" hidden>
+      <div class="delete-modal-content">
+        <div class="modal-header">
+            <h2 id="delete-header" class="modal-title">Delete Account</h2>
+        </div>
+        <div class="modal-body">
+            <p class="delete-confirm">Are you sure you would like to delete your account? This action cannot be undone!</p>
+        </div>
+        <div class="modal-footer">
+            <button class="yes-btn">Yes</button>
+            <a class="no-btn" href="">No</a>
+        </div>
+      </div>
+    </div>
+
   </body>
 
 <script>
   window.onload = function() {
+    const deleteButton = document.querySelector('.delete');
+    const modal = document.querySelector('.bg-modal');
+    const yesButton = document.querySelector('.yes-btn');
+    const noButton = document.querySelector('.no-btn');
+
+    deleteButton.addEventListener('click', () => {
+      modal.removeAttribute('hidden');
+    });
+
+    yesButton.addEventListener('click', () => {
+      // Create a post request to delete the account, no headers needed
+      fetch('/delete-account', {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.status === 200) {
+          window.location.href = '/logout';
+        }
+      });
+    });
+
+    noButton.addEventListener('click', () => {
+      event.preventDefault();
+      modal.setAttribute('hidden', true);
+    });
+
+
     let updateEmailForm = document.getElementsByName("update-email-form")[0];
     let realEmail = updateEmailForm.id;
 
@@ -269,6 +313,55 @@
 	margin: 0;
 	padding: 0;
 	font-family: Montserrat;
+}
+
+.bg-modal {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	position: fixed;
+	top: 0;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	border: none;
+}
+
+.delete-modal-content {
+    width: 450px;
+    height: 250px;
+    background-color: rgb(50, 52, 63);
+    border-radius: 8px;
+    position: relative;
+    border: none;
+}
+
+.delete-confirm {
+  text-align: center;
+  color: white;
+  font-size: 16px;
+}
+
+.yes-btn {
+  background-color: #FA5B5B;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 7px 10px;
+  border-radius: 4px;
+}
+
+.no-btn {
+  position: absolute;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 70px;
+}
+
+#delete-header {
+  width: 100%;
+  text-align: center;
 }
 
 .label-check {
@@ -547,18 +640,6 @@ a:hover {
 label {
 	font-size: 15px;
 	color: white;
-}
-
-.bg-modal {
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.7);
-	position: fixed;
-	top: 0;
-	justify-content: center;
-	align-items: center;
-	display: flex;
-	border: none;
 }
 
 .modal-body {
