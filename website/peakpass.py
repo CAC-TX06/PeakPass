@@ -53,6 +53,10 @@ async def login():
 
     elif(request.method == 'GET'):
         if(current_user.is_authenticated):
+            if current_user.id not in user_keys:
+                logout_user()
+                return redirect(url_for('login'))
+
             return redirect(url_for('dashboard'))
 
         return render_template('login.html')
@@ -362,7 +366,6 @@ def update_password():
                 password = hash_new_pass(new_pass)
                 cur.execute("UPDATE users SET password = %s WHERE email = %s", (password, current_user.id))
                 conn.commit()
-                conn.close()
             except:
                 try:
                     path = user_pfp_path[current_user.id[0].lower()]
@@ -377,6 +380,34 @@ def update_password():
                 path = 'pfp_question.png'
             path = url_for('static', filename=path)
             return render_template('settings.html', path=path, email=current_user.id, pass_error='The password you entered was not your current password. Please try again.')
+
+        # Take their old password and decrypt all of their passwords, then re-encrypt them with the new password
+        fernet = Fernet(user_keys[current_user.id])
+
+        hashed_pass = hashlib.sha512(new_pass.encode()).hexdigest()
+        hashed_pass = bytes(hashed_pass[:32], 'utf-8')
+        hashed_pass = base64.b64encode(hashed_pass)
+        fernet_2 = Fernet(hashed_pass)
+
+        all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = %s", (current_user.id,))
+        all_passwords = cur.fetchall()
+        for password in all_passwords:
+            name = fernet.decrypt(password[1].encode()).decode()
+            username = fernet.decrypt(password[2].encode()).decode()
+            password = fernet.decrypt(password[3].encode()).decode()
+            hash = fernet.decrypt(password[4].encode()).decode()
+            url = fernet.decrypt(password[5].encode()).decode()
+
+            name = fernet_2.encrypt(name.encode()).decode()
+            username = fernet_2.encrypt(username.encode()).decode()
+            password = fernet_2.encrypt(password.encode()).decode()
+            hash = fernet_2.encrypt(hash.encode()).decode()
+            url = fernet_2.encrypt(url.encode()).decode()
+
+            cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, hash = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, hash, url, password[0], current_user.id))
+
+        conn.commit()
+        conn.close()
 
         return redirect(url_for('account_settings'))
 
