@@ -112,10 +112,10 @@ def dashboard():
             i = list(i)
 
             # Decrypt everything
-            name = fernet.decrypt(i[2]).decode('utf-8')
-            username = fernet.decrypt(i[3]).decode('utf-8')
-            password = fernet.decrypt(i[4]).decode('utf-8')
-            url = fernet.decrypt(i[5]).decode('utf-8')
+            name = fernet.decrypt(i[2].encode()).decode('utf-8')
+            username = fernet.decrypt(i[3].encode()).decode('utf-8')
+            password = fernet.decrypt(i[4].encode()).decode('utf-8')
+            url = fernet.decrypt(i[5].encode()).decode('utf-8')
 
             try:
                 img_path = user_pfp_path[name[0].lower()]
@@ -400,8 +400,7 @@ def check_passwords():
         breached = []
         fernet = Fernet(user_keys[current_user.id])
         for password in data:
-            decrypted_password = fernet.decrypt(str(password)).decode()
-            print(decrypted_password)
+            decrypted_password = fernet.decrypt(str(password).encode()).decode()
 
             # See if the password is in the breached_passwords database
             breach_cur.execute("SELECT * FROM breached_passwords WHERE password = ?", (decrypted_password,))
