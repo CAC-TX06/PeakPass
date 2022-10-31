@@ -3,7 +3,7 @@ import psycopg2
 import flask_login
 from flask import Flask
 from flask_login import UserMixin
-from reader import CONNECTION_STRING
+from reader import CONNECTION_STRING, SECRET_KEY
 
 class User(UserMixin):
     pass
@@ -13,7 +13,7 @@ class Password():
 
 def create_website():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = os.urandom(32)
+    app.config['SECRET_KEY'] = SECRET_KEY
 
     login_manager = flask_login.LoginManager()
     login_manager.init_app(app)

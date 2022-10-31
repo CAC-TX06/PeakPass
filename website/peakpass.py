@@ -116,10 +116,10 @@ def dashboard():
             i = list(i)
 
             # Decrypt everything
-            name = fernet.decrypt(i[2].encode()).decode('utf-8')
-            username = fernet.decrypt(i[3].encode()).decode('utf-8')
-            password = fernet.decrypt(i[4].encode()).decode('utf-8')
-            url = fernet.decrypt(i[5].encode()).decode('utf-8')
+            name = fernet.decrypt(i[2].encode()).decode('utf-8') if i[2] != '' else ''
+            username = fernet.decrypt(i[3].encode()).decode('utf-8') if i[3] != '' else ''
+            password = fernet.decrypt(i[4].encode()).decode('utf-8') if i[4] != '' else ''
+            url = fernet.decrypt(i[5].encode()).decode('utf-8') if i[5] != '' else ''
 
             try:
                 img_path = user_pfp_path[name[0].lower()]
@@ -225,14 +225,20 @@ def add_item():
         password_form = request.form['password-save']
         url_form = request.form['url-save']
 
-        # Encrypt it
+        # Encrypt it if there is data, otherwise leave it as an empty string
         fernet = Fernet(user_keys[current_user.id])
         name = fernet.encrypt(name_form.encode()).decode()
-        username = fernet.encrypt(username_form.encode()).decode()
-        password = fernet.encrypt(password_form.encode()).decode()
-        hash = hashlib.sha512(request.form['password-save'].encode()).hexdigest()
-        hash = fernet.encrypt(hash.encode()).decode()
-        url = fernet.encrypt(url_form.encode()).decode()
+        username = fernet.encrypt(username_form.encode()).decode() if username_form != '' else ''
+
+        if password_form != '':
+            password = fernet.encrypt(password_form.encode()).decode()
+            hash = hashlib.sha512(request.form['password-save'].encode()).hexdigest()
+            hash = fernet.encrypt(hash.encode()).decode()
+        else:
+            password = ''
+            hash = ''
+
+        url = fernet.encrypt(url_form.encode()).decode() if url_form != '' else ''
 
         # Add the data to the database
         try:
@@ -282,12 +288,19 @@ def update_item():
 
         # Encrypt the data
         fernet = Fernet(user_keys[current_user.id])
+
         name = fernet.encrypt(name.encode()).decode()
-        username = fernet.encrypt(username.encode()).decode()
-        password = fernet.encrypt(password.encode()).decode()
-        hash = hashlib.sha512(request.form['password-update'].encode()).hexdigest()
-        hash = fernet.encrypt(hash.encode()).decode()
-        url = fernet.encrypt(url.encode()).decode()
+        username = fernet.encrypt(username.encode()).decode() if username != '' else ''
+
+        if password != '':
+            password = fernet.encrypt(password.encode()).decode()
+            hash = hashlib.sha512(request.form['password-update'].encode()).hexdigest()
+            hash = fernet.encrypt(hash.encode()).decode()
+        else:
+            password = ''
+            hash = ''
+
+        url = fernet.encrypt(url.encode()).decode() if url != '' else ''
 
         # Update the data in the database
         conn = psycopg2.connect(CONNECTION_STRING)
@@ -391,25 +404,33 @@ def update_password():
 
         all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = %s", (current_user.id,))
         all_passwords = cur.fetchall()
-        for password in all_passwords:
-            name = fernet.decrypt(password[1].encode()).decode()
-            username = fernet.decrypt(password[2].encode()).decode()
-            password = fernet.decrypt(password[3].encode()).decode()
-            hash = fernet.decrypt(password[4].encode()).decode()
-            url = fernet.decrypt(password[5].encode()).decode()
+        for password_entry in all_passwords:
+            name = fernet.decrypt(password_entry[2].encode()).decode() if password_entry[2] != '' else ''
+            username = fernet.decrypt(password_entry[3].encode()).decode() if password_entry[3] != '' else ''
+            password = fernet.decrypt(password_entry[4].encode()).decode() if password_entry[4] != '' else ''
+            hash = fernet.decrypt(password_entry[5].encode()).decode() if password_entry[5] != '' else ''
+            url = fernet.decrypt(password_entry[6].encode()).decode() if password_entry[6] != '' else ''
 
-            name = fernet_2.encrypt(name.encode()).decode()
-            username = fernet_2.encrypt(username.encode()).decode()
-            password = fernet_2.encrypt(password.encode()).decode()
-            hash = fernet_2.encrypt(hash.encode()).decode()
-            url = fernet_2.encrypt(url.encode()).decode()
+            name = fernet_2.encrypt(name.encode()).decode() if name != '' else ''
+            username = fernet_2.encrypt(username.encode()).decode() if username != '' else ''
+            password = fernet_2.encrypt(password.encode()).decode() if password != '' else ''
+            hash = fernet_2.encrypt(hash.encode()).decode() if hash != '' else ''
+            url = fernet_2.encrypt(url.encode()).decode() if url != '' else ''
 
-            cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, hash = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, hash, url, password[0], current_user.id))
+            cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, hash = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, hash, url, password_entry[0], current_user.id))
 
         conn.commit()
         conn.close()
 
-        return redirect(url_for('account_settings'))
+        user_keys[current_user.id] = hashed_pass
+
+        try:
+            path = user_pfp_path[current_user.id[0].lower()]
+        except KeyError:
+            path = 'pfp_question.png'
+        path = url_for('static', filename=path)
+
+        return render_template('settings.html', path=path, email=current_user.id, pass_success='Password updated successfully!')
 
 
 # Create the password breach check route
@@ -418,10 +439,9 @@ def update_password():
 def check_passwords():
     if current_user:
         # Get all of the users passwords from the database
-
         conn = psycopg2.connect(CONNECTION_STRING)
         cur = conn.cursor()
-        cur.execute("SELECT hash FROM passwords WHERE owner = %s", (current_user.id,))
+        cur.execute("SELECT hash FROM passwords WHERE owner = %s AND hash != ''", (current_user.id,))
         data = cur.fetchall()
 
         breach_conn = sqlite3.connect('breached_passwords.db')

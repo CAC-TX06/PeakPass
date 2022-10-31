@@ -17,3 +17,4 @@ database = config.get('database')
 sslmode = config.get('sslmode')
 
 CONNECTION_STRING = f"postgresql://{username}:{password}@{host}:{port}/{database}?sslmode={sslmode}"
+SECRET_KEY = config.get('secret_key')
