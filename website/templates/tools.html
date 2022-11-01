@@ -92,6 +92,12 @@
                 <tr>
                 {% endfor %}
               {% endif %}
+              {% if secure %}
+                <tr>
+                  <td class="item-name">Good news, none of your passwords have been found in our breach list!</td>
+                </tr>
+                <tr>
+              {% endif %}
             </tbody>
           </table>
         </div>

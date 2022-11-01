@@ -181,19 +181,23 @@
     var table = document.querySelector('.content-table');
     var tr = table.querySelectorAll('tr');
 
-    searchInput.addEventListener('keyup', function(e) {
-      var searchValue = e.target.value.toLowerCase();
-      tr.forEach(function(tr) {
-        var td = tr.querySelector('td');
+    // Create the ability for users to search through their items. Check for when they type 
+    // in the search bar and then check if the item name matches the search input. If it does,
+    // display the item, otherwise hide it.
+
+    searchInput.addEventListener('keyup', function() {
+      var searchValue = searchInput.value.toLowerCase();
+      for (var i = 0; i < tr.length; i++) {
+        var td = tr[i].querySelectorAll('td')[1];
         if (td) {
           var textValue = td.textContent || td.innerText;
           if (textValue.toLowerCase().indexOf(searchValue) > -1) {
-            tr.style.display = '';
+            tr[i].style.display = "";
           } else {
-            tr.style.display = 'none';
+            tr[i].style.display = "none";
           }
         }
-      });
+      }
     });
 
     const trashButtons = document.querySelectorAll('.bi-trash-fill');
