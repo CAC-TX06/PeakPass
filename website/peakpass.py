@@ -134,7 +134,7 @@ def dashboard():
 
             return render_template('dashboard.html', path=path, data=data)
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -172,7 +172,7 @@ def tools(breached=False):
         else:
             return render_template('login.html')
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -192,7 +192,7 @@ def account_settings():
         else:
             return render_template('login.html')
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -226,7 +226,7 @@ def delete_account():
         else:
             return render_template('login.html')
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
         
 
@@ -270,7 +270,7 @@ def add_item():
 
             return redirect(url_for('dashboard'))
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -294,7 +294,7 @@ def delete_item():
         
         return render_template('dashboard.html')
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -340,7 +340,7 @@ def update_item():
 
             return redirect(url_for('dashboard'))
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -375,7 +375,7 @@ def update_email():
 
             return redirect(url_for('account_settings'))
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -465,7 +465,7 @@ def update_password():
 
             return render_template('settings.html', path=path, email=current_user.id, pass_success='Password updated successfully!')
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
@@ -516,19 +516,15 @@ def check_passwords():
             else:
                 return render_template('tools.html', path=path, secure=True)
 
-    except KeyError:
+    except:
         return redirect(url_for('login'))
 
 
 # Logout the user and redirect to the index page
 @app.route('/logout', methods=['GET'])
 def logout():
-    try:
-        if current_user and user_keys[current_user.id]:
-            logout_user()
-    
-    except KeyError:
-        pass
+    if current_user:
+        logout_user()
 
     return redirect(url_for('index'))
 
