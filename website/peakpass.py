@@ -7,9 +7,8 @@ from func.login import correct_login_information
 from func.sign_up import add_user, hash_new_pass
 from __init__ import create_website
 from __init__ import User
-import psycopg2
+import sqlite3
 import bcrypt
-from reader import CONNECTION_STRING
 from cryptography.fernet import Fernet
 import hashlib
 
@@ -63,7 +62,7 @@ async def login():
 
 
 # Create the signup route
-# If the user attempts to sign up, try to add the new information to the DB, if it fails, then the 
+# If the user attempts to sign up, try to add the new information to the DB, if it fails, then the
 # email/username is already taken, so alert the user, otherwise, redirect to the login page
 
 # Make sure that the passwords are hashed and never stored as plaintext in the DB
@@ -71,7 +70,6 @@ async def login():
 async def signup():
     if(request.method == 'POST'):
         response = await add_user(request.form['email'], request.form['password'])
-        print(response)
         if response == True:
             return render_template('login.html', success_message='Account created successfully. Please login to continue.')
         elif response == "Email too long":
@@ -84,10 +82,10 @@ async def signup():
     return render_template('signup.html')
 
 
-user_pfp_path = {'a':'pfp_a.png', 'b':'pfp_b.png', 'c':'pfp_c.png', 'd':'pfp_d.png', 'e':'pfp_e.png', 
-'f':'pfp_f.png', 'g':'pfp_g.png', 'h':'pfp_h.png', 'i':'pfp_i.png', 'j':'pfp_j.png', 'k':'pfp_k.png', 
-'l':'pfp_l.png', 'm':'pfp_m.png', 'n':'pfp_n.png', 'o':'pfp_o.png', 'p':'pfp_p.png', 'q':'pfp_q.png', 
-'r':'pfp_r.png', 's':'pfp_s.png', 't':'pfp_t.png', 'u':'pfp_u.png', 'v':'pfp_v.png', 'w':'pfp_w.png', 
+user_pfp_path = {'a':'pfp_a.png', 'b':'pfp_b.png', 'c':'pfp_c.png', 'd':'pfp_d.png', 'e':'pfp_e.png',
+'f':'pfp_f.png', 'g':'pfp_g.png', 'h':'pfp_h.png', 'i':'pfp_i.png', 'j':'pfp_j.png', 'k':'pfp_k.png',
+'l':'pfp_l.png', 'm':'pfp_m.png', 'n':'pfp_n.png', 'o':'pfp_o.png', 'p':'pfp_p.png', 'q':'pfp_q.png',
+'r':'pfp_r.png', 's':'pfp_s.png', 't':'pfp_t.png', 'u':'pfp_u.png', 'v':'pfp_v.png', 'w':'pfp_w.png',
 'x':'pfp_x.png', 'y':'pfp_y.png', 'z':'pfp_z.png'}
 
 # If there is a current user, redirect to the dashboard, otherwise redirect to the login page
@@ -103,9 +101,9 @@ def dashboard():
             path = url_for('static', filename=path)
 
             # Get all of the password data
-            conn = psycopg2.connect(CONNECTION_STRING)
+            conn = sqlite3.connect("data.db")
             cur = conn.cursor()
-            cur.execute("SELECT id, owner, name, username, password, url FROM passwords WHERE owner = %s", (current_user.id,))
+            cur.execute("SELECT id, owner, name, username, password, url FROM passwords WHERE owner = ?", (current_user.id,))
             data = cur.fetchall()
             conn.close()
 
@@ -202,16 +200,16 @@ def account_settings():
 def delete_account():
     try:
         if current_user and user_keys[current_user.id]:
-            conn = psycopg2.connect(CONNECTION_STRING)
+            conn = sqlite3.connect("data.db")
             cur = conn.cursor()
-            cur.execute("SELECT id FROM passwords WHERE owner = %s", (current_user.id,))
+            cur.execute("SELECT id FROM passwords WHERE owner = ?", (current_user.id,))
             data = cur.fetchall()
 
-            for i in data:            
-                cur.execute("DELETE FROM passwords WHERE id = %s", (i[0],))
+            for i in data:
+                cur.execute("DELETE FROM passwords WHERE id = ?", (i[0],))
 
             # Delete the user from the database
-            cur.execute("DELETE FROM users WHERE email = %s", (current_user.id,))
+            cur.execute("DELETE FROM users WHERE email = ?", (current_user.id,))
 
             conn.commit()
             conn.close()
@@ -228,7 +226,6 @@ def delete_account():
 
     except:
         return redirect(url_for('login'))
-        
 
 # Add items to the database (from the 'Add Item' button on the dashboard)
 @app.route('/add-item', methods=['POST'])
@@ -259,10 +256,10 @@ def add_item():
 
             # Add the data to the database
             try:
-                conn = psycopg2.connect(CONNECTION_STRING)
+                conn = sqlite3.connect("data.db")
                 cur = conn.cursor()
 
-                cur.execute("INSERT INTO passwords (owner, name, username, password, hash, url) VALUES (%s, %s, %s, %s, %s, %s)", (current_user.id, name, username, password, hash, url))
+                cur.execute("INSERT INTO passwords (owner, name, username, password, hash, url) VALUES (?, ?, ?, ?, ?, ?)", (current_user.id, name, username, password, hash, url))
                 conn.commit()
                 conn.close()
             except:
@@ -285,13 +282,13 @@ def delete_item():
             user = request.args.get('user')
 
             if current_user.id == user:
-                conn = psycopg2.connect(CONNECTION_STRING)
+                conn = sqlite3.connect("data.db")
                 cur = conn.cursor()
 
-                cur.execute("DELETE FROM passwords WHERE id = %s", (id,))
+                cur.execute("DELETE FROM passwords WHERE id = ?", (id,))
                 conn.commit()
                 conn.close()
-        
+
         return render_template('dashboard.html')
 
     except:
@@ -328,11 +325,11 @@ def update_item():
             url = fernet.encrypt(url.encode()).decode() if url != '' else ''
 
             # Update the data in the database
-            conn = psycopg2.connect(CONNECTION_STRING)
+            conn = sqlite3.connect("data.db")
             cur = conn.cursor()
 
             try:
-                cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, hash = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, hash, url, id, current_user.id))
+                cur.execute("UPDATE passwords SET name = ?, username = ?, password = ?, hash = ?, url = ? WHERE id = ? AND owner = ?", (name, username, password, hash, url, id, current_user.id))
                 conn.commit()
                 conn.close()
             except:
@@ -354,22 +351,22 @@ def update_email():
             email = request.form['new-email-update']
 
             # Update the data in the database
-            conn = psycopg2.connect(CONNECTION_STRING)
+            conn = sqlite3.connect("data.db")
             cur = conn.cursor()
 
             try:
-                cur.execute("UPDATE users SET email = %s WHERE email = %s", (email, current_user.id))
+                cur.execute("UPDATE users SET email = ? WHERE email = ?", (email, current_user.id))
                 conn.commit()
-            except psycopg2.errors.UniqueViolation:
+            except:
                 path = user_pfp_path[current_user.id[0].lower()]
                 path = url_for('static', filename=path)
                 conn.close()
                 return render_template('settings.html', path=path, email=current_user.id, email_error='Email already taken, please try again with a different email address.')
 
-            all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = %s", (current_user.id,))
+            all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = ?", (current_user.id,))
             all_passwords = cur.fetchall()
             for password in all_passwords:
-                cur.execute("UPDATE passwords SET owner = %s WHERE id = %s", (email, password[0]))
+                cur.execute("UPDATE passwords SET owner = ? WHERE id = ?", (email, password[0]))
             conn.commit()
             conn.close()
 
@@ -398,11 +395,11 @@ def update_password():
                 return render_template('settings.html', path=path, email=current_user.id, pass_error='New password cannot be the same as your current password, please try again.')
 
             # Update the data in the database
-            conn = psycopg2.connect(CONNECTION_STRING)
+            conn = sqlite3.connect("data.db")
             cur = conn.cursor()
 
             # Get the users current password from the DB
-            cur.execute("SELECT password FROM users WHERE email = %s", (current_user.id,))
+            cur.execute("SELECT password FROM users WHERE email = ?", (current_user.id,))
             data = cur.fetchone()
             current_password = data[0]
 
@@ -410,7 +407,7 @@ def update_password():
             if bcrypt.checkpw(cur_pass.encode('utf-8'), current_password.encode('utf-8')):
                 try:
                     password = hash_new_pass(new_pass)
-                    cur.execute("UPDATE users SET password = %s WHERE email = %s", (password, current_user.id))
+                    cur.execute("UPDATE users SET password = ? WHERE email = ?", (password, current_user.id))
                     conn.commit()
                 except:
                     try:
@@ -435,7 +432,7 @@ def update_password():
             hashed_pass = base64.b64encode(hashed_pass)
             fernet_2 = Fernet(hashed_pass)
 
-            all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = %s", (current_user.id,))
+            all_passwords = cur.execute("SELECT * FROM passwords WHERE owner = ?", (current_user.id,))
             all_passwords = cur.fetchall()
             for password_entry in all_passwords:
                 name = fernet.decrypt(password_entry[2].encode()).decode() if password_entry[2] != '' else ''
@@ -450,7 +447,7 @@ def update_password():
                 hash = fernet_2.encrypt(hash.encode()).decode() if hash != '' else ''
                 url = fernet_2.encrypt(url.encode()).decode() if url != '' else ''
 
-                cur.execute("UPDATE passwords SET name = %s, username = %s, password = %s, hash = %s, url = %s WHERE id = %s AND owner = %s", (name, username, password, hash, url, password_entry[0], current_user.id))
+                cur.execute("UPDATE passwords SET name = ?, username = ?, password = ?, hash = ?, url = ? WHERE id = ? AND owner = ?", (name, username, password, hash, url, password_entry[0], current_user.id))
 
             conn.commit()
             conn.close()
@@ -476,9 +473,9 @@ def check_passwords():
     try:
         if current_user and user_keys[current_user.id]:
             # Get all of the users passwords from the database
-            conn = psycopg2.connect(CONNECTION_STRING)
+            conn = sqlite3.connect("data.db")
             cur = conn.cursor()
-            cur.execute("SELECT hash FROM passwords WHERE owner = %s AND hash != ''", (current_user.id,))
+            cur.execute("SELECT hash FROM passwords WHERE owner = ? AND hash != ''", (current_user.id,))
             data = cur.fetchall()
 
             breach_conn = sqlite3.connect('breached_passwords.db')
@@ -496,7 +493,7 @@ def check_passwords():
 
                 # If the password is in the breached_passwords database, add it to the list
                 if data:
-                    cur.execute("SELECT name FROM passwords WHERE hash = %s", (password,))
+                    cur.execute("SELECT name FROM passwords WHERE hash = ?", (password,))
                     name = cur.fetchone()
                     name = fernet.decrypt(str(name).encode()).decode()
                     breached.append(f'"{name}"')

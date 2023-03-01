@@ -1,12 +1,11 @@
 import bcrypt
-import psycopg2
-from reader import CONNECTION_STRING
+import sqlite3
 
 async def correct_login_information(email: str, password: str):
-    conn = psycopg2.connect(CONNECTION_STRING)
+    conn = sqlite3.connect("data.db")
     cur = conn.cursor()
 
-    cur.execute("SELECT password FROM users WHERE email = %s", (email,))
+    cur.execute("SELECT password FROM users WHERE email = ?", (email,))
     hashed_password = cur.fetchone()
     conn.close()
 
