@@ -1,14 +1,12 @@
 import bcrypt
-import psycopg2
-import psycopg2
-from reader import CONNECTION_STRING
+import sqlite3
 
 def hash_new_pass(password: str):
     password = (bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())).decode('utf-8')
     return password
 
 
-async def add_user(email, password):  
+async def add_user(email, password):
     if not email or not password:
         return
 
@@ -21,12 +19,12 @@ async def add_user(email, password):
     password = hash_new_pass(password)
 
     try:
-        conn = psycopg2.connect(CONNECTION_STRING)
+        conn = sqlite3.connect("data.db")
         cur = conn.cursor()
 
-        cur.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, password))
+        cur.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, password))
         conn.commit()
         conn.close()
         return True
-    except psycopg2.IntegrityError:
+    except sqlite3.IntegrityError:
         return False

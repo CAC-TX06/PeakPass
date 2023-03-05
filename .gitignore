@@ -4,3 +4,4 @@ breached_passwords.db
 .DS_Store
 priv_key.pem
 origin_key.pem
+data.db
