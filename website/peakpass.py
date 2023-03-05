@@ -529,7 +529,7 @@ def check_passwords():
 
                 # If the password is in the breached_passwords database, add it to the list
                 if data:
-                    cur.execute("SELECT name FROM passwords WHERE hash = ?", (password,))
+                    cur.execute("SELECT name FROM passwords WHERE hash = ?", (password[0],))
                     name = cur.fetchone()
                     name = fernet.decrypt(str(name).encode()).decode()
                     breached.append(f'"{name}"')
