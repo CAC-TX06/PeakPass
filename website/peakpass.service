@@ -1,0 +1,18 @@
+# For production, this keeps the PeakPass website actuall up and running
+# Make sure to move this to /etc/systemd/system
+# For Ubuntu systems you then run `sudo systemctl enable peakpass` and `sudo systemctl start peakpass`
+
+# Make sure to change the `WorkingDirectory` and `ExecStart` paths, as it is most likely not correct
+# for your setup.
+[Unit]
+Description=Keep PeakPass Up and Running
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/parker/docker/peakpass
+ExecStart=/usr/bin/bash /home/parker/docker/peakpass/peakpass.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
