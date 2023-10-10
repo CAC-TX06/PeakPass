@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <title>PeakPass | HTTPS</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#73C276" />
     <meta name="apple-mobile-web-app-title" content="PeakPass | HTTPS" />
 
@@ -25,9 +24,10 @@
     <meta property="og:description" content="HTTPS blog. What is it? How does it work?"/>
     
     <meta name="description" content="HTTPS blog. What is it? How does it work?"/>
-    <meta name="robots" content="index, follow" />
-    <meta name="http-equiv" content="X-Robots-Tag : index, follow" />
-    <meta name="googlebot" content="index, follow" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
     
     <meta name="twitter:card" content="summary" />
   </head>
@@ -53,7 +53,7 @@
   <body>
     <div class="wrapper">
         <h1 class="main-title">HTTPS (Hypertext Transfer Protocol Secure)</h1>
-        <p class="author">By: Parker M.</p>
+        <p class="author">By: Parker</p>
         <div class="blog-section">
           <h2 class="subtitle">What is HTTPS?</h2>
             <p class="body-text">HTTPS is the Hypertext transfer protocol secure, and is the secure and encrypted version of HTTP - the main protocol of data transmission on websites. HTTPS allows websites to securely communicate with your web browser, meaning you can safely login to your accounts without leaking your data.<br><br>Any website that requires you to login using your username/password combination should use HTTPS, especially ones that are crucial to your life like: banks, insurance providers, email services, etc.</p>

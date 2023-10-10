@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <title>PeakPass | Documentation</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#73C276" />
     <meta name="apple-mobile-web-app-title" content="PeakPass | Documentation" />
 
@@ -25,9 +24,10 @@
     <meta property="og:description" content="Documentation for PeakPass."/>
     
     <meta name="description" content="Documentation for PeakPass."/>
-    <meta name="robots" content="index, follow" />
-    <meta name="http-equiv" content="X-Robots-Tag : index, follow" />
-    <meta name="googlebot" content="index, follow" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
     
     <meta name="twitter:card" content="summary" />
   </head>
@@ -54,7 +54,7 @@
     <div class="wrapper">
         <h1 class="main-title">PeakPass Technical Documentation</h1>
         <img class="blog-image" src="{{ url_for('static', filename='peakpass_text_logo.png') }}" alt="Blog Image">
-        <p class="author">By: Parker M. (Backend Developer)</p>
+        <p class="author">By: Parker (Backend Developer)</p>
         <div class="blog-section">
             <h2 class="subtitle">What Technologies/Languages are Employed?</h2>
                 <p class="body-text">PeakPass employs the use of HTML, JS, and CSS for front end development. For back-end development we use Python's Flask library. Our websites are hosted with NGINX on Ubuntu Server with the Gunicorn module. For data storage we employ both SQLite for breached passwords, and a PostgreSQL database for user data.</p>

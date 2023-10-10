@@ -12,7 +12,6 @@
     />
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>PeakPass | Blog</title>
-    <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#73C276" />
     <meta name="apple-mobile-web-app-title" content="PeakPass | Blog" />
 
@@ -23,9 +22,10 @@
     <meta property="og:description" content="PeakPass blog."/>
     
     <meta name="description" content="PeakPass blog."/>
-    <meta name="robots" content="index, follow" />
-    <meta name="http-equiv" content="X-Robots-Tag : index, follow" />
-    <meta name="googlebot" content="index, follow" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
     
     <meta name="twitter:card" content="summary" />
 
@@ -56,7 +56,7 @@
       <td class="blog-name">
         <a href="/blog/"><h1 class="blog-title"></h1></a>
           <br>
-        <h2 class="blog-author">Parker M.</h2>
+        <h2 class="blog-author">Parker</h2>
           <br>
         <a class="blog-excerpt" href="/blog/"></a>
       </td>
@@ -69,7 +69,7 @@
             <td class="blog-name">
               <a href="/blog/https"><h1 class="blog-title">HTTPS (Hypertext Transfer Protocol Secure)</h1></a>
                 <br>
-              <h2 class="blog-author">Parker M.</h2>
+              <h2 class="blog-author">Parker</h2>
                 <br>
               <a class="blog-excerpt" href="/blog/https">HTTPS is the Hypertext transfer protocol secure, and is the secure and encrypted version of HTTP - the main protocol of data transmission on websites. HTTPS allows websites to securely communicate with your web browser, meaning you can safely login to your accounts without leaking your data.</a>
             </td>
@@ -79,7 +79,7 @@
             <td class="blog-name">
               <a href="/blog/encryption"><h1 class="blog-title">Encryption</h1></a>
                 <br>
-              <h2 class="blog-author">Parker M.</h2>
+              <h2 class="blog-author">Parker</h2>
                 <br>
               <a class="blog-excerpt" href="/blog/encryption">Encryption is the process of taking human readable text called plaintext, and turning it into a randomized string a characters called cyphertext.</a>
             </td>

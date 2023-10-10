@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PeakPass | 404</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#73C276" />
     <meta name="apple-mobile-web-app-title" content="PeakPass | 404" />
 
@@ -15,12 +14,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://peakpass.pkrm.dev/static/peakpass_logo.png"/>
     <meta property="og:description" content="Page Not Found."/>
-    
+
     <meta name="description" content="Page Not Found."/>
-    <meta name="robots" content="index, follow" />
-    <meta name="http-equiv" content="X-Robots-Tag : index, follow" />
-    <meta name="googlebot" content="index, follow" />
-    
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+
     <meta name="twitter:card" content="summary" />
   </head>
   <body>
@@ -37,7 +37,7 @@
   </html>
 
 <style>
-    
+
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
   * {
