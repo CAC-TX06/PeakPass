@@ -10,9 +10,9 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <link 
-    rel="stylesheet" 
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" 
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>PeakPass | Login</title>
@@ -24,13 +24,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://peakpass.pkrm.dev/static/peakpass_logo.png"/>
     <meta property="og:description" content="Login to PeakPass."/>
-    
+
     <meta name="description" content="Login to PeakPass."/>
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
     <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
     <meta name="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
-    
+
     <meta name="twitter:card" content="summary" />
   </head>
   <script
@@ -54,11 +54,11 @@
         <input class="email-box" name="email" placeholder="Email">
         <input type="password"  class="input-box" name="password" placeholder="Password">
         <i class="bi bi-eye-slash" id="togglePassword"></i>
-        
+
         {% if error_message %}
         <p class="error"> {{ error_message }} </p>
         {% endif %}
-        
+
         <button type="submit" value="submit" class="log-in-btn">Log In</button>
         <hr>
         <p class="alt-sign-up">Don't have an account yet? <a href="{{ url_for('signup') }}">Sign Up</a></p>
@@ -83,7 +83,7 @@
     password.addEventListener('input', () => {
         password.style.border = '1px solid #979797';
     });
-  } 
+  }
 
   const togglePass = document.querySelector('#togglePassword');
     const pass = document.querySelector('input[name="password"]');
@@ -99,8 +99,8 @@
     let email = document.querySelector('input[name="email"]');
     if (email.value.length == 0) {
       email.style.border = '1px solid #FA5B5B';
-    } 
-    
+    }
+
     if (password.value.length == 0) {
       password.style.border = '1px solid #FA5B5B';
     }
