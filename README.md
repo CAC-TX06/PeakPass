@@ -1,14 +1,19 @@
-<img src="./website/static/peakpass_logo.png" width="125"/>
+<h1 align="center">
+  <br>
+  <img src="website/static/peakpass_text_logo.png" width="400" alt="PeakPass Logo"></a>
+  <br>
+  PeakPass<br>
+</h1>
 
-# PeakPass
-## Won 2nd Place!
+<h3 align="center">
+    A simple password manager and breach detector
+    <br>
+</h3>
 
-PeakPass is a password manager that also doubles as a tool to check your passwords against those that have been affected in previous data breaches. Along with this we offer a blog to teach users about online standards that help to keep them safe when using the internet.
-<br>
-<br>
-Made in approx. 1 month, this code is our submission for the 2022 Congressional App Challenge. It has been open sourced for transparency, and we encourage anyone who is wanting to look through our code, to go ahread and do it. It would be greatly appreciated if you notify one of the developers of any issues you see, or submit a pull request if you have the fix yourself.
-<br>
-<br>
-Since this code has been open sourced purely for transparency, no instructions will be provided for setup, should you want to run your own instance. Feel free to look through the file structure and start it yourself though. For production, you should use a WSGI server and not just run the `peakpass.py` file.
+PeakPass is a password manager and breach detector built in Python with the Flask framework. PeakPass uses a database of over 14 million previously breached passwords to let you know if one of your passwords is at risk. Along with this, we offer a small blog to teach users about online security standards.
 
-Happy coding!
+PeakPass was made in ~1 month and recieved 2nd place in the Congressional App Challenge. This code has been published purely for transparency and to serve as reference for others to use.
+
+Since this code has been open sourced only for transparency, no instructions or support will be provided for self-hosting - though it is not difficult.
+
+**This code is open sourced for transparency and has not recieved a security audit. There ARE SECURITY VULNERABILITIES within this project, it should not be considered a secure alternative.**
